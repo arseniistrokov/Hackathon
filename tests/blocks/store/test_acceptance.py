@@ -12,9 +12,8 @@ import sqlite3
 from datetime import date
 from pathlib import Path
 
-import pytest
-
 import app.blocks.store as store
+import pytest
 from app.config import settings
 from app.contracts.models import (
     Chunk,
@@ -22,9 +21,9 @@ from app.contracts.models import (
     Conflict,
     ConflictSide,
     Navigation,
+    RawPage,
     Stats,
 )
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -98,6 +97,53 @@ def conn() -> sqlite3.Connection:
     c = store.connect()
     store.init_schema(c)
     return c
+
+
+def test_init_schema_creates_tables_and_is_idempotent() -> None:
+    """D1-2: схема содержит контрактные таблицы и повторно создаётся без ошибок."""
+    c = sqlite3.connect(":memory:")
+    store.init_schema(c)
+    store.init_schema(c)
+
+    names = {
+        row[0]
+        for row in c.execute("SELECT name FROM sqlite_master WHERE type IN ('table', 'view')")
+    }
+    assert {"documents", "chunks", "chunks_fts", "conflicts", "queries", "feedback", "site_pages"} <= names
+    sql = c.execute("SELECT sql FROM sqlite_master WHERE name = 'chunks_fts'").fetchone()[0]
+    assert "unicode61 remove_diacritics 2" in sql
+
+
+def test_connect_fixture_loads_corpus_once(expect: dict) -> None:
+    """D1: fixture connection has a schema and loads the canonical corpus."""
+    c = store.connect()
+    document_count = c.execute("SELECT COUNT(*) FROM documents").fetchone()[0]
+    chunk_count = c.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
+    site_count = c.execute("SELECT COUNT(DISTINCT site) FROM documents").fetchone()[0]
+
+    assert document_count == expect["documents"]
+    assert chunk_count >= document_count * expect["min_chunks_per_page"]
+    assert site_count == expect["sites"]
+    second = store.connect()
+    assert second is not c
+    assert second.execute("SELECT COUNT(*) FROM documents").fetchone()[0] == document_count
+
+
+def test_upsert_document_inserts_and_updates() -> None:
+    """Документ сохраняется и повторный upsert обновляет его метаданные."""
+    c = sqlite3.connect(":memory:")
+    c.row_factory = sqlite3.Row
+    store.init_schema(c)
+    page = RawPage(
+        site="rtec.md", url="https://example.test/page", title="Titlu vechi",
+        text="Text de fixture suficient pentru a construi pagina.", category="mobility",
+    )
+    store.upsert_document(c, page, "doc_manual")
+    updated = page.model_copy(update={"title": "Titlu nou"})
+    store.upsert_document(c, updated, "doc_manual")
+
+    rows = c.execute("SELECT id, title FROM documents").fetchall()
+    assert [tuple(row) for row in rows] == [("doc_manual", "Titlu nou")]
 
 
 # ---------------------------------------------------------------------------
@@ -186,8 +232,14 @@ def test_fts_search_special_chars_and_empty(conn: sqlite3.Connection, query_text
 def test_upsert_chunks_idempotent(conn: sqlite3.Connection) -> None:
     """Критерий 5: второй upsert тех же чанков возвращает 0 и не увеличивает число строк."""
     chunks = [
-        _make_chunk(0, text="Costul unei călătorii în troleibuz este de 6 lei."),
-        _make_chunk(1, text="Abonamentul lunar costă 60 de lei pentru toate rutele."),
+        _make_chunk(
+            0, url="https://rtec.md/upsert-test",
+            text="Costul unei călătorii în troleibuz este de 6 lei.",
+        ),
+        _make_chunk(
+            1, url="https://rtec.md/upsert-test",
+            text="Abonamentul lunar costă 60 de lei pentru toate rutele.",
+        ),
     ]
 
     first = store.upsert_chunks(conn, chunks)
