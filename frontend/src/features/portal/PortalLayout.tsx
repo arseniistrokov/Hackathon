@@ -229,29 +229,28 @@ export function PortalLayout() {
                 <line x1="3" y1="18" x2="21" y2="18" />
               </svg>
             </button>
-            <div className="portal-topbar__title-group">
-              <span className="portal-topbar__badge" aria-hidden="true">🏛️</span>
-              <div>
-                <h1 className="portal-topbar__title">{s.title}</h1>
-                <p className="portal-topbar__subtitle">{s.subtitle}</p>
-              </div>
-            </div>
           </div>
 
           <div className="portal-topbar__right">
-            <div className="portal-lang" role="group" aria-label={lang === "ru" ? "Выбор языка" : "Selectare limbă"}>
-              {(["ro", "ru"] as const).map((code) => (
-                <button
-                  key={code}
-                  type="button"
-                  className="portal-lang__button"
-                  aria-pressed={lang === code}
-                  onClick={() => setLang(code)}
-                >
-                  {code.toUpperCase()}
-                </button>
-              ))}
-            </div>
+            <button type="button" className="portal-topbar__link-btn">
+              {lang === "ru" ? "Войти" : "Log in"}
+            </button>
+            <button type="button" className="portal-topbar__signup-btn">
+              {lang === "ru" ? "Регистрация" : "Sign up"}
+            </button>
+            <button
+              type="button"
+              className="portal-topbar__globe-btn"
+              onClick={() => setLang(lang === "ro" ? "ru" : "ro")}
+              aria-label={lang === "ru" ? "Сменить язык на румынский" : "Schimbă limba"}
+              title={`Limbă: ${lang.toUpperCase()}`}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="2" y1="12" x2="22" y2="12" />
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+              </svg>
+            </button>
           </div>
         </header>
 

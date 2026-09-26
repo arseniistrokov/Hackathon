@@ -85,6 +85,10 @@
   --c-nexa-purple: #8b5cf6;
 
   --c-text-muted: #53616e;
+  --c-black-pill: #000000;
+  --c-black-pill-hover: #1e293b;
+  --c-composer-bg: #e5e7eb;
+  --radius-composer: 24px;
 
   --measure: 65ch;
   --width-app: 48rem;

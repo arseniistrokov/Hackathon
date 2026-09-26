@@ -18,17 +18,17 @@
   min-height: 100vh;
 }
 
-/* --- верхняя плашка портала (64px) ---------------------------------------- */
+/* --- верхняя плашка портала (Figma reference) ----------------------------- */
 .portal-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  height: 64px;
-  min-height: 64px;
-  padding: 0 var(--space-5);
+  height: 60px;
+  min-height: 60px;
+  padding: 0 var(--space-6);
   background: var(--c-surface);
-  border-bottom: 1px solid var(--c-border);
+  border-bottom: 1px solid transparent;
   position: sticky;
   top: 0;
   z-index: 20;
@@ -38,7 +38,6 @@
 .portal-topbar__left {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
 }
 
 .portal-topbar__menu-btn {
@@ -56,63 +55,61 @@
   cursor: pointer;
 }
 
-.portal-topbar__title-group {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.portal-topbar__badge {
-  font-size: var(--fs-lg);
-  line-height: 1;
-}
-
-.portal-topbar__title {
-  font-size: var(--fs-md);
-  font-weight: 700;
-  color: var(--c-ink);
-  letter-spacing: -0.01em;
-}
-
-.portal-topbar__subtitle {
-  font-size: var(--fs-xs);
-  color: var(--c-ink-muted);
-}
-
 .portal-topbar__right {
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  margin-left: auto;
 }
 
-/* --- переключатель языка -------------------------------------------------- */
-.portal-lang {
-  display: flex;
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.portal-lang__button {
-  min-width: 3.25rem;
-  min-height: 2.25rem;
-  padding: 0 var(--space-3);
+.portal-topbar__link-btn {
+  background: transparent;
   border: 0;
-  background: var(--c-surface);
-  color: var(--c-ink-muted);
-  font-size: var(--fs-xs);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  padding: var(--space-2) var(--space-3);
   cursor: pointer;
+  border-radius: var(--radius-md);
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.portal-lang__button + .portal-lang__button {
-  border-left: 1px solid var(--c-border-strong);
+.portal-topbar__link-btn:hover {
+  background: var(--c-surface-sunken);
 }
 
-.portal-lang__button[aria-pressed="true"] {
-  background: var(--c-accent);
-  color: var(--c-on-accent);
+.portal-topbar__signup-btn {
+  background: var(--c-black-pill, #000000);
+  color: var(--c-surface, #ffffff);
+  border: 0;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-sm);
   font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.portal-topbar__signup-btn:hover {
+  opacity: 0.88;
+}
+
+.portal-topbar__globe-btn {
+  background: transparent;
+  border: 0;
+  color: var(--c-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.portal-topbar__globe-btn:hover {
+  background: var(--c-surface-sunken);
 }
 
 /* --- nexa боковая панель (max-width: 280px) ------------------------------- */
@@ -173,85 +170,80 @@
 }
 
 .nexa-sidebar__actions {
-  padding: var(--space-2) var(--space-2) var(--space-3);
+  padding: var(--space-2) 0 var(--space-3);
 }
 
 .nexa-new-chat-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   width: 100%;
-  min-height: var(--tap-min);
-  border-radius: var(--radius-full);
-  border: 1px solid var(--c-border-strong);
-  background: var(--c-surface-sunken);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
   color: var(--c-ink);
   font-size: var(--fs-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s ease;
 }
 
 .nexa-new-chat-btn:hover {
-  border-color: var(--c-accent);
-  background: var(--c-accent-soft);
-  color: var(--c-accent);
+  background: var(--c-surface-sunken);
 }
 
 .nexa-new-chat-btn__icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink);
 }
 
 .nexa-sidebar__section-title {
   font-size: var(--fs-xs);
   color: var(--c-ink-faint);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-label);
-  font-weight: 700;
-  padding: var(--space-2) var(--space-3) var(--space-1);
+  font-weight: 600;
+  padding: var(--space-4) var(--space-3) var(--space-1);
 }
 
 .nexa-sidebar__nav {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  padding: 0 var(--space-1);
 }
 
 .nexa-nav-item {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  min-height: 2.5rem;
-  padding: 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
-  color: var(--c-ink-muted);
+  color: var(--c-ink);
   font-size: var(--fs-sm);
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   text-align: left;
   width: 100%;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .nexa-nav-item:hover {
   background: var(--c-surface-sunken);
-  color: var(--c-ink);
 }
 
 .nexa-nav-item--active {
-  background: var(--c-accent-soft);
-  color: var(--c-accent);
-  font-weight: 600;
+  background: var(--c-surface-sunken);
+  color: var(--c-ink);
 }
 
 .nexa-nav-item__icon {
-  font-size: 1.15rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-ink);
 }
 
 .nexa-sidebar__recent {
@@ -260,8 +252,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
-  margin-top: var(--space-3);
-  padding: 0 var(--space-1);
+  margin-top: var(--space-2);
 }
 
 .nexa-recent-list {
@@ -279,60 +270,51 @@
 }
 
 .nexa-recent-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+  display: block;
   width: 100%;
   padding: var(--space-2) var(--space-3);
   border: 0;
   border-radius: var(--radius-md);
   background: transparent;
-  color: var(--c-ink-muted);
-  font-size: var(--fs-xs);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: background 0.15s ease;
 }
 
 .nexa-recent-btn:hover {
   background: var(--c-surface-sunken);
-  color: var(--c-ink);
 }
 
 .nexa-recent-btn__text {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  flex: 1;
-}
-
-.nexa-recent-btn__bullet {
-  color: var(--c-ink-faint);
-  font-weight: 700;
+  display: block;
 }
 
 .nexa-sidebar__footer {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
   padding-top: var(--space-3);
-  border-top: 1px solid var(--c-border);
   margin-top: auto;
 }
 
 .nexa-user-profile {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-1) var(--space-2);
+  gap: var(--space-2);
 }
 
 .nexa-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--c-accent);
-  color: var(--c-on-accent);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--c-nexa-blue);
+  color: var(--c-surface);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -344,43 +326,36 @@
 .nexa-user-info {
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .nexa-user-name {
   font-size: var(--fs-sm);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--c-ink);
   line-height: 1.2;
 }
 
-.nexa-lang-switch {
+.nexa-sidebar__footer-icons {
   display: flex;
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  align-items: center;
+  gap: var(--space-1);
 }
 
-.nexa-lang-btn {
-  flex: 1;
-  min-height: 2rem;
+.nexa-icon-btn {
+  background: transparent;
   border: 0;
-  background: var(--c-surface);
-  color: var(--c-ink-muted);
-  font-size: var(--fs-xs);
-  font-weight: 500;
+  color: var(--c-ink-faint);
+  padding: var(--space-1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
 }
 
-.nexa-lang-btn + .nexa-lang-btn {
-  border-left: 1px solid var(--c-border-strong);
-}
-
-.nexa-lang-btn[aria-pressed="true"] {
-  background: var(--c-accent);
-  color: var(--c-on-accent);
-  font-weight: 700;
+.nexa-icon-btn:hover {
+  color: var(--c-ink);
 }
 
 @media (max-width: 899px) {
@@ -594,46 +569,42 @@
   outline-offset: 2px;
 }
 
-/* --- плавающий композер NEXA (высота 56px, серый фон, скругление) -------- */
+/* --- плавающий композер NEXA (Figma reference: серый блок со скруглением 24px) --- */
 .chat .composer {
   position: sticky;
   bottom: var(--space-4);
   z-index: 10;
   display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  height: var(--input-height, 56px) !important;
-  min-height: var(--input-height, 56px) !important;
-  background: var(--c-surface-sunken) !important;
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
-  padding: 0 var(--space-2) 0 var(--space-4);
-  gap: var(--space-2);
-  margin-top: auto;
-  box-sizing: border-box;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  flex-direction: column !important;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto var(--space-4);
+  background: var(--c-composer-bg, #e5e7eb) !important;
+  border: 0 !important;
+  border-radius: var(--radius-composer, 24px) !important;
+  padding: 16px 20px 14px 20px !important;
+  gap: 14px !important;
+  box-sizing: border-box !important;
+  box-shadow: none !important;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
 }
 
 .chat .composer:focus-within {
-  border-color: var(--c-accent);
-  background: var(--c-surface) !important;
+  box-shadow: var(--shadow-card);
 }
 
 .chat .composer__input-wrapper {
-  flex: 1;
-  min-width: 0;
+  width: 100%;
   display: flex;
   align-items: center;
-  height: 100%;
 }
 
 .chat .composer__input {
   width: 100%;
-  height: 100%;
   border: 0;
   background: transparent;
   color: var(--c-ink);
-  font-size: var(--fs-md);
+  font-size: 1.05rem;
   font-family: inherit;
   outline: none;
   padding: 0;
@@ -641,34 +612,77 @@
 
 .chat .composer__input::placeholder {
   color: var(--c-ink-faint);
+  font-weight: 500;
+}
+
+.chat .composer__bottom-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+.chat .composer__attach-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  border: 0;
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 2px var(--c-black-shade);
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+
+.chat .composer__attach-btn:hover {
+  background: var(--c-surface-sunken);
+  transform: translateY(-1px);
 }
 
 .chat .composer__actions {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  flex-shrink: 0;
+  gap: 10px;
 }
 
 .chat .composer .mic-btn {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--c-border);
-  background: var(--c-surface);
-  padding: 0;
+  width: 38px !important;
+  height: 38px !important;
+  min-width: 38px !important;
+  min-height: 38px !important;
+  border-radius: var(--radius-full) !important;
+  border: 0 !important;
+  background: radial-gradient(circle at 35% 30%, var(--c-nexa-cyan), var(--c-nexa-purple) 60%, var(--c-nexa-blue) 100%) !important;
+  box-shadow: 0 2px 8px var(--c-cyan-translucent) !important;
+  color: var(--c-on-send) !important;
+  padding: 0 !important;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.chat .composer .mic-btn:hover {
+  transform: scale(1.05);
+}
+
+.chat .composer .mic-btn--listening {
+  animation: orb-pulse 1.2s ease-in-out infinite alternate !important;
 }
 
 .chat .composer__submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  min-height: 40px;
-  min-width: 40px;
+  width: 38px;
+  height: 38px;
+  min-height: 38px;
+  min-width: 38px;
   border: 0;
   border-radius: var(--radius-full);
   background: var(--c-send);
@@ -684,49 +698,44 @@
 }
 
 .chat .composer__submit:disabled {
-  background: var(--c-border-strong);
-  color: var(--c-ink-faint);
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
 @media (max-width: 420px) {
   .chat .composer {
-    padding: 0 var(--space-2) 0 var(--space-3);
+    padding: 12px 14px 10px 14px !important;
   }
 }
 
-/* --- welcome-экран NEXA (центрирование) ----------------------------------- */
+/* --- welcome-экран NEXA (Figma reference: сфера и крупный текст) ---------- */
 .chat .welcome {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: var(--space-6) var(--space-4) var(--space-2);
-  gap: var(--space-2);
+  padding: var(--space-4);
+  gap: var(--space-1);
   margin: auto 0;
-  min-height: 52vh;
+  min-height: 48vh;
 }
 
 .chat .welcome__title {
-  font-size: var(--fs-xl);
+  font-size: 2.25rem;
   font-weight: 800;
   color: var(--c-ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
+  margin: var(--space-4) 0 0 0;
+  line-height: 1.2;
 }
 
 .chat .welcome__subtitle {
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  color: var(--c-accent);
-  letter-spacing: -0.01em;
-}
-
-.chat .welcome__desc {
-  font-size: var(--fs-sm);
-  color: var(--c-text-muted);
-  max-width: 44ch;
-  line-height: var(--lh-normal);
-  margin-top: var(--space-1);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1.2;
 }

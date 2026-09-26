@@ -180,9 +180,8 @@ export function ChatScreen({
         {showEmpty && (
           <section className="welcome" aria-label="NEXA Welcome">
             <NexaOrb />
-            <h2 className="welcome__title">{s.nexaWelcomeTitle}</h2>
-            <p className="welcome__subtitle">{s.nexaWelcomeSubtitle}</p>
-            <p className="welcome__desc">{s.welcomeDescription}</p>
+            <h1 className="welcome__title">{lang === "ru" ? "Привет, я NEXA" : "HI, Im NEXA"}</h1>
+            <h2 className="welcome__subtitle">{lang === "ru" ? "Чем я могу помочь?" : "How can i help you?"}</h2>
           </section>
         )}
 
@@ -215,7 +214,7 @@ export function ChatScreen({
         {!showEmpty && <StatsFooter />}
       </main>
 
-      {chipsSlot}
+      {!showEmpty && chipsSlot}
 
       <form className="composer" onSubmit={onSubmit}>
         <div className="composer__input-wrapper">
@@ -224,36 +223,44 @@ export function ChatScreen({
             className="composer__input"
             type="text"
             value={draft}
-            placeholder={s.nexaPlaceholder}
+            placeholder={lang === "ru" ? "Спросите NEXA о чём угодно..." : "Ask NEXA anything .."}
             maxLength={1000}
             autoComplete="off"
             onChange={(event) => setDraft(event.target.value)}
           />
         </div>
-        <div className="composer__actions">
-          <MicButton
-            lang={lang}
-            onTranscript={(text) => setDraft(text)}
-            recognitionFactory={getFallbackRecognitionFactory(lang)}
-          />
-          <button
-            type="submit"
-            className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
-            disabled={!canSend}
-            aria-label={pending ? s.sending : s.send}
-            title={pending ? s.sending : s.send}
-          >
-            {pending ? (
-              <svg className="composer__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-              </svg>
-            ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
-              </svg>
-            )}
+        <div className="composer__bottom-bar">
+          <button type="button" className="composer__attach-btn" onClick={() => {}} title="Attach">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+            </svg>
+            <span>{s.attachLabel}</span>
           </button>
+          <div className="composer__actions">
+            <MicButton
+              lang={lang}
+              onTranscript={(text) => setDraft(text)}
+              recognitionFactory={getFallbackRecognitionFactory(lang)}
+            />
+            <button
+              type="submit"
+              className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
+              disabled={!canSend}
+              aria-label={pending ? s.sending : s.send}
+              title={pending ? s.sending : s.send}
+            >
+              {pending ? (
+                <svg className="composer__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="12" y1="19" x2="12" y2="5" />
+                  <polyline points="5 12 12 5 19 12" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </form>
     </div>

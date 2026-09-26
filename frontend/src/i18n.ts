@@ -45,6 +45,12 @@ export interface Strings {
   nexaPlaceholder: string
   nexaNewChat: string
   nexaRecentTitle: string
+  attachLabel: string
+  searchLabel: string
+  pinnedLabel: string
+  recentLabel: string
+  loginLabel: string
+  signupLabel: string
 }
 
 const ro: Strings = {
@@ -89,8 +95,14 @@ const ro: Strings = {
   nexaWelcomeSubtitle: "Cum te pot ajuta?",
   nexaOfficialSources: "Surse oficiale",
   nexaPlaceholder: "Întreabă NEXA orice...",
-  nexaNewChat: "Conversație nouă",
-  nexaRecentTitle: "Interogări recente",
+  nexaNewChat: "New chat",
+  nexaRecentTitle: "Recent",
+  attachLabel: "Attach",
+  searchLabel: "Search",
+  pinnedLabel: "Pinned",
+  recentLabel: "Recent",
+  loginLabel: "Log in",
+  signupLabel: "Sign up",
 }
 
 const ru: Strings = {
@@ -136,7 +148,13 @@ const ru: Strings = {
   nexaOfficialSources: "Официальные источники",
   nexaPlaceholder: "Задайте вопрос NEXA...",
   nexaNewChat: "Новый чат",
-  nexaRecentTitle: "Недавние запросы",
+  nexaRecentTitle: "Recent",
+  attachLabel: "Прикрепить",
+  searchLabel: "Поиск",
+  pinnedLabel: "Закрепленные",
+  recentLabel: "Recent",
+  loginLabel: "Войти",
+  signupLabel: "Регистрация",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
