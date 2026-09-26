@@ -2,6 +2,7 @@
 
 from fastapi import APIRouter
 
+from app.blocks import llm, store
 from app.contracts.models import Stats
 
 router = APIRouter(tags=["stats"])
@@ -9,4 +10,10 @@ router = APIRouter(tags=["stats"])
 
 @router.get("/stats", response_model=Stats)
 def get_stats() -> Stats:
-    raise NotImplementedError("A1: собрать из D1.stats() и settings")
+    conn = store.connect()
+    try:
+        with conn:
+            stats = store.stats(conn)
+    finally:
+        conn.close()
+    return stats.model_copy(update={"model": llm.model_name()})
