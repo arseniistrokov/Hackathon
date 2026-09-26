@@ -24,6 +24,18 @@ from app.contracts.models import Chunk, Citation, Conflict, ConflictSide, Naviga
 _fixture_template: sqlite3.Connection | None = None
 log = logging.getLogger(__name__)
 
+_EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z]{2,}")
+_IDNP_RE = re.compile(r"(?<!\d)\d{13}(?!\d)")  # IDNP: 13 цифр (Молдова)
+_PHONE_RE = re.compile(r"(?<!\w)\+?(?:\d[\s().-]?){6,14}\d(?!\w)")
+
+
+def _redact_pii(text: str) -> str:
+    """Маскирует e-mail, IDNP (13 цифр) и телефоны перед записью в БД. Минимизация данных (GDPR C1/C3)."""
+    text = _EMAIL_RE.sub("[REDACTED]", text)
+    text = _IDNP_RE.sub("[REDACTED]", text)
+    text = _PHONE_RE.sub("[REDACTED]", text)
+    return text
+
 
 def connect() -> sqlite3.Connection:
     """Соединение по settings.CORPUS: fixture → :memory: (заполняется один раз), real → DB_PATH.
@@ -400,7 +412,7 @@ def save_query(
              model=excluded.model, latency_ms=excluded.latency_ms""",
         (
             query_id,
-            question,
+            _redact_pii(question),
             lang,
             status,
             answer,
@@ -415,9 +427,23 @@ def save_query(
 def save_feedback(conn: sqlite3.Connection, query_id: str, rating: int, comment: str) -> None:
     conn.execute(
         "INSERT INTO feedback (query_id, rating, comment) VALUES (?, ?, ?)",
-        (query_id, rating, comment),
+        (query_id, rating, _redact_pii(comment)),
     )
     conn.commit()
+
+
+def purge_old_queries(conn: sqlite3.Connection, days: int = 30) -> int:
+    """Удалить queries (и их feedback) старше `days` дней. Возвращает число удалённых queries."""
+    cutoff = f"-{days} days"
+    conn.execute(
+        """DELETE FROM feedback WHERE query_id IN (
+               SELECT id FROM queries WHERE ts < datetime('now', ?)
+           )""",
+        (cutoff,),
+    )
+    cursor = conn.execute("DELETE FROM queries WHERE ts < datetime('now', ?)", (cutoff,))
+    conn.commit()
+    return cursor.rowcount
 
 
 def site_navigation(conn: sqlite3.Connection, site: str) -> Navigation | None:
