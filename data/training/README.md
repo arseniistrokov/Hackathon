@@ -1,14 +1,17 @@
-# Gemma 4 E4B mobile behavior dataset
+# RAG memory and behavior data
 
-These JSONL files are a **synthetic format and pipeline pilot**, not a factual Chișinău dataset and not a release-ready fine-tuning corpus. All towns, institutions, documents, schedules, and values in examples are invented. Do not present these examples as real municipal information.
+## Source-backed starter corpus
 
-Each row uses Unsloth conversational `messages` and the app's `LLMAnswer` output keys (`answer`, `citations`, `enough`). It demonstrates Romanian and Russian responses, evidence-only answers, citation selection, ignoring instructions embedded in passages, and abstaining when evidence is absent. Validation rows are separate; never merge them into training.
+`rag_memory/` contains two manually curated `RawPage` pairs (`.md` + `.meta.json`) based on public municipal pages, checked on 2026-09-26. The RTEC page records the tariff and subscription values currently shown by RTEC, including the cited 31 March 2026 disposition. The Primăria page describes a historical SMS/QR pilot launched in March 2023; it must not be presented as proof that the service is currently available. Source URLs and retrieval timestamps are in the metadata.
 
-- `behavior_seed_train.jsonl`: 8 synthetic training examples.
-- `behavior_seed_validation.jsonl`: 4 separate synthetic validation examples.
+The memory uses the paired-file layout used by I1 and can be loaded with `fetch.load_raw(Path("data/training/rag_memory"))`. It is a small, manually checked seed corpus, not a complete crawl. The app's `scripts/index.py` is still a C0 L1 stub, so adding these pages here does not by itself populate `data/index/app.sqlite` or make the running app retrieve them.
 
-## Real training data requirements
+## Training files
 
-At dataset creation time `data/raw` contained no crawled pages and `data/index` had no populated index. Therefore this seed contains no verified Chișinău facts. Before training a useful adapter, collect and review real public corpus examples from non-hidden documents, exclude every URL in `data/golden/**`, deduplicate and split validation by source document/site. Keep factual lookup in RAG; train only response behavior. This seed is suitable only for checking that the chat format and training pipeline work; it is far too small to establish model quality.
+- `rag_train.jsonl`: 8 evidence-grounded Romanian response examples from `rtec.md`.
+- `rag_validation.jsonl`: 5 examples from the separate `proiecte.chisinau.md` site, including an abstention case. Keep this file out of training.
+- `behavior_seed_train.jsonl` and `behavior_seed_validation.jsonl`: earlier invented format-pilot examples. They are synthetic and should not be mixed into factual training.
 
-Current runtime selection in Unsloth Studio: `Qwen3.5-4B-MTP-GGUF · Q8_0` (as shown in the user-provided screenshot). This GGUF is an inference artifact. For fine-tuning, select a Transformers checkpoint such as `unsloth/Qwen3.5-4B`, then export a GGUF for inference. Unsloth lists about 10 GB VRAM for 4B bf16 LoRA and 5 GB for 2B; its guide discourages QLoRA for Qwen3.5. The available local GPU is an RTX 5060 Laptop with 8 GB VRAM, so this 4B training setup may not fit.
+Each JSONL record uses Unsloth conversational `messages` and the app's `LLMAnswer` keys (`answer`, `citations`, `enough`). The source-site split avoids putting paraphrases of the same source into both partitions, but five validation examples are only a format check. This corpus is far too small to establish model quality or justify training an adapter. Keep changing facts in RAG; expand with reviewed, non-hidden documents from more sites before a training run. Exclude every URL in `data/golden/**` from generated training examples.
+
+These documents and datasets are deliverable inputs; they do not select a base model or prove that a particular Unsloth checkpoint fits the available GPU. Use a trainable Transformers checkpoint for the chosen Gemma family model, rather than an inference-only GGUF.
