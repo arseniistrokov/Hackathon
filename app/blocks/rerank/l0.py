@@ -6,7 +6,51 @@ import unicodedata
 
 from app.contracts.models import Passage, Query
 
-_STOP = {"de", "la", "în", "și", "a", "cu", "pe", "care", "este", "и", "в", "на", "с", "по", "как", "что"}
+_STOP = {
+    # ro (формы уже без диакритики — сравниваются после фолдинга, "în"/"și" тут бесполезны)
+    "de",
+    "la",
+    "in",
+    "si",
+    "a",
+    "cu",
+    "pe",
+    "care",
+    "este",
+    "pentru",
+    "din",
+    "un",
+    "o",
+    "sa",
+    "nu",
+    "mai",
+    "prin",
+    "se",
+    "fi",
+    "unei",
+    "unui",
+    "acest",
+    "aceasta",
+    "al",
+    "ale",
+    "lui",
+    "sau",
+    # ru
+    "и",
+    "в",
+    "на",
+    "с",
+    "по",
+    "как",
+    "что",
+    "для",
+    "не",
+    "это",
+    "от",
+    "к",
+    "из",
+    "или",
+}
 _STEM_LEN = 6  # усечение до префикса: ro/ru — суффиксальные языки (petiției/petiționarului/petițiile)
 
 
