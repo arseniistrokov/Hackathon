@@ -115,6 +115,13 @@ export function MicButton({
       ? "Голосовой ввод"
       : "Introducere vocală"
 
+  // Честно про голос (EU alignment C3): Web Speech API отправляет аудио в облачный
+  // сервис браузера, а не обрабатывает его локально — пользователь должен это знать.
+  const privacyNote =
+    lang === "ru"
+      ? "звук обрабатывается облачным сервисом браузера (Web Speech API), не локально"
+      : "sunetul este procesat de serviciul cloud al browserului (Web Speech API), nu local"
+
   return (
     <button
       type="button"
@@ -122,7 +129,7 @@ export function MicButton({
       onClick={handleClick}
       aria-label={label}
       aria-pressed={isListening}
-      title={label}
+      title={`${label} — ${privacyNote}`}
     >
       <span className="mic-btn__icon" aria-hidden="true">
         🎙️
