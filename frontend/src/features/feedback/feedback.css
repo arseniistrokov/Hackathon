@@ -1,0 +1,126 @@
+/* Стили для компонента FeedbackBar.
+   Используются исключительно CSS-токены из styles/tokens.css.
+   Литеральные цвета (#hex, rgb) строго запрещены. */
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--c-border);
+}
+
+.feedback__rating-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.feedback__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-size: var(--fs-md);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.feedback__btn:hover:not(:disabled) {
+  border-color: var(--c-border-strong);
+  background: var(--c-surface-sunken);
+}
+
+.feedback__btn:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.feedback__btn--active {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+}
+
+.feedback__btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.feedback__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.feedback__textarea {
+  width: 100%;
+  min-height: 4rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-family: var(--font-ui);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-normal);
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.feedback__textarea:focus {
+  outline: none;
+  border-color: var(--c-focus);
+}
+
+.feedback__textarea:disabled {
+  background: var(--c-surface-sunken);
+  color: var(--c-ink-muted);
+}
+
+.feedback__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.feedback__submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.feedback__submit-btn:hover:not(:disabled) {
+  background: var(--c-accent-hover);
+}
+
+.feedback__submit-btn:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
+
+.feedback__submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.feedback__message {
+  font-size: var(--fs-sm);
+  color: var(--c-accent);
+  font-weight: 500;
+}
