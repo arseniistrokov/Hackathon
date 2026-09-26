@@ -5,8 +5,166 @@ import { t } from "@/i18n"
 import { AnswerCard } from "./AnswerCard"
 import { MicButton, isSpeechRecognitionSupported } from "../voice/MicButton"
 import { StatsFooter } from "../stats/StatsFooter"
-import { NexaOrb } from "../portal/NexaOrb"
 import "./chat.css"
+
+export function NexaMascot() {
+  return (
+    <div className="nexa-mascot" role="img" aria-label="NEXA AI Mascot">
+      <div className="nexa-mascot__halo" aria-hidden="true" />
+      <svg
+        className="nexa-mascot__svg"
+        viewBox="0 0 320 280"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <defs>
+          <radialGradient
+            id="nexaSphereGrad"
+            cx="35%"
+            cy="28%"
+            r="68%"
+            fx="35%"
+            fy="28%"
+          >
+            <stop offset="0%" stopColor="var(--c-nexa-orb-light)" />
+            <stop offset="30%" stopColor="var(--c-nexa-cyan)" />
+            <stop offset="68%" stopColor="var(--c-nexa-blue)" />
+            <stop offset="100%" stopColor="var(--c-nexa-orb-deep)" />
+          </radialGradient>
+
+          <linearGradient id="nexaHighlightGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0" />
+            <stop offset="25%" stopColor="var(--c-surface)" stopOpacity="0.95" />
+            <stop offset="65%" stopColor="var(--c-nexa-highlight-soft)" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="var(--c-nexa-cyan)" stopOpacity="0" />
+          </linearGradient>
+
+          <linearGradient id="nexaUpperGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="var(--c-surface)" stopOpacity="0" />
+          </linearGradient>
+
+          <linearGradient id="nexaRingGradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--c-nexa-blue)" />
+            <stop offset="50%" stopColor="var(--c-nexa-cyan)" />
+            <stop offset="100%" stopColor="var(--c-nexa-orb-light)" />
+          </linearGradient>
+
+          <linearGradient id="nexaRingGradCyan" x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor="var(--c-nexa-turquoise)" />
+            <stop offset="45%" stopColor="var(--c-nexa-cyan)" />
+            <stop offset="100%" stopColor="var(--c-nexa-blue)" />
+          </linearGradient>
+
+          <filter id="nexaMascotBloom" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+
+          <filter id="nexaSoftNebula" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="4.5" />
+          </filter>
+        </defs>
+
+        {/* Задние дуги орбитальных колец (Layer_1 за сферой) */}
+        <g className="nexa-mascot__rings-back">
+          <path
+            d="M 58 116 C 54 94 85 74 146 68 C 176 65 206 68 234 78"
+            stroke="url(#nexaRingGradBlue)"
+            strokeWidth="9"
+            strokeLinecap="round"
+            opacity="0.48"
+            filter="url(#nexaSoftNebula)"
+          />
+          <path
+            d="M 90 76 C 120 68 165 66 210 74 C 246 80 268 96 264 116"
+            stroke="url(#nexaRingGradCyan)"
+            strokeWidth="9"
+            strokeLinecap="round"
+            opacity="0.52"
+            filter="url(#nexaSoftNebula)"
+          />
+        </g>
+
+        {/* 3D Сфера маскота (Frame 88 / Frame 91) */}
+        <g className="nexa-mascot__sphere">
+          <circle cx="160" cy="140" r="78" fill="var(--c-nexa-orb-deep)" />
+          <circle cx="160" cy="140" r="78" fill="url(#nexaSphereGrad)" />
+
+          {/* Глубокая тень справа снизу */}
+          <path
+            d="M 160 62 A 78 78 0 0 1 238 140 A 78 78 0 0 1 185 215 C 220 185 225 125 185 85 C 175 75 167 67 160 62 Z"
+            fill="var(--c-nexa-orb-deep)"
+            opacity="0.65"
+          />
+
+          {/* Изогнутая световая полоса/небула (Frame 88) */}
+          <path
+            className="nexa-mascot__highlight"
+            d="M 102 165 Q 155 210 218 148 Q 165 180 102 165 Z"
+            fill="url(#nexaHighlightGrad)"
+            filter="url(#nexaSoftNebula)"
+          />
+
+          {/* Верхний мягкий блик */}
+          <ellipse
+            cx="145"
+            cy="100"
+            rx="46"
+            ry="20"
+            transform="rotate(-15 145 100)"
+            fill="url(#nexaUpperGlow)"
+            opacity="0.65"
+            filter="url(#nexaSoftNebula)"
+          />
+
+          {/* Неоновый шеврон снизу (Frame 91) */}
+          <polygon
+            className="nexa-mascot__chevron"
+            points="154,195 160,206 166,195 162,195 160,201 158,195"
+            fill="var(--c-nexa-turquoise)"
+            opacity="0.9"
+            filter="url(#nexaSoftNebula)"
+          />
+        </g>
+
+        {/* Передние дуги орбитальных колец (Layer_1 перед сферой) */}
+        <g className="nexa-mascot__rings-front">
+          {/* Левая синяя петля */}
+          <path
+            className="nexa-mascot__ring-loop-1"
+            d="M 52 112 C 30 135 25 168 55 190 C 85 212 145 208 215 178 C 248 164 268 145 264 130 C 260 118 245 110 225 105"
+            stroke="url(#nexaRingGradBlue)"
+            strokeWidth="11"
+            strokeLinecap="round"
+            filter="url(#nexaMascotBloom)"
+          />
+
+          {/* Правая бирюзовая петля */}
+          <path
+            className="nexa-mascot__ring-loop-2"
+            d="M 268 112 C 290 135 292 168 262 188 C 230 208 170 198 105 168 C 72 154 50 138 55 125 C 60 114 78 106 100 102"
+            stroke="url(#nexaRingGradCyan)"
+            strokeWidth="10.5"
+            strokeLinecap="round"
+            filter="url(#nexaMascotBloom)"
+          />
+        </g>
+
+        {/* Живые квантовые искры вокруг орбиты */}
+        <g className="nexa-mascot__sparks">
+          <circle cx="56" cy="132" r="3.2" fill="var(--c-nexa-orb-light)" className="spark-1" />
+          <circle cx="266" cy="144" r="2.8" fill="var(--c-nexa-turquoise)" className="spark-2" />
+          <circle cx="204" cy="64" r="2.2" fill="var(--c-surface)" className="spark-3" />
+          <circle cx="114" cy="216" r="3" fill="var(--c-nexa-cyan)" className="spark-4" />
+        </g>
+      </svg>
+    </div>
+  )
+}
+
+export const NexaOrb = NexaMascot
 
 const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
 
