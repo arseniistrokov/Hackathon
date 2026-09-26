@@ -143,6 +143,58 @@ def test_real_storage_error_logs_and_falls_back_to_fixture(
     assert "falling back to fixture" in caplog.text
 
 
+def test_real_storage_uses_file_wal_and_query_indexes(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    db_path = tmp_path / "real" / "store.sqlite"
+    monkeypatch.setattr(settings, "CORPUS", "real")
+    monkeypatch.setattr(settings, "DB_PATH", db_path)
+
+    conn = store.connect()
+    try:
+        journal_mode = conn.execute("PRAGMA journal_mode").fetchone()[0]
+        indexes = {row[0] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='index'")}
+    finally:
+        conn.close()
+
+    assert db_path.is_file()
+    assert journal_mode.lower() == "wal"
+    assert {
+        "idx_chunks_category",
+        "idx_chunks_document_id",
+        "idx_conflicts_a_chunk",
+        "idx_conflicts_b_chunk",
+        "idx_queries_ts",
+        "idx_feedback_query_id",
+    } <= indexes
+
+
+def test_real_storage_persists_chunks_after_reconnect(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    fixture_conn = store.connect()
+    try:
+        chunk_id = store.all_chunk_ids(fixture_conn)[0]
+        chunk = store.get_chunks(fixture_conn, [chunk_id])[0]
+    finally:
+        fixture_conn.close()
+    db_path = tmp_path / "persistent.sqlite"
+    monkeypatch.setattr(settings, "CORPUS", "real")
+    monkeypatch.setattr(settings, "DB_PATH", db_path)
+
+    first = store.connect()
+    store.upsert_chunks(first, [chunk])
+    first.close()
+
+    second = store.connect()
+    try:
+        loaded = store.get_chunks(second, [chunk_id])
+    finally:
+        second.close()
+
+    assert loaded == [chunk]
+
+
 def test_upsert_document_inserts_and_updates() -> None:
     """Документ сохраняется и повторный upsert обновляет его метаданные."""
     c = sqlite3.connect(":memory:")

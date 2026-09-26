@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.blocks.fetch import l0
+from app.blocks.fetch import l0, l1
 from app.contracts.models import RawPage
 
 
@@ -26,7 +26,7 @@ def save_raw(page: RawPage, root: Path) -> Path:
 
 def list_urls(site: str, limit: int = 150) -> list[str]:
     """L1. Кандидаты URL сайта: sitemap.xml → WP REST (/wp-json/wp/v2/pages, /posts) → BFS same-domain."""
-    raise RuntimeError("L1")
+    return l1.list_urls(site, limit)
 
 
 def fetch_page(url: str, site: str) -> RawPage | None:
@@ -34,4 +34,4 @@ def fetch_page(url: str, site: str) -> RawPage | None:
 
     Мусор → None.
     """
-    raise RuntimeError("L1")
+    return l1.fetch_page(url, site)
