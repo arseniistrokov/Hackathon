@@ -1,6 +1,6 @@
 // Экран чата: ввод, переключатель ro/ru, история вопросов, загрузка и ошибка.
 // Уровень L0/L1 переключает только api/client.ts — здесь про моки ничего не известно.
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ask } from "@/api/client"
 import type { AskResponse, Lang } from "@/api/types"
 import { t } from "@/i18n"
@@ -17,14 +17,53 @@ interface Turn {
   response: AskResponse
 }
 
-export function ChatScreen() {
-  const [lang, setLang] = useState<Lang>("ro")
+export interface ChatScreenProps {
+  initialQuestion?: string
+  quickQuestion?: string
+  chipsSlot?: React.ReactNode
+  onQuickAsk?: (askFn: (question: string) => void) => void
+  currentLang?: Lang
+  onLangChange?: (lang: Lang) => void
+}
+
+export function ChatScreen({
+  initialQuestion,
+  quickQuestion,
+  chipsSlot,
+  onQuickAsk,
+  currentLang,
+  onLangChange,
+}: ChatScreenProps = {}) {
+  const [lang, setLang] = useState<Lang>(currentLang || "ro")
   const [draft, setDraft] = useState("")
   const [turns, setTurns] = useState<Turn[]>([])
   const [pending, setPending] = useState(false)
   const [failed, setFailed] = useState(false)
   const [lastQuestion, setLastQuestion] = useState("")
   const s = t(lang)
+
+  useEffect(() => {
+    if (currentLang && currentLang !== lang) {
+      setLang(currentLang)
+    }
+  }, [currentLang])
+
+  useEffect(() => {
+    if (onQuickAsk) {
+      onQuickAsk((question: string) => {
+        if (question.trim().length >= MIN_QUESTION_LENGTH) {
+          void run(question.trim())
+        }
+      })
+    }
+  }, [onQuickAsk, lang])
+
+  useEffect(() => {
+    const q = initialQuestion || quickQuestion
+    if (q && q.trim().length >= MIN_QUESTION_LENGTH) {
+      void run(q.trim())
+    }
+  }, [initialQuestion, quickQuestion])
 
   async function run(question: string): Promise<void> {
     setPending(true)
@@ -67,7 +106,10 @@ export function ChatScreen() {
                 type="button"
                 className="lang__button"
                 aria-pressed={lang === code}
-                onClick={() => setLang(code)}
+                onClick={() => {
+                  setLang(code)
+                  onLangChange?.(code)
+                }}
               >
                 {code.toUpperCase()}
               </button>
@@ -110,6 +152,8 @@ export function ChatScreen() {
           </section>
         )}
       </main>
+
+      {chipsSlot}
 
       <form className="composer" onSubmit={onSubmit}>
         <label className="composer__label" htmlFor="question">

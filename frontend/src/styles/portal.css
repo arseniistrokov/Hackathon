@@ -1,0 +1,315 @@
+/* Стили оболочки городского портала (U2-PORTAL).
+   Цвета — исключительно через var(--…) из tokens.css.
+   Литеральные значения цвета (#hex, rgb) запрещены и проверяются grep-ом в CI. */
+
+.portal {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--c-page);
+  color: var(--c-ink);
+}
+
+/* --- шапка портала -------------------------------------------------------- */
+.portal-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--c-page);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.portal-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--width-app);
+  margin: 0 auto;
+  padding: max(var(--space-3), env(safe-area-inset-top, 0px))
+    max(var(--space-4), env(safe-area-inset-right, 0px))
+    var(--space-3)
+    max(var(--space-4), env(safe-area-inset-left, 0px));
+}
+
+.portal-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.portal-brand__emblem {
+  font-size: var(--fs-xl);
+  line-height: 1;
+}
+
+.portal-brand__title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+}
+
+.portal-brand__subtitle {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-muted);
+}
+
+/* --- переключатель языка -------------------------------------------------- */
+.portal-lang {
+  display: flex;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.portal-lang__button {
+  min-width: 3.5rem;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: 0;
+  background: var(--c-surface);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.portal-lang__button + .portal-lang__button {
+  border-left: 1px solid var(--c-border-strong);
+}
+
+.portal-lang__button[aria-pressed="true"] {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}
+
+/* --- навигация по табам --------------------------------------------------- */
+.portal-nav {
+  background: var(--c-surface);
+  border-top: 1px solid var(--c-border);
+}
+
+.portal-nav__list {
+  display: flex;
+  gap: var(--space-2);
+  max-width: var(--width-app);
+  margin: 0 auto;
+  padding: 0 max(var(--space-4), env(safe-area-inset-left, 0px));
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.portal-nav__list::-webkit-scrollbar {
+  display: none;
+}
+
+.portal-nav__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.portal-nav__tab:hover {
+  color: var(--c-ink);
+}
+
+.portal-nav__tab--active {
+  color: var(--c-accent);
+  border-bottom-color: var(--c-accent);
+  font-weight: 600;
+}
+
+/* --- контент портала ------------------------------------------------------ */
+.portal-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.portal-panel--catalog {
+  width: 100%;
+  max-width: var(--width-app);
+  margin: 0 auto;
+  padding: var(--space-5) max(var(--space-4), env(safe-area-inset-left, 0px));
+  gap: var(--space-5);
+}
+
+/* --- баннер заглушки ------------------------------------------------------ */
+.portal-banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.portal-banner__badge {
+  align-self: flex-start;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.portal-banner__title {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+}
+
+.portal-banner__body {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+  max-width: var(--measure);
+  line-height: var(--lh-normal);
+}
+
+/* --- карточки услуг и контактов ------------------------------------------- */
+.portal-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .portal-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.portal-card {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.portal-card:hover {
+  border-color: var(--c-border-strong);
+  box-shadow: var(--shadow-raised);
+}
+
+.portal-card__icon {
+  font-size: var(--fs-xl);
+  line-height: 1;
+  padding-top: var(--space-1);
+}
+
+.portal-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.portal-card__title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--c-ink);
+}
+
+.portal-card__desc {
+  font-size: var(--fs-sm);
+  color: var(--c-ink-muted);
+  line-height: var(--lh-normal);
+}
+
+.portal-card__action {
+  align-self: flex-start;
+  margin-top: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--c-accent);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--c-accent);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.portal-card__action:hover {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+}
+
+/* --- быстрые подсказки (Quick Chips) ------------------------------------- */
+.quick-chips {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+}
+
+.quick-chips__label {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  font-weight: 600;
+}
+
+.quick-chips__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.quick-chip {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.quick-chip:hover {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
+}
+
+.quick-chip:focus-visible {
+  outline: 2px solid var(--c-focus);
+  outline-offset: 2px;
+}
