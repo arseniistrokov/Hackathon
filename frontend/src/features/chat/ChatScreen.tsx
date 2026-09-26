@@ -180,12 +180,8 @@ export function ChatScreen({
         {showEmpty && (
           <section className="welcome" aria-label="NEXA Welcome">
             <NexaOrb />
-            <h2 className="welcome__title">
-              {lang === "ru" ? "Привет, я NEXA" : "Salut, sunt NEXA"}
-            </h2>
-            <p className="welcome__subtitle">
-              {lang === "ru" ? "Чем я могу помочь?" : "Cum te pot ajuta?"}
-            </p>
+            <h2 className="welcome__title">{s.nexaWelcomeTitle}</h2>
+            <p className="welcome__subtitle">{s.nexaWelcomeSubtitle}</p>
             <p className="welcome__desc">{s.welcomeDescription}</p>
           </section>
         )}
@@ -215,6 +211,8 @@ export function ChatScreen({
             </button>
           </section>
         )}
+
+        <StatsFooter />
       </main>
 
       {chipsSlot}
@@ -226,11 +224,7 @@ export function ChatScreen({
             className="composer__input"
             type="text"
             value={draft}
-            placeholder={
-              lang === "ru"
-                ? "Задайте вопрос NEXA..."
-                : "Ask NEXA anything..."
-            }
+            placeholder={s.nexaPlaceholder}
             maxLength={1000}
             autoComplete="off"
             onChange={(event) => setDraft(event.target.value)}
@@ -239,7 +233,7 @@ export function ChatScreen({
         <div className="composer__toolbar">
           <div className="composer__meta-tag" title="Surse oficiale Primăria Chișinău">
             <span className="composer__meta-icon" aria-hidden="true">📎</span>
-            <span>{lang === "ru" ? "Официальные источники" : "Surse oficiale"}</span>
+            <span>{s.nexaOfficialSources}</span>
           </div>
           <div className="composer__actions">
             <MicButton
@@ -249,21 +243,25 @@ export function ChatScreen({
             />
             <button
               type="submit"
-              className="composer__submit"
+              className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
               disabled={!canSend}
-              aria-label={s.send}
-              title={s.send}
+              aria-label={pending ? s.sending : s.send}
+              title={pending ? s.sending : s.send}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
-              </svg>
+              {pending ? (
+                <svg className="composer__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="12" y1="19" x2="12" y2="5" />
+                  <polyline points="5 12 12 5 19 12" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
       </form>
-
-      <StatsFooter />
     </div>
   )
 }

@@ -220,7 +220,8 @@ export function PortalLayout() {
               type="button"
               className="portal-topbar__menu-btn"
               aria-label={lang === "ru" ? "Открыть меню" : "Deschide meniul"}
-              onClick={() => setSidebarOpen(true)}
+              aria-expanded={sidebarOpen}
+              onClick={() => setSidebarOpen((prev) => !prev)}
             >
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <line x1="3" y1="12" x2="21" y2="12" />

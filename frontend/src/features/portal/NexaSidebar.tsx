@@ -1,5 +1,6 @@
 import type { Lang } from "@/api/types"
 import type { PortalTab } from "./PortalLayout"
+import { t } from "@/i18n"
 
 export interface NexaSidebarProps {
   activeTab: PortalTab
@@ -25,6 +26,7 @@ export function NexaSidebar({
   onClose,
 }: NexaSidebarProps) {
   const isRu = lang === "ru"
+  const s = t(lang)
 
   const defaultRecent = isRu
     ? [
@@ -77,7 +79,7 @@ export function NexaSidebar({
             }}
           >
             <span className="nexa-new-chat-btn__icon" aria-hidden="true">+</span>
-            <span>{isRu ? "Новый чат" : "New chat"}</span>
+            <span>{s.nexaNewChat}</span>
           </button>
         </div>
 
@@ -122,7 +124,7 @@ export function NexaSidebar({
 
         <div className="nexa-sidebar__recent">
           <div className="nexa-sidebar__section-title">
-            {isRu ? "Недавние запросы" : "Recent"}
+            {s.nexaRecentTitle}
           </div>
           <ul className="nexa-recent-list">
             {queries.slice(0, 6).map((q, idx) => (

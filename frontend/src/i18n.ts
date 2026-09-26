@@ -39,6 +39,12 @@ export interface Strings {
   welcomeGreeting: string
   welcomeSubtitle: string
   welcomeDescription: string
+  nexaWelcomeTitle: string
+  nexaWelcomeSubtitle: string
+  nexaOfficialSources: string
+  nexaPlaceholder: string
+  nexaNewChat: string
+  nexaRecentTitle: string
 }
 
 const ro: Strings = {
@@ -79,6 +85,12 @@ const ro: Strings = {
   metaPassages: (retrieved, used) => `Fragmente: ${retrieved} verificate · ${used} folosite`,
   metaModel: "Model",
   metaLatency: (ms) => `${(ms / 1000).toFixed(1)} s`,
+  nexaWelcomeTitle: "Salut, sunt NEXA",
+  nexaWelcomeSubtitle: "Cum te pot ajuta?",
+  nexaOfficialSources: "Surse oficiale",
+  nexaPlaceholder: "Întreabă NEXA orice...",
+  nexaNewChat: "Conversație nouă",
+  nexaRecentTitle: "Interogări recente",
 }
 
 const ru: Strings = {
@@ -119,6 +131,12 @@ const ru: Strings = {
   metaPassages: (retrieved, used) => `Фрагментов: ${retrieved} проверено · ${used} использовано`,
   metaModel: "Модель",
   metaLatency: (ms) => `${(ms / 1000).toFixed(1)} с`,
+  nexaWelcomeTitle: "Привет, я NEXA",
+  nexaWelcomeSubtitle: "Чем я могу помочь?",
+  nexaOfficialSources: "Официальные источники",
+  nexaPlaceholder: "Задайте вопрос NEXA...",
+  nexaNewChat: "Новый чат",
+  nexaRecentTitle: "Недавние запросы",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
