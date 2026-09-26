@@ -120,9 +120,13 @@ export function ChatScreen({
 
       <main className="chat__thread">
         {showEmpty && (
-          <section className="chat__empty">
-            <h2>{s.emptyTitle}</h2>
-            <p>{s.emptyBody}</p>
+          <section className="welcome" aria-label={s.welcomeGreeting}>
+            <div className="welcome__icon" aria-hidden="true">
+              🏛️
+            </div>
+            <h2 className="welcome__title">{s.welcomeGreeting}</h2>
+            <p className="welcome__subtitle">{s.welcomeSubtitle}</p>
+            <p className="welcome__desc">{s.welcomeDescription}</p>
           </section>
         )}
 

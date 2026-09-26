@@ -124,9 +124,18 @@ export function MicButton({
       aria-pressed={isListening}
       title={label}
     >
-      <span className="mic-btn__icon" aria-hidden="true">
-        🎙️
-      </span>
+      {isListening ? (
+        <span className="mic-wave" aria-hidden="true">
+          <span className="mic-wave__bar" />
+          <span className="mic-wave__bar" />
+          <span className="mic-wave__bar" />
+          <span className="mic-wave__bar" />
+        </span>
+      ) : (
+        <span className="mic-btn__icon" aria-hidden="true">
+          🎙️
+        </span>
+      )}
     </button>
   )
 }

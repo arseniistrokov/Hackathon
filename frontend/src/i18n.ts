@@ -36,9 +36,15 @@ export interface Strings {
   metaPassages: (retrieved: number, used: number) => string
   metaModel: string
   metaLatency: (ms: number) => string
+  welcomeGreeting: string
+  welcomeSubtitle: string
+  welcomeDescription: string
 }
 
 const ro: Strings = {
+  welcomeGreeting: "Bună ziua!",
+  welcomeSubtitle: "Asistentul Municipal Chișinău",
+  welcomeDescription: "Puneți o întrebare despre serviciile municipale",
   appTitle: "Asistentul municipal Chișinău",
   appTagline: "Răspunsuri din surse oficiale, cu citat și link către document",
   langLabel: "Limba",
@@ -76,6 +82,9 @@ const ro: Strings = {
 }
 
 const ru: Strings = {
+  welcomeGreeting: "Здравствуйте!",
+  welcomeSubtitle: "Муниципальный ассистент Кишинёва",
+  welcomeDescription: "Задайте вопрос о муниципальных услугах",
   appTitle: "Муниципальный ассистент Кишинёва",
   appTagline: "Ответы из официальных источников — с цитатой и ссылкой на документ",
   langLabel: "Язык",
