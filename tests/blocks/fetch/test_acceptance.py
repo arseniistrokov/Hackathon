@@ -145,13 +145,14 @@ def test_fetch_page_extracts_html_without_navigation_or_footer(monkeypatch: pyte
     assert fixture_page.text.splitlines()[2][:30] in page.text
 
 
-def test_fetch_page_parses_wordpress_rest_response(monkeypatch: pytest.MonkeyPatch) -> None:
-    fixture_page = next(page for page in FIXTURE_PAGES if page.site == "rtec.md" and len(page.text) > 200)
+@pytest.mark.parametrize("site", ["rtec.md", "amtriscani.md"])
+def test_fetch_page_parses_wordpress_rest_response(monkeypatch: pytest.MonkeyPatch, site: str) -> None:
+    fixture_page = next(page for page in FIXTURE_PAGES if page.site == site and len(page.text) > 200)
     payload = [
         {
             "title": {"rendered": f"<strong>{fixture_page.title}</strong>"},
             "content": {"rendered": f"<p>{fixture_page.text}</p>"},
-            "date": "2024-03-05T09:00:00",
+            "date": f"{fixture_page.date}T09:00:00",
             "link": fixture_page.url,
         }
     ]
@@ -172,10 +173,11 @@ def test_fetch_page_parses_wordpress_rest_response(monkeypatch: pytest.MonkeyPat
 
     assert page is not None
     assert page.url == fixture_page.url
+    assert page.lang == fixture_page.lang
     assert page.date == fixture_page.date
     assert page.text.splitlines()[0] == f"# {page.title}"
     assert "<p>" not in page.text
-    assert "Troleibuzele circulă" in page.text
+    assert fixture_page.text.splitlines()[2][:30] in page.text
 
 
 def test_list_urls_uses_sitemap_after_wordpress_is_unavailable(monkeypatch: pytest.MonkeyPatch) -> None:
