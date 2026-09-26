@@ -163,6 +163,12 @@ def init_schema(conn: sqlite3.Connection) -> None:
             site TEXT PRIMARY KEY, label TEXT NOT NULL, contact TEXT,
             services TEXT, url TEXT NOT NULL
         );
+        CREATE INDEX IF NOT EXISTS idx_chunks_category ON chunks(category);
+        CREATE INDEX IF NOT EXISTS idx_chunks_document_id ON chunks(document_id);
+        CREATE INDEX IF NOT EXISTS idx_conflicts_a_chunk ON conflicts(a_chunk);
+        CREATE INDEX IF NOT EXISTS idx_conflicts_b_chunk ON conflicts(b_chunk);
+        CREATE INDEX IF NOT EXISTS idx_queries_ts ON queries(ts);
+        CREATE INDEX IF NOT EXISTS idx_feedback_query_id ON feedback(query_id);
         CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts USING fts5(
             text, title, section, content='chunks', content_rowid='rowid',
             tokenize='unicode61 remove_diacritics 2'
