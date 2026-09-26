@@ -247,6 +247,7 @@ def _wp_page(client: httpx.Client, url: str, site: str, config: dict[str, object
             title=title,
             text=_with_title(text, title),
             category=str(config["category"]),
+            lang=_language(str(item.get("link", url)), ""),
             date=_date(item.get("date")),
         )
     return None
