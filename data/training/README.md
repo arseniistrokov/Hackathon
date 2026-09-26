@@ -1,17 +1,20 @@
 # RAG memory and behavior data
 
-## Source-backed starter corpus
+## Coverage of Annex 1
 
-`rag_memory/` contains two manually curated `RawPage` pairs (`.md` + `.meta.json`) based on public municipal pages, checked on 2026-09-26. The RTEC page records the tariff and subscription values currently shown by RTEC, including the cited 31 March 2026 disposition. The Primăria page describes a historical SMS/QR pilot launched in March 2023; it must not be presented as proof that the service is currently available. Source URLs and retrieval timestamps are in the metadata.
+`rag_memory/` now contains source-backed pages from the Annex 1 site list. `rag_coverage.json` inventories all 40 configured domains, the captured page URLs, and per-site availability. During the 2026-09-26 crawl, substantive paired pages were captured for 34 sites; the other entries are explicitly marked as unavailable, inactive, or limited to an application/navigation shell. A coverage entry does not imply the site is fully indexed. Several captured documents are old, dynamic, or only provide a limited view; check each page's metadata and source before answering time-sensitive questions.
 
-The memory uses the paired-file layout used by I1 and can be loaded with `fetch.load_raw(Path("data/training/rag_memory"))`. It is a small, manually checked seed corpus, not a complete crawl. The app's `scripts/index.py` is still a C0 L1 stub, so adding these pages here does not by itself populate `data/index/app.sqlite` or make the running app retrieve them.
+The RTEC tariff and Botanica audience schedule were manually curated from their official pages. The 2023 Primăria SMS/QR article is historical and does not establish current availability. The Commerce 2026 tax amount is dated and must be verified against the current official decision. Some crawl results were rejected because they contained unrelated SEO spam; those pages are not included.
+
+The memory uses I1 paired-file layout (`.md` plus `.meta.json`) and can be loaded with `fetch.load_raw(Path("data/training/rag_memory"))`. The app's `scripts/index.py` remains a C0 L1 stub, so these files do not yet populate the runtime SQLite index or make the running app retrieve them.
 
 ## Training files
 
-- `rag_train.jsonl`: 8 evidence-grounded Romanian response examples from `rtec.md`.
-- `rag_validation.jsonl`: 5 examples from the separate `proiecte.chisinau.md` site, including an abstention case. Keep this file out of training.
-- `behavior_seed_train.jsonl` and `behavior_seed_validation.jsonl`: earlier invented format-pilot examples. They are synthetic and should not be mixed into factual training.
+- `rag_train.jsonl` contains evidence-grounded response examples from multiple Annex 1 sources, including the earlier RTEC examples.
+- `rag_validation.jsonl` includes held-out sources, the earlier historical Proiecte SMS/QR examples, and abstention examples for pages that exposed no substantive text. Keep it out of training.
+- `rag_coverage.json` is the 40-site coverage inventory.
+- `behavior_seed_train.jsonl` and `behavior_seed_validation.jsonl` are earlier synthetic format-pilot examples; do not mix them with factual training.
 
-Each JSONL record uses Unsloth conversational `messages` and the app's `LLMAnswer` keys (`answer`, `citations`, `enough`). The source-site split avoids putting paraphrases of the same source into both partitions, but five validation examples are only a format check. This corpus is far too small to establish model quality or justify training an adapter. Keep changing facts in RAG; expand with reviewed, non-hidden documents from more sites before a training run. Exclude every URL in `data/golden/**` from generated training examples.
+Each JSONL record uses Unsloth conversational `messages` and the app's `LLMAnswer` keys (`answer`, `citations`, `enough`). The corpus is still a small seed dataset and cannot establish model quality or justify an adapter training run. Facts that change belong in RAG and need refreshing from their official sources. Exclude every URL in `data/golden/**` from generated training examples.
 
-These documents and datasets are deliverable inputs; they do not select a base model or prove that a particular Unsloth checkpoint fits the available GPU. Use a trainable Transformers checkpoint for the chosen Gemma family model, rather than an inference-only GGUF.
+These files do not select a base model or show that a particular Unsloth checkpoint fits the available GPU. Use a trainable Transformers checkpoint for the chosen Gemma family model, rather than an inference-only GGUF.
