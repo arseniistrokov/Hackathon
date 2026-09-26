@@ -117,8 +117,16 @@
 }
 
 .welcome__icon {
-  font-size: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 2.25rem;
   line-height: 1;
+  background: var(--c-accent-soft);
+  border: 1px solid var(--c-border);
+  border-radius: 50%;
   margin-bottom: var(--space-2);
 }
 
@@ -149,7 +157,9 @@
   }
 
   .welcome__icon {
-    font-size: 2.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    font-size: 1.75rem;
   }
 
   .welcome__title {

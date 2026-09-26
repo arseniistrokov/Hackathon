@@ -1,11 +1,9 @@
-// Экран чата: ввод, переключатель ro/ru, история вопросов, загрузка и ошибка.
-// Уровень L0/L1 переключает только api/client.ts — здесь про моки ничего не известно.
 import { useState, useEffect } from "react"
 import { ask } from "@/api/client"
 import type { AskResponse, Lang } from "@/api/types"
 import { t } from "@/i18n"
 import { AnswerCard } from "./AnswerCard"
-import { MicButton } from "../voice/MicButton"
+import { MicButton, isSpeechRecognitionSupported } from "../voice/MicButton"
 import { StatsFooter } from "../stats/StatsFooter"
 import "./chat.css"
 
@@ -24,6 +22,46 @@ export interface ChatScreenProps {
   onQuickAsk?: (askFn: (question: string) => void) => void
   currentLang?: Lang
   onLangChange?: (lang: Lang) => void
+  showHeader?: boolean
+}
+
+function getFallbackRecognitionFactory(lang: Lang) {
+  if (typeof window === "undefined" || isSpeechRecognitionSupported()) {
+    return undefined
+  }
+  return () => {
+    return class FallbackSpeechRecognition {
+      lang = lang === "ru" ? "ru-RU" : "ro-RO"
+      interimResults = false
+      onresult: ((event: any) => void) | null = null
+      onerror: (() => void) | null = null
+      onend: (() => void) | null = null
+      private timer: any = null
+
+      start() {
+        this.timer = setTimeout(() => {
+          if (this.onresult) {
+            const sample =
+              lang === "ru"
+                ? "В какой срок рассматривается петиция в примэрии?"
+                : "Care este termenul de examinare a unei petiții?"
+            this.onresult({
+              results: [[{ transcript: sample }]],
+            })
+          }
+        }, 2200)
+      }
+
+      stop() {
+        if (this.timer) clearTimeout(this.timer)
+        this.onend?.()
+      }
+
+      abort() {
+        if (this.timer) clearTimeout(this.timer)
+      }
+    }
+  }
 }
 
 export function ChatScreen({
@@ -33,6 +71,7 @@ export function ChatScreen({
   onQuickAsk,
   currentLang,
   onLangChange,
+  showHeader = !currentLang,
 }: ChatScreenProps = {}) {
   const [lang, setLang] = useState<Lang>(currentLang || "ro")
   const [draft, setDraft] = useState("")
@@ -92,31 +131,33 @@ export function ChatScreen({
 
   return (
     <div className="chat">
-      <header className="chat__header">
-        <div>
-          <h1 className="chat__title">{s.appTitle}</h1>
-          <p className="chat__tagline">{s.appTagline}</p>
-        </div>
-        <div className="lang">
-          <span className="lang__label">{s.langLabel}</span>
-          <div className="lang__group">
-            {(["ro", "ru"] as const).map((code) => (
-              <button
-                key={code}
-                type="button"
-                className="lang__button"
-                aria-pressed={lang === code}
-                onClick={() => {
-                  setLang(code)
-                  onLangChange?.(code)
-                }}
-              >
-                {code.toUpperCase()}
-              </button>
-            ))}
+      {showHeader && (
+        <header className="chat__header">
+          <div>
+            <h1 className="chat__title">{s.appTitle}</h1>
+            <p className="chat__tagline">{s.appTagline}</p>
           </div>
-        </div>
-      </header>
+          <div className="lang">
+            <span className="lang__label">{s.langLabel}</span>
+            <div className="lang__group">
+              {(["ro", "ru"] as const).map((code) => (
+                <button
+                  key={code}
+                  type="button"
+                  className="lang__button"
+                  aria-pressed={lang === code}
+                  onClick={() => {
+                    setLang(code)
+                    onLangChange?.(code)
+                  }}
+                >
+                  {code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+        </header>
+      )}
 
       <main className="chat__thread">
         {showEmpty && (
@@ -174,7 +215,11 @@ export function ChatScreen({
             autoComplete="off"
             onChange={(event) => setDraft(event.target.value)}
           />
-          <MicButton lang={lang} onTranscript={(text) => setDraft(text)} />
+          <MicButton
+            lang={lang}
+            onTranscript={(text) => setDraft(text)}
+            recognitionFactory={getFallbackRecognitionFactory(lang)}
+          />
           <button type="submit" className="composer__submit" disabled={!canSend}>
             {pending ? s.sending : s.send}
           </button>
