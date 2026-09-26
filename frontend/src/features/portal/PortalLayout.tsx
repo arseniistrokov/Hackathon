@@ -264,6 +264,7 @@ export function PortalLayout() {
               className="portal-panel"
             >
               <ChatScreen
+                showHeader={false}
                 initialQuestion={initialQuestion}
                 currentLang={lang}
                 onLangChange={(newLang) => setLang(newLang)}

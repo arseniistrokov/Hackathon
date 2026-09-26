@@ -595,16 +595,16 @@
 }
 
 /* --- плавающий композер NEXA (высота 56px, серый фон, скругление) -------- */
-.composer {
+.chat .composer {
   position: sticky;
   bottom: var(--space-4);
   z-index: 10;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: var(--input-height, 56px);
-  min-height: var(--input-height, 56px);
-  background: var(--c-surface-sunken);
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  height: var(--input-height, 56px) !important;
+  min-height: var(--input-height, 56px) !important;
+  background: var(--c-surface-sunken) !important;
   border: 1px solid var(--c-border);
   border-radius: var(--radius-lg);
   padding: 0 var(--space-2) 0 var(--space-4);
@@ -614,12 +614,12 @@
   transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.composer:focus-within {
+.chat .composer:focus-within {
   border-color: var(--c-accent);
-  background: var(--c-surface);
+  background: var(--c-surface) !important;
 }
 
-.composer__input-wrapper {
+.chat .composer__input-wrapper {
   flex: 1;
   min-width: 0;
   display: flex;
@@ -627,7 +627,7 @@
   height: 100%;
 }
 
-.composer__input {
+.chat .composer__input {
   width: 100%;
   height: 100%;
   border: 0;
@@ -639,18 +639,18 @@
   padding: 0;
 }
 
-.composer__input::placeholder {
+.chat .composer__input::placeholder {
   color: var(--c-ink-faint);
 }
 
-.composer__actions {
+.chat .composer__actions {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   flex-shrink: 0;
 }
 
-.composer .mic-btn {
+.chat .composer .mic-btn {
   width: 40px;
   height: 40px;
   min-width: 40px;
@@ -661,7 +661,7 @@
   padding: 0;
 }
 
-.composer__submit {
+.chat .composer__submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -678,12 +678,12 @@
   flex-shrink: 0;
 }
 
-.composer__submit:hover:not(:disabled) {
+.chat .composer__submit:hover:not(:disabled) {
   background: var(--c-send-hover);
   transform: translateY(-1px);
 }
 
-.composer__submit:disabled {
+.chat .composer__submit:disabled {
   background: var(--c-border-strong);
   color: var(--c-ink-faint);
   cursor: not-allowed;
@@ -691,7 +691,7 @@
 }
 
 @media (max-width: 420px) {
-  .composer {
+  .chat .composer {
     padding: 0 var(--space-2) 0 var(--space-3);
   }
 }
