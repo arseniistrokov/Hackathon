@@ -1,0 +1,78 @@
+/* Токены блока U1. Единственный источник цвета, типографики и отступов для frontend/src/features/**.
+   В features запрещены #hex и rgb( — только var(--…). CI проверяет grep-ом.
+
+   Палитра выбрана под предмет: муниципальный ассистент, официальный, но не казённый.
+   Нейтрали сдвинуты в синеву (чистый серый читается как «не выбирали»).
+   Главное смысловое решение: NOT_FOUND окрашен нейтральным сланцем, а НЕ красным.
+   Заблокированная генерация — это заявленная фича продукта, и выглядеть как сбой она не должна.
+   Красный зарезервирован ровно за одним случаем: сеть или бэкенд действительно упали. */
+
+:root {
+  /* --- цвет ------------------------------------------------------------- */
+  --c-page: #f4f6f8;
+  --c-surface: #ffffff;
+  --c-surface-sunken: #eef2f5;
+  --c-border: #d5dde4;
+  --c-border-strong: #b6c3cd;
+
+  --c-ink: #16212b;
+  --c-ink-muted: #53616e;
+  --c-ink-faint: #7d8a95;
+
+  --c-accent: #0f5d8c;
+  --c-accent-hover: #0c4b72;
+  --c-accent-soft: #e4eef5;
+  --c-on-accent: #ffffff;
+
+  /* ANSWERED — акцент. CONFLICT — охра: «посмотри сам», не «ошибка». */
+  --c-conflict: #8a5a12;
+  --c-conflict-soft: #fbf1de;
+  /* NOT_FOUND — сланец: честный отказ, не авария. */
+  --c-blocked: #5a6b7a;
+  --c-blocked-soft: #e9eef1;
+  /* Только реальный сбой запроса. */
+  --c-error: #a32b2b;
+  --c-error-soft: #fbeaea;
+
+  --c-focus: #1d7fbd;
+
+  /* --- типографика ------------------------------------------------------ */
+  --font-ui: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-quote: Georgia, "Times New Roman", serif;
+
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.3125rem;
+  --fs-xl: 1.625rem;
+
+  --lh-tight: 1.25;
+  --lh-normal: 1.55;
+  --lh-loose: 1.7;
+
+  --ls-label: 0.06em;
+
+  /* --- размеры и ритм --------------------------------------------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --measure: 65ch;
+  --width-app: 46rem;
+  /* README фронта требует ≥ 48 px (контракт U1 — ≥ 44); берём строгую цифру. */
+  --tap-min: 48px;
+
+  --shadow-card: 0 1px 2px rgba(22, 33, 43, 0.06), 0 1px 8px rgba(22, 33, 43, 0.04);
+  --shadow-raised: 0 2px 4px rgba(22, 33, 43, 0.08), 0 8px 24px rgba(22, 33, 43, 0.06);
+
+  /* Точка, на которой CONFLICT расходится в две колонки (критерий приёмки 2). */
+  --bp-wide: 768px;
+}

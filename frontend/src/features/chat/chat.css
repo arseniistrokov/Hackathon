@@ -1,0 +1,482 @@
+/* Стили экрана чата. Цвета — исключительно через var(--…) из styles/tokens.css.
+   Литеральные значения цвета в features запрещены и проверяются grep-ом в CI. */
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: var(--width-app);
+  margin: 0 auto;
+  padding: var(--space-4);
+  gap: var(--space-5);
+}
+
+/* --- шапка ----------------------------------------------------------------- */
+.chat__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.chat__title {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.01em;
+}
+
+.chat__tagline {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.lang {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.lang__label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.lang__group {
+  display: flex;
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.lang__button {
+  min-width: 3.5rem;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: 0;
+  background: var(--c-surface);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+}
+
+.lang__button + .lang__button {
+  border-left: 1px solid var(--c-border-strong);
+}
+
+.lang__button[aria-pressed="true"] {
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-weight: 600;
+}
+
+/* --- поток --------------------------------------------------------------- */
+.chat__thread {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-6);
+}
+
+.chat__empty {
+  padding: var(--space-6) var(--space-5);
+  border: 1px dashed var(--c-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+
+.chat__empty h2 {
+  font-size: var(--fs-lg);
+}
+
+.chat__empty p {
+  margin-top: var(--space-3);
+  max-width: var(--measure);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.turn__question {
+  align-self: flex-end;
+  max-width: min(100%, 34rem);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+  background: var(--c-accent-soft);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+}
+
+/* --- карточка ответа ----------------------------------------------------- */
+.answer {
+  padding: var(--space-5);
+  border: 1px solid var(--c-border);
+  border-left-width: 3px;
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.answer--answered {
+  border-left-color: var(--c-accent);
+}
+
+.answer--conflict {
+  border-left-color: var(--c-conflict);
+}
+
+.answer--not-found {
+  border-left-color: var(--c-blocked);
+}
+
+.answer__status {
+  display: inline-block;
+  margin-bottom: var(--space-3);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.answer--answered .answer__status {
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+}
+
+.answer--conflict .answer__status {
+  background: var(--c-conflict-soft);
+  color: var(--c-conflict);
+}
+
+.answer--not-found .answer__status {
+  background: var(--c-blocked-soft);
+  color: var(--c-blocked);
+}
+
+.answer__text {
+  max-width: var(--measure);
+  line-height: var(--lh-loose);
+}
+
+.answer__heading {
+  margin-bottom: var(--space-3);
+  font-size: var(--fs-lg);
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--c-conflict);
+  border-radius: var(--radius-sm);
+  background: var(--c-conflict-soft);
+  font-size: var(--fs-sm);
+}
+
+.banner__label {
+  color: var(--c-conflict);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.section-label {
+  margin: var(--space-5) 0 var(--space-3);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+/* --- цитата -------------------------------------------------------------- */
+.citation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface-sunken);
+}
+
+.citation + .citation {
+  margin-top: var(--space-3);
+}
+
+.citation__title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.citation__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+}
+
+/* Passage показывается ДОСЛОВНО и целиком: обрезка многоточием запрещена критерием приёмки 4. */
+.citation__passage {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 2px solid var(--c-border-strong);
+  background: var(--c-surface);
+  font-family: var(--font-quote);
+  font-size: var(--fs-sm);
+  line-height: var(--lh-loose);
+  overflow-wrap: anywhere;
+}
+
+.citation__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap-min);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* --- конфликт: две колонки от --bp-wide, стек на узком экране ------------- */
+.conflict__entity {
+  margin-top: var(--space-4);
+  font-size: var(--fs-sm);
+}
+
+.conflict__entity dt {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.conflict__entity dd {
+  margin: var(--space-1) 0 0;
+  font-weight: 600;
+}
+
+.conflict-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .conflict-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.conflict-side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--c-border);
+  border-top: 3px solid var(--c-conflict);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  min-width: 0;
+}
+
+.conflict-side__label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.conflict-side__value {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.conflict-side__date {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+}
+
+.conflict-side .citation {
+  background: var(--c-surface-sunken);
+}
+
+/* --- навигация и meta ---------------------------------------------------- */
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--c-border);
+  font-size: var(--fs-sm);
+}
+
+.navigation__label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.navigation__link {
+  min-height: var(--tap-min);
+  display: inline-flex;
+  align-items: center;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-top: var(--space-4);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- загрузка и ошибка --------------------------------------------------- */
+.skeleton {
+  padding: var(--space-5);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+}
+
+.skeleton__caption {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.skeleton__bar {
+  height: 0.75rem;
+  margin-top: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-sunken);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton__bar--short {
+  width: 45%;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.error {
+  padding: var(--space-5);
+  border: 1px solid var(--c-error);
+  border-left-width: 3px;
+  border-radius: var(--radius-lg);
+  background: var(--c-error-soft);
+}
+
+.error__title {
+  color: var(--c-error);
+  font-size: var(--fs-lg);
+}
+
+.error__body {
+  margin-top: var(--space-2);
+  max-width: var(--measure);
+  font-size: var(--fs-sm);
+}
+
+.error__retry {
+  margin-top: var(--space-4);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-5);
+  border: 1px solid var(--c-error);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-error);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* --- композер ------------------------------------------------------------ */
+.composer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4) 0;
+  background: var(--c-page);
+}
+
+.composer__label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.composer__row {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.composer__input {
+  flex: 1;
+  min-width: 0;
+  min-height: var(--tap-min);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  font-size: var(--fs-sm);
+}
+
+.composer__submit {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-5);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--c-accent);
+  color: var(--c-on-accent);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.composer__submit:hover:not(:disabled) {
+  background: var(--c-accent-hover);
+}
+
+.composer__submit:disabled {
+  background: var(--c-border-strong);
+  cursor: not-allowed;
+}
+
+@media (max-width: 420px) {
+  .composer__row {
+    flex-direction: column;
+  }
+}
