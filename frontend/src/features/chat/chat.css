@@ -34,6 +34,12 @@
   font-size: var(--fs-sm);
 }
 
+.chat__disclaimer {
+  max-width: var(--measure);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+}
+
 .lang {
   display: flex;
   align-items: center;

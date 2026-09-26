@@ -76,6 +76,10 @@ export function ChatScreen() {
         </div>
       </header>
 
+      <p className="chat__disclaimer" role="note">
+        {s.disclaimer}
+      </p>
+
       <main className="chat__thread">
         {showEmpty && (
           <section className="chat__empty">

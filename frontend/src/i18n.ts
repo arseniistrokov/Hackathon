@@ -6,6 +6,7 @@ import type { Lang } from "./api/types"
 export interface Strings {
   appTitle: string
   appTagline: string
+  disclaimer: string
   langLabel: string
   questionLabel: string
   questionPlaceholder: string
@@ -41,6 +42,8 @@ export interface Strings {
 const ro: Strings = {
   appTitle: "Asistentul municipal Chișinău",
   appTagline: "Răspunsuri din surse oficiale, cu citat și link către document",
+  disclaimer:
+    "Răspunsurile sunt generate de AI pe baza documentelor oficiale. Verificați la sursă. Nu constituie consultanță juridică.",
   langLabel: "Limba",
   questionLabel: "Întrebarea dumneavoastră",
   questionPlaceholder: "Care este termenul de examinare a unei petiții?",
@@ -78,6 +81,8 @@ const ro: Strings = {
 const ru: Strings = {
   appTitle: "Муниципальный ассистент Кишинёва",
   appTagline: "Ответы из официальных источников — с цитатой и ссылкой на документ",
+  disclaimer:
+    "Ответы формирует AI на основе официальных документов. Проверяйте по источнику. Не является юридической консультацией.",
   langLabel: "Язык",
   questionLabel: "Ваш вопрос",
   questionPlaceholder: "В какой срок рассматривается петиция в примэрии?",
