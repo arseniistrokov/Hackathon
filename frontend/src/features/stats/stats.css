@@ -1,0 +1,66 @@
+/* Стили для компонента StatsFooter.
+   Используются исключительно CSS-токены из styles/tokens.css.
+   Литеральные цвета (#hex, rgb) строго запрещены. */
+
+.stats-footer {
+  width: 100%;
+  max-width: var(--width-app);
+  margin: var(--space-6) auto 0;
+  padding: var(--space-4) 0;
+  border-top: 1px solid var(--c-border);
+  box-sizing: border-box;
+}
+
+.stats-footer--loading,
+.stats-footer--empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 2.5rem;
+}
+
+.stats-footer__loading,
+.stats-footer__empty-msg {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+}
+
+.stats-footer__grid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.stats-footer__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.stats-footer__label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.stats-footer__value {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-family: var(--font-ui);
+}
+
+.stats-footer__item--model .stats-footer__value {
+  font-family: monospace;
+}
+
+@media (max-width: 500px) {
+  .stats-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+}
