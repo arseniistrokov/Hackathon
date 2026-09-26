@@ -7,11 +7,15 @@ L1 (SCOUT=llm): группы ≥ 2 chunks с одной сущностью → �
 
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from pydantic import BaseModel
 
+from app.config import ROOT, settings
 from app.contracts.models import Chunk, Conflict
+
+log = logging.getLogger(__name__)
 
 
 class EntityGroup(BaseModel):
@@ -27,19 +31,50 @@ def prefilter(chunks: list[Chunk]) -> list[EntityGroup]:
 
     Только группы из ≥ 2 chunks.
     """
-    raise NotImplementedError("S1")
+    from app.blocks.scout import l0
+
+    return l0.prefilter(chunks)
 
 
 def load_manual(path: Path) -> list[Conflict]:
     """Ручные пары от дизайнеров (G1). Формат — data/fixture/conflicts.json."""
-    raise NotImplementedError("S1")
+    from app.blocks.scout import l0
+
+    return l0.load_manual(path)
 
 
 def judge(group: EntityGroup, chunks: list[Chunk]) -> list[Conflict]:
-    """L1. Одна группа → 0..N конфликтов через LLM. Ошибка/None от модели → []."""
-    raise NotImplementedError("S1")
+    """При SCOUT=llm судит через LLM-порт; ошибка пропускает группу."""
+    if settings.SCOUT != "llm":
+        return []
+    from app.blocks.scout import l1
+
+    try:
+        return l1.judge(group, chunks)
+    except Exception:
+        log.warning("S1 judge failed for group %s; skipping it", group.key, exc_info=True)
+        return []
 
 
 def run(chunks: list[Chunk], manual_path: Path | None = None) -> list[Conflict]:
-    """Порт: manual + (при SCOUT=llm) judge по группам. Детерминированный порядок, без дублей по (a,b)."""
-    raise NotImplementedError("S1")
+    """Запускает ручной источник и, при SCOUT=llm, судью по regex-группам."""
+    from app.blocks.scout import l0
+
+    selected_path = manual_path
+    if selected_path is None:
+        default_path = ROOT / "data" / "conflicts_manual.json"
+        selected_path = default_path if default_path.exists() else settings.FIXTURE_DIR / "conflicts.json"
+    conflicts = l0.load_manual(selected_path)
+    if settings.SCOUT == "llm":
+        for group in prefilter(chunks):
+            conflicts.extend(judge(group, chunks))
+
+    unique = l0.deduplicate(conflicts)
+    unique.sort(
+        key=lambda conflict: (
+            conflict.a.citation.chunk_id,
+            conflict.b.citation.chunk_id,
+            conflict.id,
+        )
+    )
+    return unique
