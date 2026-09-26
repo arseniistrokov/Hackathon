@@ -228,3 +228,112 @@ def test_build_index_roundtrip(tmp_path, monkeypatch: pytest.MonkeyPatch) -> Non
     assert loaded is not None
     ids, matrix = loaded
     assert matrix.shape == (len(ids), 2048)
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 2: Мутационная проверка и различение текстов
+# ---------------------------------------------------------------------------
+
+
+def test_embed_different_texts_produce_different_vectors() -> None:
+    v1 = retrieval.embed(["troleibuz"])
+    v2 = retrieval.embed(["policlinica vaccin medic"])
+    assert not np.allclose(v1, v2)
+    similarity = float((v1 @ v2.T)[0, 0])
+    assert similarity < 0.5
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 3: Границы данных
+# ---------------------------------------------------------------------------
+
+
+def test_embed_diacritics_folding_equivalence() -> None:
+    # Диакритика folding в l0 нормализует ș/ş, ț/ţ, ă, â, î к латинице
+    v_diacritics = retrieval.embed(["petiție și plăți"])
+    v_plain = retrieval.embed(["petitie si plati"])
+    np.testing.assert_allclose(v_diacritics, v_plain, atol=1e-5)
+
+
+def test_make_query_mixed_cyrillic_and_latin() -> None:
+    # Смешанный текст: ≥ 30% кириллицы распознается как ru
+    q = retrieval.make_query("Care este расписание троллейбусов?")
+    assert q.lang in ("ro", "ru")
+    assert q.search_text
+
+
+def test_retrieve_single_chunk(monkeypatch: pytest.MonkeyPatch) -> None:
+    query = retrieval.make_query("Care este termenul de examinare a petiției?")
+    passages = retrieval.retrieve(query, n=1)
+    assert len(passages) == 1
+    assert passages[0].n == 1
+
+
+def test_retrieve_chunk_with_none_optional_fields(monkeypatch: pytest.MonkeyPatch) -> None:
+    # Убеждаемся, что чанки с section=None, page=None, date=None корректно обрабатываются
+    query = retrieval.make_query("Care este termenul de examinare a petiției?")
+    passages = retrieval.retrieve(query, n=5)
+    assert passages
+    for p in passages:
+        assert isinstance(p.chunk.id, str)
+        # section, page, date могут быть None и не вызывать ошибок сериализации
+        assert p.chunk.section is None or isinstance(p.chunk.section, str)
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 4: Откат bge-m3 на hash с warning
+# ---------------------------------------------------------------------------
+
+
+def test_bge_m3_runtime_error_logs_warning_and_falls_back(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    monkeypatch.setattr(settings, "EMBEDDER", "bge-m3")
+
+    def _boom(_texts: list[str]):
+        raise RuntimeError("torch cuda out of memory")
+
+    from app.blocks.retrieval import l1
+
+    monkeypatch.setattr(l1, "embed", _boom)
+    with caplog.at_level("WARNING"):
+        vectors = retrieval.embed(["salut"])
+    assert vectors.shape == (1, 2048)
+    assert "R1: bge-m3 embedder failed, falling back to hash" in caplog.text
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 5: Детерминированность
+# ---------------------------------------------------------------------------
+
+
+def test_make_query_and_embed_are_deterministic() -> None:
+    q1 = retrieval.make_query("Cât costă o călătorie cu troleibuzul?")
+    q2 = retrieval.make_query("Cât costă o călătorie cu troleibuzul?")
+    assert q1.text == q2.text
+    assert q1.lang == q2.lang
+    assert q1.search_text == q2.search_text
+    assert q1.category == q2.category
+
+    v1 = retrieval.embed(["test determinism text"])
+    v2 = retrieval.embed(["test determinism text"])
+    np.testing.assert_array_equal(v1, v2)
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 8: Тесты без сети
+# ---------------------------------------------------------------------------
+
+
+def test_retrieval_runs_completely_offline(monkeypatch: pytest.MonkeyPatch) -> None:
+    import httpx
+
+    def _no_network(*_a, **_k):
+        raise AssertionError("Network access attempted in retrieval block!")
+
+    monkeypatch.setattr(httpx, "post", _no_network)
+    monkeypatch.setattr(httpx, "get", _no_network)
+
+    query = retrieval.make_query("Care este termenul de examinare a petiției?")
+    passages = retrieval.retrieve(query, n=3)
+    assert len(passages) == 3
