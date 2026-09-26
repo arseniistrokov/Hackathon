@@ -183,3 +183,104 @@ def test_single_element_list() -> None:
     top = rerank.rerank(query, [_passage(1, "troleibuz")])
     assert len(top) == 1
     assert top[0].n == 1
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 2 & 4: Прямая проверка bge L1 с моком и логирование warning при ошибке
+# ---------------------------------------------------------------------------
+
+
+def test_bge_l1_rerank_with_mocked_model(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(settings, "RERANKER", "bge")
+
+    from app.blocks.rerank import l1
+
+    class _MockCrossEncoder:
+        def predict(self, pairs: list[tuple[str, str]], activation_fn=None):
+            return [2.0, -2.0]
+
+    monkeypatch.setattr(l1, "_model", lambda: _MockCrossEncoder())
+    query = Query(text="petitie", lang="ro", search_text="petitie")
+    passages = [_passage(1, "text A"), _passage(2, "text B")]
+    top = rerank.rerank(query, passages, k=2)
+    assert len(top) == 2
+    assert top[0].score > top[1].score
+    assert 0.0 <= top[0].score <= 1.0
+
+
+def test_bge_exception_logs_warning(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    monkeypatch.setattr(settings, "RERANKER", "bge")
+
+    from app.blocks.rerank import l1
+
+    def _boom(*_a, **_k):
+        raise RuntimeError("torch cuda out of memory")
+
+    monkeypatch.setattr(l1, "rerank", _boom)
+    query = Query(text="petitie", lang="ro", search_text="petitie")
+    passages = [_passage(1, "petitie text")]
+    with caplog.at_level("WARNING"):
+        top = rerank.rerank(query, passages)
+    assert top
+    assert "R2: bge reranker failed, falling back to lexical" in caplog.text
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 3: Границы данных
+# ---------------------------------------------------------------------------
+
+
+def test_diacritics_t_and_a_variations() -> None:
+    passage_text = "Informații despre petiții și plăți"
+    score_with = rerank.rerank(
+        Query(text="plăți", lang="ro", search_text="plăți"),
+        [_passage(1, passage_text)],
+    )[0].score
+    score_without = rerank.rerank(
+        Query(text="plati", lang="ro", search_text="plati"),
+        [_passage(1, passage_text)],
+    )[0].score
+    assert score_with == score_without == pytest.approx(1.0)
+
+
+def test_stop_words_only_query_does_not_crash() -> None:
+    query = Query(text="de la în și", lang="ro", search_text="de la în și")
+    top = rerank.rerank(query, [_passage(1, "orice text")])
+    assert len(top) == 1
+    assert top[0].score == 0.0
+
+
+def test_rerank_k_larger_than_passages_list() -> None:
+    query = Query(text="troleibuz", lang="ro", search_text="troleibuz")
+    passages = [_passage(1, "troleibuz 1"), _passage(2, "troleibuz 2")]
+    top = rerank.rerank(query, passages, k=10)
+    assert len(top) == 2
+    assert [p.n for p in top] == [1, 2]
+
+
+def test_mixed_ru_ro_query() -> None:
+    query = Query(text="троллейбус расписание", lang="ru", search_text="troleibuz orar")
+    top = rerank.rerank(query, [_passage(1, "troleibuz orar ruta 22")])
+    assert top[0].score > 0.0
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 8: Тесты без сети
+# ---------------------------------------------------------------------------
+
+
+def test_rerank_runs_completely_offline(monkeypatch: pytest.MonkeyPatch) -> None:
+    import httpx
+
+    def _fail(*_a, **_k):
+        raise AssertionError("Network attempted in R2 block!")
+
+    monkeypatch.setattr(httpx, "post", _fail)
+    monkeypatch.setattr(httpx, "get", _fail)
+
+    query = Query(text="termen petiție", lang="ro", search_text="termen petiție")
+    top = rerank.rerank(query, [_passage(1, "termenul de examinare este 30 de zile")])
+    assert len(top) == 1
+    assert top[0].score > 0.0
