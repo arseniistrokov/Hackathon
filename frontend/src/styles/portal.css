@@ -748,7 +748,7 @@
 }
 
 /* --- 3D Nexa Orb (Figma Frame 91, Layer_1 & Frame 88) --------------------- */
-.nexa-orb {
+.chat .nexa-orb {
   position: relative;
   width: 160px;
   height: 160px;
@@ -757,10 +757,11 @@
   justify-content: center;
   user-select: none;
   pointer-events: none;
+  margin: 0 auto;
   animation: nexa-orb-float 4.5s ease-in-out infinite;
 }
 
-.nexa-orb__glow {
+.chat .nexa-orb__glow {
   position: absolute;
   width: 180px;
   height: 180px;
@@ -776,7 +777,7 @@
   animation: nexa-orb-pulse 3s ease-in-out infinite alternate;
 }
 
-.nexa-orb__sphere {
+.chat .nexa-orb__sphere {
   position: relative;
   width: 114px;
   height: 114px;
@@ -787,17 +788,17 @@
     var(--c-nexa-cyan) 32%,
     var(--c-nexa-blue) 68%,
     var(--c-nexa-orb-deep) 100%
-  );
+  ) !important;
   box-shadow:
     inset -6px -8px 18px var(--c-nexa-orb-deep),
     inset 4px 4px 10px var(--c-white-highlight),
-    0 4px 24px var(--c-cyan-translucent);
+    0 4px 24px var(--c-cyan-translucent) !important;
   overflow: hidden;
   z-index: 1;
 }
 
 /* Изогнутая световая полоса через центр сферы (Figma Frame 88) */
-.nexa-orb__highlight {
+.chat .nexa-orb__highlight {
   position: absolute;
   width: 130px;
   height: 46px;
@@ -809,15 +810,15 @@
     var(--c-nexa-highlight) 0%,
     var(--c-nexa-highlight-soft) 45%,
     transparent 75%
-  );
+  ) !important;
   filter: blur(5px);
-  transform: rotate(-22deg);
+  transform: rotate(-22deg) !important;
   opacity: 0.88;
   pointer-events: none;
 }
 
 /* Верхний мягкий блик */
-.nexa-orb__mesh {
+.chat .nexa-orb__mesh {
   position: absolute;
   width: 72px;
   height: 36px;
@@ -829,46 +830,47 @@
     var(--c-nexa-highlight-mesh) 0%,
     var(--c-nexa-mesh-soft) 50%,
     transparent 75%
-  );
+  ) !important;
   filter: blur(4px);
-  transform: rotate(-10deg);
+  transform: rotate(-10deg) !important;
+  opacity: 0.7;
   pointer-events: none;
 }
 
 /* Орбитальные кольца (Figma Layer_1 & Frame 91) */
-.nexa-orb__ring {
+.chat .nexa-orb__ring {
   position: absolute;
   border-radius: var(--radius-full);
   pointer-events: none;
   box-sizing: border-box;
 }
 
-.nexa-orb__ring--1 {
+.chat .nexa-orb__ring--1 {
   width: 156px;
   height: 52px;
-  border: 3.5px solid transparent;
-  border-top-color: var(--c-nexa-cyan);
-  border-bottom-color: var(--c-nexa-blue);
-  border-right-color: var(--c-nexa-cyan);
-  border-left-color: var(--c-cyan-translucent);
-  transform: rotate(-26deg);
+  border: 3.5px solid transparent !important;
+  border-top-color: var(--c-nexa-cyan) !important;
+  border-bottom-color: var(--c-nexa-blue) !important;
+  border-right-color: var(--c-nexa-cyan) !important;
+  border-left-color: var(--c-cyan-translucent) !important;
+  transform: rotate(-26deg) !important;
   filter: drop-shadow(0 0 8px var(--c-nexa-ring-glow));
   z-index: 2;
-  animation: nexa-ring-rotate-1 8s ease-in-out infinite alternate;
+  animation: nexa-ring-rotate-1 8s ease-in-out infinite alternate !important;
 }
 
-.nexa-orb__ring--2 {
+.chat .nexa-orb__ring--2 {
   width: 150px;
   height: 48px;
-  border: 3px solid transparent;
-  border-top-color: var(--c-nexa-orb-light);
-  border-bottom-color: var(--c-nexa-blue);
-  border-left-color: var(--c-nexa-cyan);
-  border-right-color: var(--c-cyan-translucent);
-  transform: rotate(32deg);
+  border: 3px solid transparent !important;
+  border-top-color: var(--c-nexa-orb-light) !important;
+  border-bottom-color: var(--c-nexa-blue) !important;
+  border-left-color: var(--c-nexa-cyan) !important;
+  border-right-color: var(--c-cyan-translucent) !important;
+  transform: rotate(32deg) !important;
   filter: drop-shadow(0 0 8px var(--c-nexa-ring-blue-glow));
   z-index: 2;
-  animation: nexa-ring-rotate-2 9s ease-in-out infinite alternate;
+  animation: nexa-ring-rotate-2 9s ease-in-out infinite alternate !important;
 }
 
 @keyframes nexa-orb-float {
