@@ -294,7 +294,7 @@ BLOCKS = [
  dict(id="C0", name="skeleton", title="Каркас проекта", group="CORE", owner="A", backup="N",
   depends=[], consumers=["все блоки"],
   goal="Один Python-процесс (FastAPI раздаёт статику фронта), общие модели, переключатели уровней, гнёзда всех блоков, fixture, CI. Сделан до хакатона; после него общие файлы заморожены.",
-  paths=["app/**", "tests/**", "scripts/**", "data/fixture/**", "data/sites.yaml", "docs/**", "frontend/**", "pyproject.toml", "uv.lock", ".github/**", "hooks/**", "README.md", "AGENTS.md", "CLAUDE.md", ".env.example", ".gitignore"],
+  paths=["app/**", "tests/**", "scripts/**", "data/fixture/**", "data/sites.yaml", "data/training/**", "docs/**", "frontend/**", "pyproject.toml", "uv.lock", ".github/**", "hooks/**", "README.md", "AGENTS.md", "CLAUDE.md", ".env.example", ".gitignore"],
   models=[],
   port="""\
 Результат — не функция, а состояние репозитория:

@@ -54,6 +54,7 @@
 - `scripts/**`
 - `data/fixture/**`
 - `data/sites.yaml`
+- `data/training/**`
 - `docs/**`
 - `frontend/**`
 - `pyproject.toml`

@@ -15,6 +15,8 @@ data/raw/*
 !data/raw/.gitkeep
 data/index/*
 !data/index/.gitkeep
+data/training/*
+!data/training/.gitkeep
 *.sqlite
 *.sqlite3
 *.npy
