@@ -29,6 +29,7 @@ from app.contracts.models import (
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _make_chunk(
     n: int,
     *,
@@ -85,6 +86,7 @@ def _make_conflict(a_chunk: Chunk, b_chunk: Chunk) -> Conflict:
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def expect() -> dict:
     """Load the canonical expected-values fixture."""
@@ -105,10 +107,7 @@ def test_init_schema_creates_tables_and_is_idempotent() -> None:
     store.init_schema(c)
     store.init_schema(c)
 
-    names = {
-        row[0]
-        for row in c.execute("SELECT name FROM sqlite_master WHERE type IN ('table', 'view')")
-    }
+    names = {row[0] for row in c.execute("SELECT name FROM sqlite_master WHERE type IN ('table', 'view')")}
     assert {"documents", "chunks", "chunks_fts", "conflicts", "queries", "feedback", "site_pages"} <= names
     sql = c.execute("SELECT sql FROM sqlite_master WHERE name = 'chunks_fts'").fetchone()[0]
     assert "unicode61 remove_diacritics 2" in sql
@@ -129,14 +128,32 @@ def test_connect_fixture_loads_corpus_once(expect: dict) -> None:
     assert second.execute("SELECT COUNT(*) FROM documents").fetchone()[0] == document_count
 
 
+def test_real_storage_error_logs_and_falls_back_to_fixture(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture, expect: dict
+) -> None:
+    blocked_parent = tmp_path / "not-a-directory"
+    blocked_parent.write_text("fixture", encoding="utf-8")
+    monkeypatch.setattr(settings, "CORPUS", "real")
+    monkeypatch.setattr(settings, "DB_PATH", blocked_parent / "index.sqlite")
+
+    with caplog.at_level("WARNING", logger="app.blocks.store"):
+        conn = store.connect()
+
+    assert conn.execute("SELECT COUNT(*) FROM documents").fetchone()[0] == expect["documents"]
+    assert "falling back to fixture" in caplog.text
+
+
 def test_upsert_document_inserts_and_updates() -> None:
     """Документ сохраняется и повторный upsert обновляет его метаданные."""
     c = sqlite3.connect(":memory:")
     c.row_factory = sqlite3.Row
     store.init_schema(c)
     page = RawPage(
-        site="rtec.md", url="https://example.test/page", title="Titlu vechi",
-        text="Text de fixture suficient pentru a construi pagina.", category="mobility",
+        site="rtec.md",
+        url="https://example.test/page",
+        title="Titlu vechi",
+        text="Text de fixture suficient pentru a construi pagina.",
+        category="mobility",
     )
     store.upsert_document(c, page, "doc_manual")
     updated = page.model_copy(update={"title": "Titlu nou"})
@@ -150,6 +167,7 @@ def test_upsert_document_inserts_and_updates() -> None:
 # Критерий 1 — статистика корпуса fixture
 # ---------------------------------------------------------------------------
 
+
 def test_stats_on_fixture(expect: dict) -> None:
     """Критерий 1: connect() на fixture даёт ожидаемое число документов, чанков и сайтов."""
     c = store.connect()
@@ -162,14 +180,13 @@ def test_stats_on_fixture(expect: dict) -> None:
     assert s.corpus_chunks >= expect["documents"] * expect["min_chunks_per_page"], (
         f"corpus_chunks={s.corpus_chunks} < documents×min_chunks_per_page"
     )
-    assert s.sites == expect["sites"], (
-        f"sites={s.sites}, ожидалось {expect['sites']}"
-    )
+    assert s.sites == expect["sites"], f"sites={s.sites}, ожидалось {expect['sites']}"
 
 
 # ---------------------------------------------------------------------------
 # Критерий 2 — FTS без диакритики
 # ---------------------------------------------------------------------------
+
 
 def test_fts_search_diacritics_insensitive(conn: sqlite3.Connection, expect: dict) -> None:
     """Критерий 2: 'petitie termen' и 'petiție termen' оба находят целевой passage в top-3."""
@@ -183,14 +200,14 @@ def test_fts_search_diacritics_insensitive(conn: sqlite3.Connection, expect: dic
         chunks = store.get_chunks(conn, top3_ids)
         found = any(target_passage in ch.text for ch in chunks)
         assert found, (
-            f"fts_search({query_text!r}): passage {target_passage!r} не найден в top-3; "
-            f"top-3 ids={top3_ids}"
+            f"fts_search({query_text!r}): passage {target_passage!r} не найден в top-3; top-3 ids={top3_ids}"
         )
 
 
 # ---------------------------------------------------------------------------
 # Критерий 3 — фильтрация по категории
 # ---------------------------------------------------------------------------
+
 
 def test_fts_search_category_filter(conn: sqlite3.Connection) -> None:
     """Критерий 3: fts_search с category='mobility' возвращает только chunks с category=='mobility'."""
@@ -210,13 +227,17 @@ def test_fts_search_category_filter(conn: sqlite3.Connection) -> None:
 # Критерий 4 — спецсимволы и пустая строка не бросают
 # ---------------------------------------------------------------------------
 
-@pytest.mark.parametrize("query_text", [
-    'Ordinea "publică"',
-    "tarif*",
-    "troleibuz AND tarif",
-    '"',
-    "",
-])
+
+@pytest.mark.parametrize(
+    "query_text",
+    [
+        'Ordinea "publică"',
+        "tarif*",
+        "troleibuz AND tarif",
+        '"',
+        "",
+    ],
+)
 def test_fts_search_special_chars_and_empty(conn: sqlite3.Connection, query_text: str) -> None:
     """Критерий 4: специальные символы FTS и пустая строка не бросают исключений; пустая строка → []."""
     result = store.fts_search(conn, query_text)
@@ -229,15 +250,18 @@ def test_fts_search_special_chars_and_empty(conn: sqlite3.Connection, query_text
 # Критерий 5 — идемпотентность upsert_chunks
 # ---------------------------------------------------------------------------
 
+
 def test_upsert_chunks_idempotent(conn: sqlite3.Connection) -> None:
     """Критерий 5: второй upsert тех же чанков возвращает 0 и не увеличивает число строк."""
     chunks = [
         _make_chunk(
-            0, url="https://rtec.md/upsert-test",
+            0,
+            url="https://rtec.md/upsert-test",
             text="Costul unei călătorii în troleibuz este de 6 lei.",
         ),
         _make_chunk(
-            1, url="https://rtec.md/upsert-test",
+            1,
+            url="https://rtec.md/upsert-test",
             text="Abonamentul lunar costă 60 de lei pentru toate rutele.",
         ),
     ]
@@ -250,14 +274,13 @@ def test_upsert_chunks_idempotent(conn: sqlite3.Connection) -> None:
     count_after: int = conn.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]
 
     assert second == 0, f"Второй upsert вернул {second}, ожидалось 0"
-    assert count_after == count_before, (
-        f"Число строк выросло: {count_before} → {count_after}"
-    )
+    assert count_after == count_before, f"Число строк выросло: {count_before} → {count_after}"
 
 
 # ---------------------------------------------------------------------------
 # Критерий 6 — порядок get_chunks и пропуск неизвестных id
 # ---------------------------------------------------------------------------
+
 
 def test_get_chunks_order_and_unknown_ids(conn: sqlite3.Connection) -> None:
     """Критерий 6: get_chunks возвращает чанки в порядке запроса; неизвестные id пропускаются."""
@@ -273,9 +296,24 @@ def test_get_chunks_order_and_unknown_ids(conn: sqlite3.Connection) -> None:
     assert result[1].id == c0.id, f"Вторым должен быть {c0.id}, получен {result[1].id}"
 
 
+def test_all_chunk_ids_and_document_date_are_stable(conn: sqlite3.Connection) -> None:
+    expected_ids = [row[0] for row in conn.execute("SELECT id FROM chunks ORDER BY rowid")]
+    assert store.all_chunk_ids(conn) == expected_ids
+
+    dated = conn.execute(
+        "SELECT id, date FROM documents WHERE date IS NOT NULL ORDER BY id LIMIT 1"
+    ).fetchone()
+    undated = conn.execute("SELECT id FROM documents WHERE date IS NULL ORDER BY id LIMIT 1").fetchone()
+    assert dated is not None and undated is not None
+    assert store.document_date(conn, dated[0]) == date.fromisoformat(dated[1])
+    assert store.document_date(conn, undated[0]) is None
+    assert store.document_date(conn, "unknown-document") is None
+
+
 # ---------------------------------------------------------------------------
 # Критерий 7 — round-trip эмбеддингов
 # ---------------------------------------------------------------------------
+
 
 def test_embeddings_roundtrip(tmp_path: Path) -> None:
     """Критерий 7: save_embeddings + load_embeddings дают те же ids и ту же матрицу float32."""
@@ -302,14 +340,14 @@ def test_embeddings_roundtrip(tmp_path: Path) -> None:
         f"dtype после загрузки: {loaded_matrix.dtype}, ожидалось float32"
     )
     np.testing.assert_array_almost_equal(
-        loaded_matrix, matrix, decimal=6,
-        err_msg="Матрица эмбеддингов изменилась после round-trip"
+        loaded_matrix, matrix, decimal=6, err_msg="Матрица эмбеддингов изменилась после round-trip"
     )
 
 
 # ---------------------------------------------------------------------------
 # Критерий 8 — конфликты
 # ---------------------------------------------------------------------------
+
 
 def test_conflicts_for(conn: sqlite3.Connection) -> None:
     """Критерий 8: insert_conflict + conflicts_for по a_chunk и b_chunk; [] на пустом списке."""
@@ -351,6 +389,7 @@ def test_conflicts_for(conn: sqlite3.Connection) -> None:
 # Критерий 9 — навигация по сайту
 # ---------------------------------------------------------------------------
 
+
 def test_site_navigation(conn: sqlite3.Connection, expect: dict) -> None:
     """Критерий 9: навигация для известных сайтов и None для неизвестного."""
     # autosalubritate.md — есть в expect.navigation
@@ -358,12 +397,8 @@ def test_site_navigation(conn: sqlite3.Connection, expect: dict) -> None:
     assert nav is not None, "site_navigation('autosalubritate.md') вернул None"
     assert isinstance(nav, Navigation)
     expected = expect["navigation"]["autosalubritate.md"]
-    assert nav.label == expected["label"], (
-        f"label={nav.label!r}, ожидалось {expected['label']!r}"
-    )
-    assert nav.url == expected["url"], (
-        f"url={nav.url!r}, ожидалось {expected['url']!r}"
-    )
+    assert nav.label == expected["label"], f"label={nav.label!r}, ожидалось {expected['label']!r}"
+    assert nav.url == expected["url"], f"url={nav.url!r}, ожидалось {expected['url']!r}"
 
     # сайт без contact/services — должен вернуть url из sites.yaml
     nav_no_contact = store.site_navigation(conn, "rtec.md")
@@ -381,6 +416,7 @@ def test_site_navigation(conn: sqlite3.Connection, expect: dict) -> None:
 # ---------------------------------------------------------------------------
 # Критерий 10 — статистика запросов и обратной связи
 # ---------------------------------------------------------------------------
+
 
 def test_query_feedback_stats(conn: sqlite3.Connection) -> None:
     """Критерий 10: save_query + save_feedback → stats() показывает queries==1, feedback_up==1."""
