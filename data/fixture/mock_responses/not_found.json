@@ -1,0 +1,22 @@
+{
+  "question": "Care este amenda pentru parcare neregulamentară în Chișinău?",
+  "language": "ro",
+  "status": "NOT_FOUND",
+  "answer": "",
+  "citations": [],
+  "conflict": null,
+  "warning": null,
+  "navigation": {
+    "label": "Primăria Chișinău · Transparență",
+    "url": "https://www.chisinau.md/ro/transparenta"
+  },
+  "meta": {
+    "corpus_documents": 14,
+    "corpus_chunks": 52,
+    "passages_retrieved": 20,
+    "passages_used": 0,
+    "model": "gemma3:12b",
+    "latency_ms": 1100,
+    "query_id": "q_demo_3"
+  }
+}

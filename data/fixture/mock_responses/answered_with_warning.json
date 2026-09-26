@@ -1,0 +1,34 @@
+{
+  "question": "Cât costă o călătorie în troleibuz?",
+  "language": "ro",
+  "status": "ANSWERED",
+  "answer": "Costul unei călătorii în troleibuz este de 6 lei, conform tarifelor RTEC în vigoare de la 1 iulie 2024.",
+  "citations": [
+    {
+      "chunk_id": "9999aaaa0000bbbb",
+      "document_id": "cccc1111dddd2222",
+      "title": "Tarife pentru călătorie",
+      "url": "https://rtec.md/tarife-calatorie",
+      "site": "rtec.md",
+      "section": "Tariful pentru o călătorie",
+      "page": null,
+      "passage": "Costul unei călătorii în troleibuz este de 6 lei. Plata se efectuează la taxator, în numerar sau cu cardul bancar la validatoarele instalate în salon. Biletul este valabil pentru o singură călătorie, fără dreptul de transbordare pe altă rută.",
+      "date": "2024-07-01"
+    }
+  ],
+  "conflict": null,
+  "warning": "Documentul „Transport public – tarife” (chisinau.md, 2021-03-10) indică 2 lei și, probabil, este depășit.",
+  "navigation": {
+    "label": "RTEC · troleibuze și autobuze",
+    "url": "https://rtec.md/"
+  },
+  "meta": {
+    "corpus_documents": 14,
+    "corpus_chunks": 52,
+    "passages_retrieved": 20,
+    "passages_used": 5,
+    "model": "gemma3:12b",
+    "latency_ms": 3400,
+    "query_id": "q_demo_5"
+  }
+}

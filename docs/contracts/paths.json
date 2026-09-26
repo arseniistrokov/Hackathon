@@ -1,0 +1,112 @@
+{
+  "C0": [
+    "app/**",
+    "tests/**",
+    "scripts/**",
+    "data/fixture/**",
+    "data/sites.yaml",
+    "docs/**",
+    "frontend/**",
+    "pyproject.toml",
+    "uv.lock",
+    ".github/**",
+    "hooks/**",
+    "README.md",
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".env.example",
+    ".gitignore",
+    "docs/status/C0.md",
+    "docs/team/Арсений.md"
+  ],
+  "D1": [
+    "app/blocks/store/**",
+    "tests/blocks/store/**",
+    "docs/status/D1.md",
+    "docs/team/Никита.md"
+  ],
+  "I2": [
+    "app/blocks/chunker/**",
+    "tests/blocks/chunker/**",
+    "docs/status/I2.md",
+    "docs/team/Никита.md"
+  ],
+  "I1": [
+    "app/blocks/fetch/**",
+    "tests/blocks/fetch/**",
+    "docs/status/I1.md",
+    "docs/team/Никита.md"
+  ],
+  "S1": [
+    "app/blocks/scout/**",
+    "tests/blocks/scout/**",
+    "docs/status/S1.md",
+    "docs/team/Никита.md"
+  ],
+  "A1": [
+    "app/api/routes/feedback.py",
+    "app/api/routes/stats.py",
+    "tests/blocks/api/**",
+    "docs/status/A1.md",
+    "docs/team/Никита.md"
+  ],
+  "E1": [
+    "app/blocks/eval/**",
+    "tests/blocks/eval/**",
+    "docs/status/E1.md",
+    "docs/team/Арсений.md"
+  ],
+  "L1": [
+    "app/blocks/llm/**",
+    "tests/blocks/llm/**",
+    "docs/status/L1.md",
+    "docs/team/Арсений.md"
+  ],
+  "R1": [
+    "app/blocks/retrieval/**",
+    "tests/blocks/retrieval/**",
+    "docs/status/R1.md",
+    "docs/team/Арсений.md"
+  ],
+  "R2": [
+    "app/blocks/rerank/**",
+    "tests/blocks/rerank/**",
+    "docs/status/R2.md",
+    "docs/team/Арсений.md"
+  ],
+  "W1": [
+    "app/blocks/workflow/**",
+    "tests/blocks/workflow/**",
+    "docs/status/W1.md",
+    "docs/team/Арсений.md"
+  ],
+  "U1": [
+    "frontend/src/features/chat/**",
+    "frontend/src/api/**",
+    "frontend/src/i18n.ts",
+    "frontend/src/styles/**",
+    "docs/status/U1.md",
+    "docs/team/Паша.md"
+  ],
+  "U2": [
+    "frontend/src/features/feedback/**",
+    "frontend/src/features/voice/**",
+    "frontend/src/features/stats/**",
+    "frontend/src/features/chat/ChatScreen.tsx",
+    "frontend/src/features/chat/AnswerCard.tsx",
+    "docs/status/U2.md",
+    "docs/team/Паша.md"
+  ],
+  "G1": [
+    "data/golden/**",
+    "data/sites.yaml",
+    "data/conflicts_manual.json",
+    "docs/status/G1.md",
+    "docs/team/Дизайнеры.md"
+  ],
+  "P1": [
+    "docs/pitch/**",
+    "docs/status/P1.md",
+    "docs/team/Дизайнеры.md"
+  ]
+}

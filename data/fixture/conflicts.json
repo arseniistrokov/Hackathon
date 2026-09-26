@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cf_tariff",
+    "entity": "tarif călătorie troleibuz",
+    "entity_kind": "tariff",
+    "a": {
+      "url": "https://rtec.md/tarife-calatorie",
+      "quote": "Costul unei călătorii în troleibuz este de 6 lei",
+      "value": "6 lei",
+      "date": "2024-07-01"
+    },
+    "b": {
+      "url": "https://www.chisinau.md/ro/transport-public-tarife",
+      "quote": "costul unei călătorii în troleibuz constituie 2 lei",
+      "value": "2 lei",
+      "date": "2021-03-10"
+    },
+    "resolved_by_date": true
+  },
+  {
+    "id": "cf_audienta",
+    "entity": "program audiență cetățeni Pretura Botanica",
+    "entity_kind": "hours",
+    "a": {
+      "url": "https://www.botanica.md/program-audienta",
+      "quote": "Audiența cetățenilor: luni și joi, 08:00–17:00",
+      "value": "08:00–17:00",
+      "date": null
+    },
+    "b": {
+      "url": "https://help.chisinau.md/preturile-de-sector-contacte",
+      "quote": "Audiența cetățenilor: luni și joi, 09:00–16:00",
+      "value": "09:00–16:00",
+      "date": null
+    },
+    "resolved_by_date": false
+  }
+]

@@ -1,0 +1,34 @@
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# секреты и локальные настройки
+.env
+.env.local
+
+# данные: сырые страницы и индекс не коммитим (перекраул/переиндексация < 1 часа)
+data/raw/*
+!data/raw/.gitkeep
+data/index/*
+!data/index/.gitkeep
+*.sqlite
+*.sqlite3
+*.npy
+
+# модели
+models/
+*.gguf
+
+# frontend
+frontend/node_modules/
+frontend/dist/
+
+# ide
+.idea/
+.vscode/
+.serena/
+.claude/worktrees/

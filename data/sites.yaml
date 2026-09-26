@@ -1,0 +1,254 @@
+# 40 источников Annex 1. Ключ = домен. Правят: Никита (sitemap/wp/limit) и дизайнеры G1 (contact/services/label).
+# category — одно из CATEGORIES в app/contracts/models.py. ru: есть ли русская версия сайта.
+# wave: 1 = первая волна для демо (индексируем в субботу до 15:00), 2 = вторая, если пайплайн переварил первую.
+# contact / services — страницы для navigation в ответе (таблица site_pages в D1). Заполняют дизайнеры руками.
+
+chisinau.md:
+  url: https://www.chisinau.md/ro/transparenta
+  category: transparency
+  ru: true
+  wave: 1
+  wp: false
+  sitemap: true
+  limit: 200
+  pdf: true            # решения CMC — самые ценные документы для citations
+  label: Primăria Chișinău · Transparență
+  contact: https://www.chisinau.md/ro/contacte
+  services: https://www.chisinau.md/ro/transparenta
+suburbii.chisinau.md:
+  url: https://suburbii.chisinau.md/
+  category: transparency
+  ru: true
+  wave: 2
+  label: Suburbiile Chișinăului
+proiecte.chisinau.md:
+  url: https://proiecte.chisinau.md/
+  category: transparency
+  ru: false
+  wave: 2
+  label: Proiecte Chișinău
+mobilitatechisinau.md:
+  url: https://mobilitatechisinau.md/
+  category: mobility
+  ru: false
+  wave: 2
+  label: Mobilitate Chișinău
+rtec.md:
+  url: https://rtec.md/
+  category: mobility
+  ru: false
+  wave: 1
+  label: RTEC · troleibuze și autobuze
+autourban.md:
+  url: https://autourban.md/ro/rute/suburbane
+  category: mobility
+  ru: true
+  wave: 2
+  label: Autourban · rute suburbane
+exdrupo.md:
+  url: https://exdrupo.md/
+  category: mobility
+  ru: false
+  wave: 2
+  label: Exdrupo · drumuri
+dgaurf.md:
+  url: https://dgaurf.md/
+  category: urban
+  ru: false
+  wave: 2
+  label: Direcția arhitectură, urbanism și relații funciare
+dglca.md:
+  url: https://dglca.md/
+  category: urban
+  ru: false
+  wave: 2
+  label: Direcția locativ-comunală și amenajare
+autosalubritate.md:
+  url: https://autosalubritate.md/informatie-de-contact/
+  category: urban
+  ru: true
+  wave: 1
+  label: Autosalubritate · deșeuri
+  contact: https://autosalubritate.md/informatie-de-contact/
+acc.md:
+  url: https://www.acc.md/
+  category: urban
+  ru: false
+  wave: 2
+  label: Apă-Canal Chișinău
+agsv.md:
+  url: https://agsv.md/diagrama-defrisare-curatare-a-arborilor-2/
+  category: urban
+  ru: false
+  wave: 2
+  label: Asociația de gospodărire a spațiilor verzi
+chisinauedu.dgets.md:
+  url: https://chisinauedu.dgets.md/
+  category: education
+  ru: false
+  wave: 2
+  label: DGETS Chișinău
+detsriscani.md:
+  url: https://detsriscani.md/
+  category: education
+  ru: false
+  wave: 2
+  label: DETS Rîșcani
+detsciocana.educ.md:
+  url: https://detsciocana.educ.md/
+  category: education
+  ru: false
+  wave: 2
+  label: DETS Ciocana
+detscentru.md:
+  url: https://detscentru.md/
+  category: education
+  ru: false
+  wave: 2
+  label: DETS Centru
+buiucanidets.md:
+  url: https://buiucanidets.md
+  category: education
+  ru: false
+  wave: 2
+  label: DETS Buiucani
+detsbotanica.md:
+  url: https://detsbotanica.md
+  category: education
+  ru: false
+  wave: 2
+  label: DETS Botanica
+educatieonline.md:
+  url: https://educatieonline.md/
+  category: education
+  ru: false
+  wave: 2
+  label: Educație Online
+extrascolar.md:
+  url: https://extrascolar.md/
+  category: education
+  ru: false
+  wave: 2
+  label: Extrașcolar
+egradinita.md:
+  url: https://egradinita.md/
+  category: education
+  ru: false
+  wave: 2
+  unstable: true
+  label: eGrădinița
+escoala.chisinau.md:
+  url: https://escoala.chisinau.md/
+  category: education
+  ru: false
+  wave: 2
+  unstable: true
+  label: eȘcoala
+dgams.md:
+  url: https://dgams.md/
+  category: health
+  ru: false
+  wave: 2
+  label: Direcția generală asistență medicală și socială
+help.chisinau.md:
+  url: https://help.chisinau.md/
+  category: health
+  ru: true
+  wave: 1
+  label: Help Chișinău · asistență socială
+amt-botanica.md:
+  url: https://amt-botanica.md/
+  category: health
+  ru: false
+  wave: 1
+  label: AMT Botanica
+amt-centru.md:
+  url: https://amt-centru.md/
+  category: health
+  ru: false
+  wave: 2
+  label: AMT Centru
+amtbuiucani.md:
+  url: https://amtbuiucani.md/
+  category: health
+  ru: false
+  wave: 2
+  label: AMT Buiucani
+amt-ciocana.md:
+  url: https://amt-ciocana.md/
+  category: health
+  ru: false
+  wave: 2
+  label: AMT Ciocana
+amtriscani.md:
+  url: http://amtriscani.md/
+  category: health
+  ru: true
+  wave: 1
+  label: AMT Rîșcani
+botanica.md:
+  url: https://www.botanica.md/
+  category: districts
+  ru: false
+  wave: 1
+  label: Pretura Botanica
+chisinaucentru.md:
+  url: https://chisinaucentru.md/
+  category: districts
+  ru: false
+  wave: 1
+  label: Pretura Centru
+ciocana.md:
+  url: https://ciocana.md/
+  category: districts
+  ru: false
+  wave: 2
+  label: Pretura Ciocana
+rascani.md:
+  url: https://rascani.md/
+  category: districts
+  ru: false
+  wave: 2
+  label: Pretura Rîșcani
+preturabuiucani.md:
+  url: https://preturabuiucani.md/
+  category: districts
+  ru: false
+  wave: 2
+  label: Pretura Buiucani
+comert.chisinau.md:
+  url: https://comert.chisinau.md/
+  category: services
+  ru: false
+  wave: 2
+  label: Comerț Chișinău
+visit.chisinau.md:
+  url: https://visit.chisinau.md/
+  category: services
+  ru: true
+  wave: 2
+  label: Visit Chișinău
+invest.chisinau.md:
+  url: https://invest.chisinau.md/
+  category: services
+  ru: true
+  wave: 2
+  label: Invest Chișinău
+e-tineret.md:
+  url: https://e-tineret.md/
+  category: services
+  ru: true
+  wave: 1
+  label: e-Tineret · programe pentru tineri
+infocom.md:
+  url: http://www.infocom.md/
+  category: other
+  ru: false
+  wave: 2
+  label: Infocom
+liftservice.md:
+  url: https://liftservice.md/
+  category: other
+  ru: false
+  wave: 2
+  label: Liftservice

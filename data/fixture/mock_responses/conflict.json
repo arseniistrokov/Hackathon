@@ -1,0 +1,79 @@
+{
+  "question": "Care este programul de audiență a cetățenilor la Pretura Botanica?",
+  "language": "ro",
+  "status": "CONFLICT",
+  "answer": "Sursele oficiale indică programe diferite pentru audiența cetățenilor la Pretura Botanica, iar niciuna nu are dată. Verificați telefonic înainte de vizită.",
+  "citations": [
+    {
+      "chunk_id": "1111aaaa2222bbbb",
+      "document_id": "3333cccc4444dddd",
+      "title": "Program de audiență",
+      "url": "https://www.botanica.md/program-audienta",
+      "site": "botanica.md",
+      "section": "Audiența cetățenilor",
+      "page": null,
+      "passage": "Audiența cetățenilor: luni și joi, 08:00–17:00, cu pauză de masă între 12:00 și 13:00. Programarea se face la secretariatul preturii, la telefon sau personal, cu cel puțin o zi înainte.",
+      "date": null
+    },
+    {
+      "chunk_id": "5555eeee6666ffff",
+      "document_id": "7777aaaa8888bbbb",
+      "title": "Preturile de sector – contacte",
+      "url": "https://help.chisinau.md/preturile-de-sector-contacte",
+      "site": "help.chisinau.md",
+      "section": "Pretura Botanica",
+      "page": null,
+      "passage": "Adresa: bd. Dacia 49. Telefon secretariat: 022 76-72-31. Audiența cetățenilor: luni și joi, 09:00–16:00. Cererile se depun la ghișeul preturii în zilele lucrătoare.",
+      "date": null
+    }
+  ],
+  "conflict": {
+    "id": "cf_audienta",
+    "entity": "program audiență cetățeni Pretura Botanica",
+    "a": {
+      "citation": {
+        "chunk_id": "1111aaaa2222bbbb",
+        "document_id": "3333cccc4444dddd",
+        "title": "Program de audiență",
+        "url": "https://www.botanica.md/program-audienta",
+        "site": "botanica.md",
+        "section": "Audiența cetățenilor",
+        "page": null,
+        "passage": "Audiența cetățenilor: luni și joi, 08:00–17:00, cu pauză de masă între 12:00 și 13:00. Programarea se face la secretariatul preturii, la telefon sau personal, cu cel puțin o zi înainte.",
+        "date": null
+      },
+      "value": "08:00–17:00",
+      "date": null
+    },
+    "b": {
+      "citation": {
+        "chunk_id": "5555eeee6666ffff",
+        "document_id": "7777aaaa8888bbbb",
+        "title": "Preturile de sector – contacte",
+        "url": "https://help.chisinau.md/preturile-de-sector-contacte",
+        "site": "help.chisinau.md",
+        "section": "Pretura Botanica",
+        "page": null,
+        "passage": "Adresa: bd. Dacia 49. Telefon secretariat: 022 76-72-31. Audiența cetățenilor: luni și joi, 09:00–16:00. Cererile se depun la ghișeul preturii în zilele lucrătoare.",
+        "date": null
+      },
+      "value": "09:00–16:00",
+      "date": null
+    },
+    "resolved_by_date": false
+  },
+  "warning": null,
+  "navigation": {
+    "label": "Pretura Botanica",
+    "url": "https://www.botanica.md/"
+  },
+  "meta": {
+    "corpus_documents": 14,
+    "corpus_chunks": 52,
+    "passages_retrieved": 20,
+    "passages_used": 5,
+    "model": "gemma3:12b",
+    "latency_ms": 2800,
+    "query_id": "q_demo_4"
+  }
+}

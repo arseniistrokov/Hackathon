@@ -1,0 +1,4 @@
+/* Заглушка C0. Токены и стили — блок U1 (frontend/src/styles/**). */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body { font-family: system-ui, sans-serif; padding: 24px; }

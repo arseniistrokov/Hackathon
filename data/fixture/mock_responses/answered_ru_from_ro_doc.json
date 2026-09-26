@@ -1,0 +1,34 @@
+{
+  "question": "В какой срок рассматривается петиция в примэрии?",
+  "language": "ru",
+  "status": "ANSWERED",
+  "answer": "Петиция рассматривается в течение 30 рабочих дней с даты регистрации. Если требуется дополнительная проверка, срок может быть продлён не более чем на 30 рабочих дней.",
+  "citations": [
+    {
+      "chunk_id": "a1b2c3d4e5f60718",
+      "document_id": "0f1e2d3c4b5a6978",
+      "title": "Regulament privind examinarea petițiilor",
+      "url": "https://www.chisinau.md/ro/transparenta/regulament-petitii.pdf",
+      "site": "chisinau.md",
+      "section": "Articolul 14. Termenul de examinare",
+      "page": 3,
+      "passage": "Petițiile se examinează în termen de 30 de zile lucrătoare de la data înregistrării. În cazul în care examinarea necesită o verificare suplimentară sau solicitarea de informații de la alte autorități, termenul poate fi prelungit cu cel mult 30 de zile lucrătoare, cu informarea petiționarului despre motivele prelungirii. Petițiile care nu necesită verificări suplimentare se examinează în termen de 15 zile lucrătoare.",
+      "date": "2023-05-18"
+    }
+  ],
+  "conflict": null,
+  "warning": null,
+  "navigation": {
+    "label": "Primăria Chișinău · Transparență",
+    "url": "https://www.chisinau.md/ro/transparenta"
+  },
+  "meta": {
+    "corpus_documents": 14,
+    "corpus_chunks": 52,
+    "passages_retrieved": 20,
+    "passages_used": 5,
+    "model": "gemma3:12b",
+    "latency_ms": 3900,
+    "query_id": "q_demo_2"
+  }
+}

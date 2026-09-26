@@ -1,0 +1,32 @@
+{
+  "documents": 14,
+  "sites": 8,
+  "ru_documents": 4,
+  "pdf_documents": 1,
+  "golden_total": 16,
+  "golden_hidden": 4,
+  "golden_by_status": {
+    "ANSWERED": 13,
+    "CONFLICT": 1,
+    "NOT_FOUND": 2
+  },
+  "petition_term_url": "https://www.chisinau.md/ro/transparenta/regulament-petitii.pdf",
+  "petition_term_passage": "Petițiile se examinează în termen de 30 de zile lucrătoare",
+  "tariff_new_url": "https://rtec.md/tarife-calatorie",
+  "tariff_old_url": "https://www.chisinau.md/ro/transport-public-tarife",
+  "audienta_urls": [
+    "https://www.botanica.md/program-audienta",
+    "https://help.chisinau.md/preturile-de-sector-contacte"
+  ],
+  "not_found_queries": [
+    "Care este amenda pentru parcare neregulamentară în Chișinău?",
+    "Какой налог на содержание собак в Кишинёве?"
+  ],
+  "navigation": {
+    "autosalubritate.md": {
+      "label": "Autosalubritate · deșeuri",
+      "url": "https://autosalubritate.md/informatie-de-contact/"
+    }
+  },
+  "min_chunks_per_page": 2
+}

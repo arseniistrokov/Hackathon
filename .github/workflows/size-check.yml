@@ -1,0 +1,21 @@
+name: size-check
+on:
+  pull_request:
+    branches: [main, dev]
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Файлы > 5MB и артефакты не проходят
+        run: |
+          bad=0
+          for f in $(git -c core.quotePath=false diff --name-only --diff-filter=ACMR "origin/$GITHUB_BASE_REF"...HEAD); do
+            case "$f" in
+              */node_modules/*|*/__pycache__/*|.env|*.env|*.sqlite|*.sqlite3|*.npy|*.gguf) echo "ЗАБЛОКИРОВАНО: $f"; bad=1;;
+            esac
+            [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 5242880 ] && { echo "ЗАБЛОКИРОВАНО: $f > 5MB"; bad=1; }
+          done
+          exit $bad
