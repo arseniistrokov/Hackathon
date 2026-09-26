@@ -14,6 +14,7 @@ export interface Strings {
   emptyTitle: string
   emptyBody: string
   loading: string
+  networkError: string
   errorTitle: string
   errorBody: string
   retry: string
@@ -49,10 +50,11 @@ const ro: Strings = {
   emptyTitle: "Puneți o întrebare despre serviciile municipale",
   emptyBody:
     "Fiecare răspuns arată documentul din care provine și fragmentul exact. Dacă răspunsul nu există în surse, asistentul o spune direct.",
-  loading: "Se caută în surse…",
+  loading: "Se încarcă...",
+  networkError: "Serviciul este temporar indisponibil. Vă rugăm să încercați din nou.",
   errorTitle: "Cererea nu a reușit",
   errorBody: "Serviciul nu a răspuns. Verificați conexiunea și încercați din nou.",
-  retry: "Încearcă din nou",
+  retry: "Încercați din nou",
   answeredLabel: "Răspuns confirmat",
   warningLabel: "Atenție",
   sourcesLabel: "Surse",
@@ -86,7 +88,8 @@ const ru: Strings = {
   emptyTitle: "Задайте вопрос о муниципальных услугах",
   emptyBody:
     "К каждому ответу прилагается документ-источник и дословный фрагмент. Если ответа в источниках нет, ассистент скажет об этом прямо.",
-  loading: "Идёт поиск по источникам…",
+  loading: "Загрузка...",
+  networkError: "Сервис временно недоступен. Пожалуйста, попробуйте позже.",
   errorTitle: "Запрос не удался",
   errorBody: "Сервис не ответил. Проверьте соединение и попробуйте снова.",
   retry: "Повторить",

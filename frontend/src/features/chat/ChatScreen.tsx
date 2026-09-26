@@ -103,8 +103,14 @@ export function ChatScreen() {
         {failed && (
           <section className="error" role="alert">
             <h3 className="error__title">{s.errorTitle}</h3>
-            <p className="error__body">{s.errorBody}</p>
-            <button type="button" className="error__retry" onClick={() => void run(lastQuestion)}>
+            <p className="error__body">{s.networkError}</p>
+            <button
+              type="button"
+              className="error__retry"
+              onClick={() => {
+                if (lastQuestion) void run(lastQuestion)
+              }}
+            >
               {s.retry}
             </button>
           </section>

@@ -406,9 +406,13 @@
   margin-top: var(--space-2);
   max-width: var(--measure);
   font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
 }
 
 .error__retry {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-top: var(--space-4);
   min-height: var(--tap-min);
   padding: 0 var(--space-5);

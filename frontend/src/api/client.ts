@@ -13,7 +13,12 @@ import type { AskResponse, FeedbackRequest, Lang, Stats } from "./types"
 const TIMEOUT_MS = 10_000
 const MOCK_LATENCY_MS = 400
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false"
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true"
+
+export const API_BASE_URL =
+  import.meta.env.VITE_USE_MOCK !== "true"
+    ? ((import.meta.env.VITE_API_URL as string | undefined) || "http://127.0.0.1:8000").replace(/\/+$/, "")
+    : ""
 
 const MOCKS: Record<string, AskResponse> = {
   answered_ro: answeredRo as AskResponse,
@@ -72,7 +77,11 @@ async function getJson<T>(path: string): Promise<T> {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
   try {
-    const response = await fetch(path, { signal: controller.signal })
+    const response = await fetch(path, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+    })
     if (!response.ok) throw new Error(`${path} → ${response.status}`)
     return (await response.json()) as T
   } finally {
@@ -88,7 +97,7 @@ export async function ask(question: string, lang?: Lang | null): Promise<AskResp
     // иначе на моках не видно, что он вообще работает (критерии 3 и 6). Только для L0.
     return { ...mock, question, language: lang ?? mock.language }
   }
-  return postJson<AskResponse>("/api/ask", { question, lang: lang ?? null })
+  return postJson<AskResponse>(`${API_BASE_URL}/api/ask`, { question, lang: lang ?? null })
 }
 
 export async function sendFeedback(feedback: FeedbackRequest): Promise<void> {
@@ -96,7 +105,7 @@ export async function sendFeedback(feedback: FeedbackRequest): Promise<void> {
     await sleep(MOCK_LATENCY_MS)
     return
   }
-  await postJson<unknown>("/api/feedback", feedback)
+  await postJson<unknown>(`${API_BASE_URL}/api/feedback`, feedback)
 }
 
 export async function getStats(): Promise<Stats> {
@@ -115,5 +124,5 @@ export async function getStats(): Promise<Stats> {
       model: MOCKS.answered_ro.meta.model,
     }
   }
-  return getJson<Stats>("/api/stats")
+  return getJson<Stats>(`${API_BASE_URL}/api/stats`)
 }
