@@ -5,6 +5,7 @@ import { t } from "@/i18n"
 import { AnswerCard } from "./AnswerCard"
 import { MicButton, isSpeechRecognitionSupported } from "../voice/MicButton"
 import { StatsFooter } from "../stats/StatsFooter"
+import { NexaOrb } from "../portal/NexaOrb"
 import "./chat.css"
 
 const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
@@ -23,6 +24,8 @@ export interface ChatScreenProps {
   currentLang?: Lang
   onLangChange?: (lang: Lang) => void
   showHeader?: boolean
+  onQueryAsked?: (question: string) => void
+  onResetRegistered?: (resetFn: () => void) => void
 }
 
 function getFallbackRecognitionFactory(lang: Lang) {
@@ -72,6 +75,8 @@ export function ChatScreen({
   currentLang,
   onLangChange,
   showHeader = !currentLang,
+  onQueryAsked,
+  onResetRegistered,
 }: ChatScreenProps = {}) {
   const [lang, setLang] = useState<Lang>(currentLang || "ro")
   const [draft, setDraft] = useState("")
@@ -80,6 +85,17 @@ export function ChatScreen({
   const [failed, setFailed] = useState(false)
   const [lastQuestion, setLastQuestion] = useState("")
   const s = t(lang)
+
+  useEffect(() => {
+    if (onResetRegistered) {
+      onResetRegistered(() => {
+        setTurns([])
+        setDraft("")
+        setPending(false)
+        setFailed(false)
+      })
+    }
+  }, [onResetRegistered])
 
   useEffect(() => {
     if (currentLang && currentLang !== lang) {
@@ -108,6 +124,7 @@ export function ChatScreen({
     setPending(true)
     setFailed(false)
     setLastQuestion(question)
+    onQueryAsked?.(question)
     try {
       const response = await ask(question, lang)
       setTurns((previous) => [...previous, { id: previous.length + 1, question, response }])
@@ -161,12 +178,14 @@ export function ChatScreen({
 
       <main className="chat__thread">
         {showEmpty && (
-          <section className="welcome" aria-label={s.welcomeGreeting}>
-            <div className="welcome__icon" aria-hidden="true">
-              🏛️
-            </div>
-            <h2 className="welcome__title">{s.welcomeGreeting}</h2>
-            <p className="welcome__subtitle">{s.welcomeSubtitle}</p>
+          <section className="welcome" aria-label="NEXA Welcome">
+            <NexaOrb />
+            <h2 className="welcome__title">
+              {lang === "ru" ? "Привет, я NEXA" : "Salut, sunt NEXA"}
+            </h2>
+            <p className="welcome__subtitle">
+              {lang === "ru" ? "Чем я могу помочь?" : "Cum te pot ajuta?"}
+            </p>
             <p className="welcome__desc">{s.welcomeDescription}</p>
           </section>
         )}
@@ -201,28 +220,46 @@ export function ChatScreen({
       {chipsSlot}
 
       <form className="composer" onSubmit={onSubmit}>
-        <label className="composer__label" htmlFor="question">
-          {s.questionLabel}
-        </label>
-        <div className="composer__row">
+        <div className="composer__input-wrapper">
           <input
             id="question"
             className="composer__input"
             type="text"
             value={draft}
-            placeholder={s.questionPlaceholder}
+            placeholder={
+              lang === "ru"
+                ? "Задайте вопрос NEXA..."
+                : "Ask NEXA anything..."
+            }
             maxLength={1000}
             autoComplete="off"
             onChange={(event) => setDraft(event.target.value)}
           />
-          <MicButton
-            lang={lang}
-            onTranscript={(text) => setDraft(text)}
-            recognitionFactory={getFallbackRecognitionFactory(lang)}
-          />
-          <button type="submit" className="composer__submit" disabled={!canSend}>
-            {pending ? s.sending : s.send}
-          </button>
+        </div>
+        <div className="composer__toolbar">
+          <div className="composer__meta-tag" title="Surse oficiale Primăria Chișinău">
+            <span className="composer__meta-icon" aria-hidden="true">📎</span>
+            <span>{lang === "ru" ? "Официальные источники" : "Surse oficiale"}</span>
+          </div>
+          <div className="composer__actions">
+            <MicButton
+              lang={lang}
+              onTranscript={(text) => setDraft(text)}
+              recognitionFactory={getFallbackRecognitionFactory(lang)}
+            />
+            <button
+              type="submit"
+              className="composer__submit"
+              disabled={!canSend}
+              aria-label={s.send}
+              title={s.send}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </button>
+          </div>
         </div>
       </form>
 
