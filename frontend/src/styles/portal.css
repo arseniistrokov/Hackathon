@@ -18,18 +18,21 @@
   min-height: 100vh;
 }
 
-/* --- верхняя плашка портала ----------------------------------------------- */
+/* --- верхняя плашка портала (64px) ---------------------------------------- */
 .portal-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-5);
+  height: 64px;
+  min-height: 64px;
+  padding: 0 var(--space-5);
   background: var(--c-surface);
   border-bottom: 1px solid var(--c-border);
   position: sticky;
   top: 0;
   z-index: 20;
+  box-sizing: border-box;
 }
 
 .portal-topbar__left {
@@ -82,32 +85,6 @@
   gap: var(--space-3);
 }
 
-.portal-status-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-full);
-  background: var(--c-surface-sunken);
-  border: 1px solid var(--c-border);
-  font-size: var(--fs-xs);
-  font-weight: 500;
-  color: var(--c-ink-muted);
-}
-
-.portal-status-pill__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c-send);
-  box-shadow: 0 0 6px var(--c-send);
-}
-
-.portal-status-pill__text {
-  font-size: var(--fs-xs);
-  font-weight: 600;
-}
-
 /* --- переключатель языка -------------------------------------------------- */
 .portal-lang {
   display: flex;
@@ -117,13 +94,13 @@
 }
 
 .portal-lang__button {
-  min-width: 3.5rem;
-  min-height: var(--tap-min);
+  min-width: 3.25rem;
+  min-height: 2.25rem;
   padding: 0 var(--space-3);
   border: 0;
   background: var(--c-surface);
   color: var(--c-ink-muted);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-xs);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
@@ -138,7 +115,7 @@
   font-weight: 600;
 }
 
-/* --- nexa боковая панель -------------------------------------------------- */
+/* --- nexa боковая панель (max-width: 280px) ------------------------------- */
 .nexa-sidebar-overlay {
   position: fixed;
   inset: 0;
@@ -148,7 +125,8 @@
 }
 
 .nexa-sidebar {
-  width: var(--width-sidebar);
+  width: var(--sidebar-width, 280px);
+  max-width: 280px;
   flex-shrink: 0;
   height: 100vh;
   position: sticky;
@@ -376,11 +354,6 @@
   line-height: 1.2;
 }
 
-.nexa-user-role {
-  font-size: var(--fs-xs);
-  color: var(--c-ink-faint);
-}
-
 .nexa-lang-switch {
   display: flex;
   border: 1px solid var(--c-border-strong);
@@ -570,7 +543,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2) 0;
+  padding: var(--space-3) 0;
   max-width: var(--width-app);
   margin: 0 auto;
   width: 100%;
@@ -619,4 +592,141 @@
 .quick-chip:focus-visible {
   outline: 2px solid var(--c-focus);
   outline-offset: 2px;
+}
+
+/* --- плавающий композер NEXA (высота 56px, серый фон, скругление) -------- */
+.composer {
+  position: sticky;
+  bottom: var(--space-4);
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: var(--input-height, 56px);
+  min-height: var(--input-height, 56px);
+  background: var(--c-surface-sunken);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: 0 var(--space-2) 0 var(--space-4);
+  gap: var(--space-2);
+  margin-top: auto;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.composer:focus-within {
+  border-color: var(--c-accent);
+  background: var(--c-surface);
+}
+
+.composer__input-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.composer__input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--c-ink);
+  font-size: var(--fs-md);
+  font-family: inherit;
+  outline: none;
+  padding: 0;
+}
+
+.composer__input::placeholder {
+  color: var(--c-ink-faint);
+}
+
+.composer__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+.composer .mic-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--c-border);
+  background: var(--c-surface);
+  padding: 0;
+}
+
+.composer__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--c-send);
+  color: var(--c-on-send);
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+  flex-shrink: 0;
+}
+
+.composer__submit:hover:not(:disabled) {
+  background: var(--c-send-hover);
+  transform: translateY(-1px);
+}
+
+.composer__submit:disabled {
+  background: var(--c-border-strong);
+  color: var(--c-ink-faint);
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 420px) {
+  .composer {
+    padding: 0 var(--space-2) 0 var(--space-3);
+  }
+}
+
+/* --- welcome-экран NEXA (центрирование) ----------------------------------- */
+.chat .welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-6) var(--space-4) var(--space-2);
+  gap: var(--space-2);
+  margin: auto 0;
+  min-height: 52vh;
+}
+
+.chat .welcome__title {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.02em;
+}
+
+.chat .welcome__subtitle {
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  color: var(--c-accent);
+  letter-spacing: -0.01em;
+}
+
+.chat .welcome__desc {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+  max-width: 44ch;
+  line-height: var(--lh-normal);
+  margin-top: var(--space-1);
 }

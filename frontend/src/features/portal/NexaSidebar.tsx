@@ -32,14 +32,12 @@ export function NexaSidebar({
     ? [
         "Тарифы на проезд в троллейбусе",
         "Сроки рассмотрения петиций",
-        "Приём граждан в претуре Ботаника",
-        "Оплата муниципальной парковки",
+        "Приём граждан в претуре",
       ]
     : [
         "Tarife călătorie troleibuz RTEC",
         "Termenul de examinare a petițiilor",
-        "Program audiență Pretura Botanica",
-        "Regulament parcări municipale",
+        "Program audiență pretură",
       ]
 
   const queries = recentQueries.length > 0 ? recentQueries : defaultRecent
@@ -57,7 +55,7 @@ export function NexaSidebar({
         <div className="nexa-sidebar__brand">
           <div className="nexa-logo">
             <span className="nexa-logo__symbol" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <circle cx="7" cy="12" r="5" stroke="var(--c-nexa-cyan)" strokeWidth="2.5" />
                 <circle cx="17" cy="12" r="5" stroke="var(--c-nexa-blue)" strokeWidth="2.5" />
                 <path d="M10 9L14 15" stroke="var(--c-accent)" strokeWidth="2" strokeLinecap="round" />
@@ -84,9 +82,6 @@ export function NexaSidebar({
         </div>
 
         <nav className="nexa-sidebar__nav" aria-label="Разделы">
-          <div className="nexa-sidebar__section-title">
-            {isRu ? "Навигация" : "Navigare"}
-          </div>
           <button
             type="button"
             className={`nexa-nav-item ${activeTab === "assistant" ? "nexa-nav-item--active" : ""}`}
@@ -107,7 +102,7 @@ export function NexaSidebar({
             }}
           >
             <span className="nexa-nav-item__icon" aria-hidden="true">📋</span>
-            <span>{isRu ? "Каталог услуг" : "Servicii"}</span>
+            <span>{isRu ? "Услуги" : "Servicii"}</span>
           </button>
           <button
             type="button"
@@ -118,7 +113,7 @@ export function NexaSidebar({
             }}
           >
             <span className="nexa-nav-item__icon" aria-hidden="true">🏛️</span>
-            <span>{isRu ? "Контакты претур" : "Contacte"}</span>
+            <span>{isRu ? "Контакты" : "Contacte"}</span>
           </button>
         </nav>
 
@@ -127,7 +122,7 @@ export function NexaSidebar({
             {s.nexaRecentTitle}
           </div>
           <ul className="nexa-recent-list">
-            {queries.slice(0, 6).map((q, idx) => (
+            {queries.slice(0, 3).map((q, idx) => (
               <li key={idx} className="nexa-recent-item">
                 <button
                   type="button"
@@ -152,7 +147,6 @@ export function NexaSidebar({
             <div className="nexa-avatar" aria-hidden="true">A</div>
             <div className="nexa-user-info">
               <span className="nexa-user-name">Andrei</span>
-              <span className="nexa-user-role">Chișinău Resident</span>
             </div>
           </div>
 

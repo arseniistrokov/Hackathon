@@ -69,9 +69,12 @@
 
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-lg: 16px;
   --radius-xl: 20px;
   --radius-full: 9999px;
+
+  --input-height: 56px;
+  --sidebar-width: 280px;
 
   --c-send: #22c55e;
   --c-send-hover: #16a34a;
@@ -81,9 +84,11 @@
   --c-nexa-blue: #2563eb;
   --c-nexa-purple: #8b5cf6;
 
+  --c-text-muted: #53616e;
+
   --measure: 65ch;
   --width-app: 48rem;
-  --width-sidebar: 16rem;
+  --width-sidebar: 280px;
   /* README фронта требует ≥ 48 px (контракт U1 — ≥ 44); берём строгую цифру. */
   --tap-min: 48px;
 

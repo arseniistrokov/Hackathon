@@ -212,7 +212,7 @@ export function ChatScreen({
           </section>
         )}
 
-        <StatsFooter />
+        {!showEmpty && <StatsFooter />}
       </main>
 
       {chipsSlot}
@@ -230,36 +230,30 @@ export function ChatScreen({
             onChange={(event) => setDraft(event.target.value)}
           />
         </div>
-        <div className="composer__toolbar">
-          <div className="composer__meta-tag" title="Surse oficiale Primăria Chișinău">
-            <span className="composer__meta-icon" aria-hidden="true">📎</span>
-            <span>{s.nexaOfficialSources}</span>
-          </div>
-          <div className="composer__actions">
-            <MicButton
-              lang={lang}
-              onTranscript={(text) => setDraft(text)}
-              recognitionFactory={getFallbackRecognitionFactory(lang)}
-            />
-            <button
-              type="submit"
-              className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
-              disabled={!canSend}
-              aria-label={pending ? s.sending : s.send}
-              title={pending ? s.sending : s.send}
-            >
-              {pending ? (
-                <svg className="composer__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
-                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="12" y1="19" x2="12" y2="5" />
-                  <polyline points="5 12 12 5 19 12" />
-                </svg>
-              )}
-            </button>
-          </div>
+        <div className="composer__actions">
+          <MicButton
+            lang={lang}
+            onTranscript={(text) => setDraft(text)}
+            recognitionFactory={getFallbackRecognitionFactory(lang)}
+          />
+          <button
+            type="submit"
+            className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
+            disabled={!canSend}
+            aria-label={pending ? s.sending : s.send}
+            title={pending ? s.sending : s.send}
+          >
+            {pending ? (
+              <svg className="composer__spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            )}
+          </button>
         </div>
       </form>
     </div>

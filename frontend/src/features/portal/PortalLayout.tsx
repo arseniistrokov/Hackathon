@@ -239,11 +239,6 @@ export function PortalLayout() {
           </div>
 
           <div className="portal-topbar__right">
-            <div className="portal-status-pill" title="Sistem activ">
-              <span className="portal-status-pill__dot" aria-hidden="true" />
-              <span className="portal-status-pill__text">{s.portalOnline}</span>
-            </div>
-
             <div className="portal-lang" role="group" aria-label={lang === "ru" ? "Выбор языка" : "Selectare limbă"}>
               {(["ro", "ru"] as const).map((code) => (
                 <button
