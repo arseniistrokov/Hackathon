@@ -16,6 +16,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: var(--c-surface);
 }
 
 /* --- верхняя плашка портала (Figma reference) ----------------------------- */
@@ -139,34 +140,31 @@
 
 .nexa-sidebar__brand {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3) var(--space-3);
-}
-
-.nexa-logo {
-  display: flex;
   align-items: center;
-  gap: var(--space-2);
+  padding: var(--space-2) var(--space-2) var(--space-4);
 }
 
-.nexa-logo__symbol {
+.nexa-brand-logo {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  line-height: 1;
+}
+
+.nexa-brand-logo__text {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.nexa-brand-logo__x {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-.nexa-logo__text {
-  font-size: var(--fs-xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: var(--c-ink);
-}
-
-.nexa-sidebar__tag {
-  font-size: var(--fs-xs);
-  color: var(--c-ink-faint);
-  font-weight: 500;
+  margin: 0 1px;
 }
 
 .nexa-sidebar__actions {
@@ -286,6 +284,10 @@
 
 .nexa-recent-btn:hover {
   background: var(--c-surface-sunken);
+}
+
+.nexa-recent-btn:active {
+  transform: scale(0.98);
 }
 
 .nexa-recent-btn__text {
@@ -564,9 +566,14 @@
   transform: translateY(-1px);
 }
 
-.quick-chip:focus-visible {
-  outline: 2px solid var(--c-focus);
-  outline-offset: 2px;
+.quick-chip:active {
+  transform: scale(0.97);
+}
+
+.quick-chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 /* --- плавающий композер NEXA (Figma reference: серый блок со скруглением 24px) --- */
@@ -738,4 +745,166 @@
   letter-spacing: -0.03em;
   margin: 0;
   line-height: 1.2;
+}
+
+/* --- 3D Nexa Orb (Figma Frame 91, Layer_1 & Frame 88) --------------------- */
+.nexa-orb {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  pointer-events: none;
+  animation: nexa-orb-float 4.5s ease-in-out infinite;
+}
+
+.nexa-orb__glow {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    var(--c-nexa-cyan) 0%,
+    var(--c-nexa-blue) 45%,
+    transparent 72%
+  );
+  opacity: 0.38;
+  filter: blur(24px);
+  animation: nexa-orb-pulse 3s ease-in-out infinite alternate;
+}
+
+.nexa-orb__sphere {
+  position: relative;
+  width: 114px;
+  height: 114px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle at 35% 26%,
+    var(--c-nexa-orb-light) 0%,
+    var(--c-nexa-cyan) 32%,
+    var(--c-nexa-blue) 68%,
+    var(--c-nexa-orb-deep) 100%
+  );
+  box-shadow:
+    inset -6px -8px 18px var(--c-nexa-orb-deep),
+    inset 4px 4px 10px var(--c-white-highlight),
+    0 4px 24px var(--c-cyan-translucent);
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Изогнутая световая полоса через центр сферы (Figma Frame 88) */
+.nexa-orb__highlight {
+  position: absolute;
+  width: 130px;
+  height: 46px;
+  top: 40px;
+  left: -8px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    ellipse at center,
+    var(--c-nexa-highlight) 0%,
+    var(--c-nexa-highlight-soft) 45%,
+    transparent 75%
+  );
+  filter: blur(5px);
+  transform: rotate(-22deg);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+/* Верхний мягкий блик */
+.nexa-orb__mesh {
+  position: absolute;
+  width: 72px;
+  height: 36px;
+  top: 10px;
+  left: 20px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    ellipse at center,
+    var(--c-nexa-highlight-mesh) 0%,
+    var(--c-nexa-mesh-soft) 50%,
+    transparent 75%
+  );
+  filter: blur(4px);
+  transform: rotate(-10deg);
+  pointer-events: none;
+}
+
+/* Орбитальные кольца (Figma Layer_1 & Frame 91) */
+.nexa-orb__ring {
+  position: absolute;
+  border-radius: var(--radius-full);
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.nexa-orb__ring--1 {
+  width: 156px;
+  height: 52px;
+  border: 3.5px solid transparent;
+  border-top-color: var(--c-nexa-cyan);
+  border-bottom-color: var(--c-nexa-blue);
+  border-right-color: var(--c-nexa-cyan);
+  border-left-color: var(--c-cyan-translucent);
+  transform: rotate(-26deg);
+  filter: drop-shadow(0 0 8px var(--c-nexa-ring-glow));
+  z-index: 2;
+  animation: nexa-ring-rotate-1 8s ease-in-out infinite alternate;
+}
+
+.nexa-orb__ring--2 {
+  width: 150px;
+  height: 48px;
+  border: 3px solid transparent;
+  border-top-color: var(--c-nexa-orb-light);
+  border-bottom-color: var(--c-nexa-blue);
+  border-left-color: var(--c-nexa-cyan);
+  border-right-color: var(--c-cyan-translucent);
+  transform: rotate(32deg);
+  filter: drop-shadow(0 0 8px var(--c-nexa-ring-blue-glow));
+  z-index: 2;
+  animation: nexa-ring-rotate-2 9s ease-in-out infinite alternate;
+}
+
+@keyframes nexa-orb-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes nexa-orb-pulse {
+  0% {
+    opacity: 0.32;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 0.46;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes nexa-ring-rotate-1 {
+  0% {
+    transform: rotate(-26deg) scaleY(1);
+  }
+  100% {
+    transform: rotate(-20deg) scaleY(1.06);
+  }
+}
+
+@keyframes nexa-ring-rotate-2 {
+  0% {
+    transform: rotate(32deg) scaleY(1);
+  }
+  100% {
+    transform: rotate(26deg) scaleY(1.06);
+  }
 }

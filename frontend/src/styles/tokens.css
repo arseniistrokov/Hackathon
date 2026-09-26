@@ -83,6 +83,15 @@
   --c-nexa-cyan: #06b6d4;
   --c-nexa-blue: #2563eb;
   --c-nexa-purple: #8b5cf6;
+  --c-nexa-orb-light: #38bdf8;
+  --c-nexa-orb-deep: #0c2a4a;
+  --c-nexa-orb-glow: rgba(6, 182, 212, 0.4);
+  --c-nexa-ring-glow: rgba(6, 182, 212, 0.75);
+  --c-nexa-ring-blue-glow: rgba(37, 99, 235, 0.65);
+  --c-nexa-highlight: rgba(255, 255, 255, 0.9);
+  --c-nexa-highlight-soft: rgba(186, 230, 253, 0.5);
+  --c-nexa-highlight-mesh: rgba(255, 255, 255, 0.7);
+  --c-nexa-mesh-soft: rgba(147, 197, 253, 0.3);
 
   --c-text-muted: #53616e;
   --c-black-pill: #000000;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ask } from "@/api/client"
 import type { AskResponse, Lang } from "@/api/types"
 import { t } from "@/i18n"
@@ -86,6 +86,9 @@ export function ChatScreen({
   const [lastQuestion, setLastQuestion] = useState("")
   const s = t(lang)
 
+  const lastRunRef = useRef<{ q: string; time: number } | null>(null)
+  const lastInitialRef = useRef<string | undefined>(undefined)
+
   useEffect(() => {
     if (onResetRegistered) {
       onResetRegistered(() => {
@@ -93,6 +96,8 @@ export function ChatScreen({
         setDraft("")
         setPending(false)
         setFailed(false)
+        lastRunRef.current = null
+        lastInitialRef.current = undefined
       })
     }
   }, [onResetRegistered])
@@ -106,21 +111,30 @@ export function ChatScreen({
   useEffect(() => {
     if (onQuickAsk) {
       onQuickAsk((question: string) => {
-        if (question.trim().length >= MIN_QUESTION_LENGTH) {
-          void run(question.trim())
+        const trimmed = question.trim()
+        if (trimmed.length >= MIN_QUESTION_LENGTH) {
+          void run(trimmed)
         }
       })
     }
   }, [onQuickAsk, lang])
 
   useEffect(() => {
-    const q = initialQuestion || quickQuestion
-    if (q && q.trim().length >= MIN_QUESTION_LENGTH) {
-      void run(q.trim())
+    const q = (initialQuestion || quickQuestion)?.trim()
+    if (q && q.length >= MIN_QUESTION_LENGTH && q !== lastInitialRef.current) {
+      lastInitialRef.current = q
+      void run(q)
     }
   }, [initialQuestion, quickQuestion])
 
   async function run(question: string): Promise<void> {
+    const now = Date.now()
+    if (pending) return
+    if (lastRunRef.current && lastRunRef.current.q === question && now - lastRunRef.current.time < 800) {
+      return
+    }
+    lastRunRef.current = { q: question, time: now }
+
     setPending(true)
     setFailed(false)
     setLastQuestion(question)

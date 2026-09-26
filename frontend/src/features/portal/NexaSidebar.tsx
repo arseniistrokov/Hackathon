@@ -40,7 +40,8 @@ export function NexaSidebar({
         "Program audiență pretură",
       ]
 
-  const queries = recentQueries.length > 0 ? recentQueries : defaultRecent
+  const allQueries = [...recentQueries, ...defaultRecent.filter((d) => !recentQueries.includes(d))]
+  const queries = allQueries.slice(0, 3)
 
   return (
     <>
@@ -53,15 +54,15 @@ export function NexaSidebar({
       )}
       <aside className={`nexa-sidebar ${isOpen ? "nexa-sidebar--open" : ""}`}>
         <div className="nexa-sidebar__brand">
-          <div className="nexa-logo">
-            <span className="nexa-logo__symbol" aria-hidden="true">
-              <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                <circle cx="8" cy="14" r="6" stroke="var(--c-nexa-cyan)" strokeWidth="2.8" />
-                <circle cx="20" cy="14" r="6" stroke="var(--c-send)" strokeWidth="2.8" />
-                <path d="M12 10L16 18" stroke="var(--c-nexa-blue)" strokeWidth="2.4" strokeLinecap="round" />
+          <div className="nexa-brand-logo" aria-label="nexa">
+            <span className="nexa-brand-logo__text">ne</span>
+            <span className="nexa-brand-logo__x" aria-hidden="true">
+              <svg width="22" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M3 6.5C7.5 13 16.5 13 21 6.5" stroke="var(--c-nexa-blue)" strokeWidth="3.4" strokeLinecap="round" />
+                <path d="M3 17.5C7.5 11 16.5 11 21 17.5" stroke="var(--c-send)" strokeWidth="3.4" strokeLinecap="round" />
               </svg>
             </span>
-            <span className="nexa-logo__text">nexa</span>
+            <span className="nexa-brand-logo__text">a</span>
           </div>
         </div>
 

@@ -181,11 +181,11 @@ export function PortalLayout() {
   function handleAsk(question: string): void {
     if (activeTab !== "assistant") {
       setActiveTab("assistant")
-    }
-    setInitialQuestion(question)
-    handleQueryAsked(question)
-    if (askFnRef.current) {
+      setInitialQuestion(question)
+    } else if (askFnRef.current) {
       askFnRef.current(question)
+    } else {
+      setInitialQuestion(question)
     }
   }
 
