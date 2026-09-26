@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { sendFeedback } from "@/api/client"
-import type { FeedbackRequest } from "@/api/types"
+import type { FeedbackRequest, Lang } from "@/api/types"
 import "./feedback.css"
 
 export interface FeedbackBarProps {
@@ -9,6 +9,7 @@ export interface FeedbackBarProps {
   initialRating?: 1 | -1 | null
   initialSubmitted?: boolean
   sendFeedbackFn?: (data: FeedbackRequest) => Promise<void>
+  lang?: Lang
 }
 
 export function handleRatingAction(
@@ -31,6 +32,7 @@ export function FeedbackBar({
   initialRating = null,
   initialSubmitted = false,
   sendFeedbackFn = sendFeedback,
+  lang = "ru",
 }: FeedbackBarProps) {
   const [rating, setRating] = useState<1 | -1 | null>(initialRating)
   const [comment, setComment] = useState("")
@@ -63,15 +65,19 @@ export function FeedbackBar({
     }
   }
 
+  const isRo = lang === "ro"
+  const positiveLabel = isRo ? "Răspuns util" : "Полезный ответ"
+  const negativeLabel = isRo ? "Răspuns inutil" : "Бесполезный ответ"
+
   return (
-    <div className="feedback" aria-label="Обратная связь">
+    <div className="feedback animate-fade-in" aria-label="Обратная связь">
       <div className="feedback__rating-group">
         <button
           type="button"
           className={`feedback__btn ${rating === 1 ? "feedback__btn--active" : ""}`}
           disabled={isSubmitted || isSubmitting}
           onClick={() => handleRating(1)}
-          aria-label="Полезно"
+          aria-label={positiveLabel}
           aria-pressed={rating === 1}
         >
           👍
@@ -81,7 +87,7 @@ export function FeedbackBar({
           className={`feedback__btn ${rating === -1 ? "feedback__btn--active" : ""}`}
           disabled={isSubmitted || isSubmitting}
           onClick={() => handleRating(-1)}
-          aria-label="Не помогло"
+          aria-label={negativeLabel}
           aria-pressed={rating === -1}
         >
           👎

@@ -52,7 +52,7 @@ export function ChatScreen() {
   const showEmpty = turns.length === 0 && !pending && !failed
 
   return (
-    <div className="chat">
+    <div className="chat" role="main">
       <header className="chat__header">
         <div>
           <h1 className="chat__title">{s.appTitle}</h1>
@@ -76,23 +76,23 @@ export function ChatScreen() {
         </div>
       </header>
 
-      <main className="chat__thread">
+      <main className="chat__thread" role="log" aria-live="polite">
         {showEmpty && (
-          <section className="chat__empty">
+          <section className="chat__empty animate-fade-in">
             <h2>{s.emptyTitle}</h2>
             <p>{s.emptyBody}</p>
           </section>
         )}
 
         {turns.map((turn) => (
-          <section className="turn" key={turn.id}>
+          <section className="turn animate-fade-in-up" key={turn.id}>
             <p className="turn__question">{turn.question}</p>
             <AnswerCard response={turn.response} />
           </section>
         ))}
 
         {pending && (
-          <section className="skeleton" aria-busy="true">
+          <section className="skeleton animate-fade-in" aria-busy="true">
             <p className="skeleton__caption">{s.loading}</p>
             <div className="skeleton__bar" />
             <div className="skeleton__bar" />
@@ -101,7 +101,7 @@ export function ChatScreen() {
         )}
 
         {failed && (
-          <section className="error" role="alert">
+          <section className="error animate-fade-in" role="alert">
             <h3 className="error__title">{s.errorTitle}</h3>
             <p className="error__body">{s.networkError}</p>
             <button
@@ -133,7 +133,12 @@ export function ChatScreen() {
             onChange={(event) => setDraft(event.target.value)}
           />
           <MicButton lang={lang} onTranscript={(text) => setDraft(text)} />
-          <button type="submit" className="composer__submit" disabled={!canSend}>
+          <button
+            type="submit"
+            className="composer__submit"
+            disabled={!canSend}
+            aria-label={s.sendAria}
+          >
             {pending ? s.sending : s.send}
           </button>
         </div>

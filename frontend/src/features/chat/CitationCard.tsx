@@ -5,7 +5,7 @@ import { t } from "@/i18n"
 export function CitationCard({ citation, lang }: { citation: Citation; lang: Lang }) {
   const s = t(lang)
   return (
-    <article className="citation">
+    <article className="citation animate-fade-in-up">
       <h4 className="citation__title">{citation.title}</h4>
       <div className="citation__crumbs">
         <span>{citation.site}</span>
@@ -22,7 +22,13 @@ export function CitationCard({ citation, lang }: { citation: Citation; lang: Lan
         <span>{citation.date ? <time dateTime={citation.date}>{citation.date}</time> : s.undatedLabel}</span>
       </div>
       <blockquote className="citation__passage">{citation.passage}</blockquote>
-      <a className="citation__link" href={citation.url} target="_blank" rel="noreferrer">
+      <a
+        className="citation__link"
+        href={citation.url}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={s.openDocumentAria}
+      >
         {s.openDocument}
       </a>
     </article>

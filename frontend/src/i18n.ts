@@ -10,6 +10,7 @@ export interface Strings {
   questionLabel: string
   questionPlaceholder: string
   send: string
+  sendAria: string
   sending: string
   emptyTitle: string
   emptyBody: string
@@ -18,6 +19,11 @@ export interface Strings {
   errorTitle: string
   errorBody: string
   retry: string
+  openDocumentAria: string
+  micStart: string
+  micStop: string
+  feedbackUseful: string
+  feedbackNotUseful: string
   answeredLabel: string
   warningLabel: string
   sourcesLabel: string
@@ -46,6 +52,7 @@ const ro: Strings = {
   questionLabel: "Întrebarea dumneavoastră",
   questionPlaceholder: "Care este termenul de examinare a unei petiții?",
   send: "Întreabă",
+  sendAria: "Trimite",
   sending: "Se caută…",
   emptyTitle: "Puneți o întrebare despre serviciile municipale",
   emptyBody:
@@ -55,6 +62,11 @@ const ro: Strings = {
   errorTitle: "Cererea nu a reușit",
   errorBody: "Serviciul nu a răspuns. Verificați conexiunea și încercați din nou.",
   retry: "Încercați din nou",
+  openDocumentAria: "Deschide sursa într-o filă nouă",
+  micStart: "Intrare vocală",
+  micStop: "Oprește ascultarea",
+  feedbackUseful: "Răspuns util",
+  feedbackNotUseful: "Răspuns inutil",
   answeredLabel: "Răspuns confirmat",
   warningLabel: "Atenție",
   sourcesLabel: "Surse",
@@ -84,6 +96,7 @@ const ru: Strings = {
   questionLabel: "Ваш вопрос",
   questionPlaceholder: "В какой срок рассматривается петиция в примэрии?",
   send: "Спросить",
+  sendAria: "Отправить",
   sending: "Идёт поиск…",
   emptyTitle: "Задайте вопрос о муниципальных услугах",
   emptyBody:
@@ -93,6 +106,11 @@ const ru: Strings = {
   errorTitle: "Запрос не удался",
   errorBody: "Сервис не ответил. Проверьте соединение и попробуйте снова.",
   retry: "Повторить",
+  openDocumentAria: "Открыть источник в новой вкладке",
+  micStart: "Голосовой ввод",
+  micStop: "Остановить запись",
+  feedbackUseful: "Полезный ответ",
+  feedbackNotUseful: "Бесполезный ответ",
   answeredLabel: "Ответ подтверждён",
   warningLabel: "Важно",
   sourcesLabel: "Источники",

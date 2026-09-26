@@ -75,4 +75,15 @@
 
   /* Точка, на которой CONFLICT расходится в две колонки (критерий приёмки 2). */
   --bp-wide: 768px;
+
+  /* --- анимации и переходы ----------------------------------------------- */
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* --- safe-area insets -------------------------------------------------- */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }

@@ -54,6 +54,40 @@ select {
 :focus-visible {
   outline: 2px solid var(--c-focus);
   outline-offset: 2px;
+  transition: outline-offset var(--duration-fast, 0.15s) ease;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- глобальные анимации -------------------------------------------------- */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up var(--duration-normal, 0.3s) var(--ease-standard, ease-out) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-normal, 0.3s) var(--ease-standard, ease-out) forwards;
 }
 
 /* Числа в meta и в датах должны выстраиваться в колонку. */
@@ -69,5 +103,12 @@ time,
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .animate-fade-in-up,
+  .animate-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

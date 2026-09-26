@@ -53,12 +53,12 @@ export function AnswerCard({ response }: { response: AskResponse }) {
 
   if (response.status === "NOT_FOUND") {
     return (
-      <section className="answer answer--not-found" aria-live="polite">
+      <section className="answer answer--not-found animate-fade-in-up" aria-live="polite">
         <span className="answer__status">{s.notFoundLabel}</span>
         <h3 className="answer__heading">{s.notFoundTitle}</h3>
         <p className="answer__text">{s.notFoundBody(response.meta.corpus_documents, response.meta.passages_used)}</p>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-        <FeedbackBar queryId={response.meta.query_id} />
+        <FeedbackBar queryId={response.meta.query_id} lang={lang} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -69,7 +69,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
   if (response.status === "CONFLICT" && response.conflict) {
     const conflict = response.conflict
     return (
-      <section className="answer answer--conflict" aria-live="polite">
+      <section className="answer answer--conflict animate-fade-in-up" aria-live="polite">
         <span className="answer__status">{s.conflictLabel}</span>
         <h3 className="answer__heading">{s.conflictTitle}</h3>
         <p className="answer__text">{response.answer}</p>
@@ -82,7 +82,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
           <ConflictColumn side={conflict.b} index={2} lang={lang} />
         </div>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-        <FeedbackBar queryId={response.meta.query_id} />
+        <FeedbackBar queryId={response.meta.query_id} lang={lang} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -91,7 +91,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
   const statusClass = response.status === "CONFLICT" ? "answer--conflict" : "answer--answered"
   const statusLabel = response.status === "CONFLICT" ? s.conflictLabel : s.answeredLabel
   return (
-    <section className={`answer ${statusClass}`} aria-live="polite">
+    <section className={`answer ${statusClass} animate-fade-in-up`} aria-live="polite">
       <span className="answer__status">{statusLabel}</span>
       {response.warning && (
         <div className="banner">
@@ -109,7 +109,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         </>
       )}
       {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-      <FeedbackBar queryId={response.meta.query_id} />
+      <FeedbackBar queryId={response.meta.query_id} lang={lang} />
       <MetaRow meta={response.meta} lang={lang} />
     </section>
   )

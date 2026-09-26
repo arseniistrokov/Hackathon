@@ -7,7 +7,10 @@
   min-height: 100%;
   max-width: var(--width-app);
   margin: 0 auto;
-  padding: var(--space-4);
+  padding: max(var(--space-4), env(safe-area-inset-top, 0px))
+    max(var(--space-4), env(safe-area-inset-right, 0px))
+    var(--space-4)
+    max(var(--space-4), env(safe-area-inset-left, 0px));
   gap: var(--space-5);
 }
 
@@ -243,6 +246,7 @@
   font-size: var(--fs-sm);
   line-height: var(--lh-loose);
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .citation__link {
@@ -371,21 +375,26 @@
   height: 0.75rem;
   margin-top: var(--space-3);
   border-radius: var(--radius-sm);
-  background: var(--c-surface-sunken);
-  animation: pulse 1.4s ease-in-out infinite;
+  background: linear-gradient(
+    90deg,
+    var(--c-surface-sunken) 0%,
+    var(--c-border) 50%,
+    var(--c-surface-sunken) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
 
 .skeleton__bar--short {
   width: 45%;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
   }
-  50% {
-    opacity: 0.45;
+  100% {
+    background-position: -200% 0;
   }
 }
 
@@ -431,7 +440,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4) 0;
+  padding: var(--space-4) 0 max(var(--space-4), env(safe-area-inset-bottom, 0px));
   background: var(--c-page);
 }
 
@@ -460,6 +469,7 @@
 
 .composer__submit {
   min-height: var(--tap-min);
+  min-width: var(--tap-min);
   padding: 0 var(--space-5);
   border: 0;
   border-radius: var(--radius-md);

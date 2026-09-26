@@ -63,7 +63,7 @@ export function StatsFooter({
   }
 
   return (
-    <footer className="stats-footer" aria-label="Статистика сервиса">
+    <footer className="stats-footer animate-fade-in" aria-label="Статистика сервиса">
       <div className="stats-footer__grid">
         <div className="stats-footer__item">
           <span className="stats-footer__label">Документы</span>

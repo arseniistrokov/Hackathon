@@ -110,10 +110,10 @@ export function MicButton({
   const label = isListening
     ? lang === "ru"
       ? "Остановить запись"
-      : "Oprește înregistrarea"
+      : "Oprește ascultarea"
     : lang === "ru"
       ? "Голосовой ввод"
-      : "Introducere vocală"
+      : "Intrare vocală"
 
   return (
     <button
