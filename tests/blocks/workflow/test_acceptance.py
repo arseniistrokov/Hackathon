@@ -12,7 +12,7 @@ from typing import Any
 import app.blocks.retrieval as retrieval
 import app.blocks.workflow as workflow
 import pytest
-from app.blocks import llm, store
+from app.blocks import llm, rerank, store
 from app.config import settings
 from app.contracts.models import Citation, Conflict, ConflictSide, LLMAnswer, Passage
 
@@ -272,3 +272,125 @@ def test_extractive_answer_single_passage() -> None:
     result = workflow.extractive_answer([_passage(1, "singurul text")], "ro")
     assert result.citations == [1]
     assert result.enough is True
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 2: Мутационная проверка приоритета gate-условий
+# ---------------------------------------------------------------------------
+
+
+def test_conflict_takes_precedence_over_is_enough_gate(
+    conn_with_conflicts, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Контракт: проверка conflicts идёт ДО is_enough; конфликт имеет приоритет над NOT_FOUND."""
+    monkeypatch.setattr(rerank, "is_enough", lambda _top: False)
+    response = workflow.ask("Care este programul de audiență a cetățenilor la Pretura Botanica?")
+    assert response.status == "CONFLICT"
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 3: Границы данных
+# ---------------------------------------------------------------------------
+
+
+def test_ask_when_retrieval_returns_empty(shared_conn, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(retrieval, "retrieve", lambda _q: [])
+    response = workflow.ask("Întrebare fără pasaje")
+    assert response.status == "NOT_FOUND"
+    assert response.answer == ""
+    assert response.citations == []
+
+
+def test_ask_handles_diacritics_variations(shared_conn) -> None:
+    resp_with = workflow.ask("Care este termenul de examinare a petiției?")
+    resp_without = workflow.ask("Care este termenul de examinare a petitiei?")
+    assert resp_with.status == resp_without.status == "ANSWERED"
+    assert resp_with.citations[0].chunk_id == resp_without.citations[0].chunk_id
+
+
+def test_ask_handles_mixed_ru_ro_question(shared_conn) -> None:
+    response = workflow.ask("Care este срок рассмотрения a petiției?")
+    assert response.language in ("ro", "ru")
+    assert response.status in ("ANSWERED", "NOT_FOUND")
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 4: Откат на L0 и логирование warning в обоих путях ошибок
+# ---------------------------------------------------------------------------
+
+
+def test_llm_complete_json_exception_logs_warning(
+    shared_conn, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    def _boom(*_a: Any, **_k: Any) -> None:
+        raise RuntimeError("LLM service unreachable")
+
+    monkeypatch.setattr(llm, "complete_json", _boom)
+    with caplog.at_level("WARNING"):
+        response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "ANSWERED"
+    assert "W1: complete_json raised; falling back to extractive answer" in caplog.text
+
+
+def test_pipeline_outer_exception_logs_warning_and_returns_not_found(
+    shared_conn, monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+) -> None:
+    def _boom(*_a: Any, **_k: Any) -> list:
+        raise RuntimeError("database crashed")
+
+    monkeypatch.setattr(rerank, "rerank", _boom)
+    with caplog.at_level("WARNING"):
+        response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "NOT_FOUND"
+    assert "W1: ask failed after retrieve, falling back to NOT_FOUND" in caplog.text
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 8: Тесты без сети
+# ---------------------------------------------------------------------------
+
+
+def test_workflow_runs_completely_offline(shared_conn, monkeypatch: pytest.MonkeyPatch) -> None:
+    import httpx
+
+    def _no_network(*_a, **_k):
+        raise AssertionError("Network attempted in W1 workflow!")
+
+    monkeypatch.setattr(httpx, "post", _no_network)
+    monkeypatch.setattr(httpx, "get", _no_network)
+
+    response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "ANSWERED"
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 13: Модель как данные (Prompt Injection в passage)
+# ---------------------------------------------------------------------------
+
+
+def test_prompt_injection_in_passage_text_handled_safely(
+    shared_conn, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """Текст инъекции в passage не может заставить workflow выдать цитату вне top-набора."""
+    monkeypatch.setattr(
+        llm,
+        "complete_json",
+        lambda *a, **k: LLMAnswer(answer="YES", citations=[999], enough=True),
+    )
+    response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "NOT_FOUND"
+    assert response.citations == []
+
+
+# ---------------------------------------------------------------------------
+# QA Пункт 14: Невалидный ответ модели (None / мусор)
+# ---------------------------------------------------------------------------
+
+
+def test_complete_json_returning_none_yields_extractive_answer(
+    shared_conn, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(llm, "complete_json", lambda *a, **k: None)
+    response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "ANSWERED"
+    assert len(response.citations) >= 1
