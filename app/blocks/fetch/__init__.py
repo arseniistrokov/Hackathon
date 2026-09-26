@@ -10,22 +10,23 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from app.blocks.fetch import l0
 from app.contracts.models import RawPage
 
 
 def load_raw(root: Path) -> list[RawPage]:
     """Прочитать сохранённые страницы: <root>/<site>/<slug>.md + <slug>.meta.json. Без сети."""
-    raise NotImplementedError("I1")
+    return l0.load_raw(root)
 
 
 def save_raw(page: RawPage, root: Path) -> Path:
     """Сохранить страницу в <root>/<site>/<slug>.md + .meta.json; вернуть путь к .md. Идемпотентно."""
-    raise NotImplementedError("I1")
+    return l0.save_raw(page, root)
 
 
 def list_urls(site: str, limit: int = 150) -> list[str]:
     """L1. Кандидаты URL сайта: sitemap.xml → WP REST (/wp-json/wp/v2/pages, /posts) → BFS same-domain."""
-    raise NotImplementedError("I1")
+    raise RuntimeError("L1")
 
 
 def fetch_page(url: str, site: str) -> RawPage | None:
@@ -33,4 +34,4 @@ def fetch_page(url: str, site: str) -> RawPage | None:
 
     Мусор → None.
     """
-    raise NotImplementedError("I1")
+    raise RuntimeError("L1")
