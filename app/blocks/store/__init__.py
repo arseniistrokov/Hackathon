@@ -10,8 +10,10 @@ from __future__ import annotations
 import sqlite3
 from datetime import date
 from pathlib import Path
+from typing import TYPE_CHECKING
 
-import numpy as np
+if TYPE_CHECKING:
+    import numpy as np
 
 from app.contracts.models import Chunk, Conflict, Navigation, RawPage, Stats
 
