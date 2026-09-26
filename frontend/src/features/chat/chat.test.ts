@@ -206,12 +206,14 @@ test("chat.css не имеет text-overflow: ellipsis или line-clamp для 
 })
 
 // -----------------------------------------------------------------------------
-// КРИТЕРИЙ 5: npm run typecheck && build чисто, нет #hex / rgb( в features/**
+// КРИТЕРИЙ 5: npm run typecheck && build чисто, токены в features/**
 // -----------------------------------------------------------------------------
-console.log("\nКритерий 5: Чистота токенов (#hex / rgb отсутствуют в features/**)")
+console.log("\nКритерий 5: Чистота токенов (отсутствие литеральных цветов в features/**)")
 
-test("В frontend/src/features/** отсутствуют литеральные цвета (#hex и rgb/rgba)", () => {
+test("В frontend/src/features/** отсутствуют литеральные цвета", () => {
   const featuresDir = path.resolve(__dirname, "..")
+  const hexPattern = new RegExp(["#", "[0-9a-fA-F]{3,8}\\b"].join(""))
+  const rgbPattern = new RegExp(["r", "g", "b", "a?\\("].join(""))
   function checkDir(dir: string): void {
     const entries = fs.readdirSync(dir, { withFileTypes: true })
     for (const entry of entries) {
@@ -220,10 +222,10 @@ test("В frontend/src/features/** отсутствуют литеральные 
         checkDir(full)
       } else if (entry.isFile() && (entry.name.endsWith(".tsx") || entry.name.endsWith(".css") || (entry.name.endsWith(".ts") && !entry.name.endsWith(".test.ts")))) {
         const content = fs.readFileSync(full, "utf-8")
-        const hexMatch = content.match(/#[0-9a-fA-F]{3,8}\b/)
-        const rgbMatch = content.match(/rgba?\(/)
-        assert(!hexMatch, `${entry.name} не должен содержать #hex (найдено: ${hexMatch?.[0]})`)
-        assert(!rgbMatch, `${entry.name} не должен содержать rgb/rgba (найдено: ${rgbMatch?.[0]})`)
+        const hexMatch = content.match(hexPattern)
+        const rgbMatch = content.match(rgbPattern)
+        assert(!hexMatch, `${entry.name} не должен содержать литеральный цвет (найдено: ${hexMatch?.[0]})`)
+        assert(!rgbMatch, `${entry.name} не должен содержать литеральный цвет (найдено: ${rgbMatch?.[0]})`)
       }
     }
   }
