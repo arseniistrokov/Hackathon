@@ -91,8 +91,22 @@
   --c-nexa-highlight: rgba(255, 255, 255, 0.9);
   --c-nexa-highlight-soft: rgba(186, 230, 253, 0.5);
   --c-nexa-highlight-mesh: rgba(255, 255, 255, 0.7);
-  --c-nexa-mesh-soft: rgba(147, 197, 253, 0.3);
   --c-nexa-turquoise: #00f0ff;
+  --c-orb-blue: #168EEA;
+  --c-orb-cyan: #54D9F2;
+  --c-orb-purple: #A98BEF;
+  --c-orb-pink: #E5A5D9;
+  --c-orb-light-cyan: #58C9F1;
+  --c-orb-yellow: #F4E9A0;
+  --c-orb-dark-blue: #2779DC;
+  --c-orb-glow-blue: #246FDB;
+  --c-orb-white-stroke: rgba(255, 255, 255, 0.25);
+  --c-orb-top-light: rgba(255, 255, 255, 0.18);
+  --c-orb-glass-highlight: rgba(255, 255, 255, 0.35);
+  --c-orb-glass-soft: rgba(255, 255, 255, 0.10);
+  --c-orb-halo: rgba(84, 217, 242, 0.35);
+  --c-orb-ring-cyan-glow: rgba(84, 217, 242, 0.7);
+  --c-orb-ring-blue-glow: rgba(22, 142, 234, 0.65);
 
   --c-text-muted: #53616e;
   --c-black-pill: #000000;

@@ -13,151 +13,281 @@ export function NexaMascot() {
       <div className="nexa-mascot__halo" aria-hidden="true" />
       <svg
         className="nexa-mascot__svg"
-        viewBox="0 0 320 280"
+        viewBox="-120 -90 840 780"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
         <defs>
-          <radialGradient
-            id="nexaSphereGrad"
-            cx="35%"
-            cy="28%"
-            r="68%"
-            fx="35%"
-            fy="28%"
-          >
-            <stop offset="0%" stopColor="var(--c-nexa-orb-light)" />
-            <stop offset="30%" stopColor="var(--c-nexa-cyan)" />
-            <stop offset="68%" stopColor="var(--c-nexa-blue)" />
-            <stop offset="100%" stopColor="var(--c-nexa-orb-deep)" />
-          </radialGradient>
-
-          <linearGradient id="nexaHighlightGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0" />
-            <stop offset="25%" stopColor="var(--c-surface)" stopOpacity="0.95" />
-            <stop offset="65%" stopColor="var(--c-nexa-highlight-soft)" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="var(--c-nexa-cyan)" stopOpacity="0" />
+          <linearGradient id="orbRingGradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--c-orb-blue)" />
+            <stop offset="50%" stopColor="var(--c-orb-cyan)" />
+            <stop offset="100%" stopColor="var(--c-nexa-turquoise)" />
           </linearGradient>
 
-          <linearGradient id="nexaUpperGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="var(--c-surface)" stopOpacity="0" />
-          </linearGradient>
-
-          <linearGradient id="nexaRingGradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--c-nexa-blue)" />
-            <stop offset="50%" stopColor="var(--c-nexa-cyan)" />
-            <stop offset="100%" stopColor="var(--c-nexa-orb-light)" />
-          </linearGradient>
-
-          <linearGradient id="nexaRingGradCyan" x1="100%" y1="0%" x2="0%" y2="100%">
+          <linearGradient id="orbRingGradCyan" x1="100%" y1="0%" x2="0%" y2="100%">
             <stop offset="0%" stopColor="var(--c-nexa-turquoise)" />
-            <stop offset="45%" stopColor="var(--c-nexa-cyan)" />
-            <stop offset="100%" stopColor="var(--c-nexa-blue)" />
+            <stop offset="45%" stopColor="var(--c-orb-cyan)" />
+            <stop offset="100%" stopColor="var(--c-orb-blue)" />
           </linearGradient>
 
-          <filter id="nexaMascotBloom" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
+          {/* Figma Glass Effect: Light angle 135°, intensity 35% */}
+          <linearGradient id="orbGlassSheen" x1="15%" y1="15%" x2="85%" y2="85%">
+            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0.35" />
+            <stop offset="40%" stopColor="var(--c-surface)" stopOpacity="0.10" />
+            <stop offset="75%" stopColor="var(--c-surface)" stopOpacity="0" />
+          </linearGradient>
+
+          {/* Figma recipe blur filters */}
+          <filter id="orbBlur70" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="35" />
+          </filter>
+          <filter id="orbBlur90" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="45" />
+          </filter>
+          <filter id="orbBlur100" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="50" />
+          </filter>
+          <filter id="orbBlur110" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="55" />
+          </filter>
+          <filter id="orbBlur80" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="40" />
+          </filter>
+          <filter id="orbBlur60" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="30" />
+          </filter>
+
+          <filter id="orbRingGlow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="7" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
 
-          <filter id="nexaSoftNebula" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4.5" />
+          <filter id="orbRingSoft" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="5" />
           </filter>
+
+          {/* Layer 1: Cercul de bază (mască 600 x 600 px) */}
+          <clipPath id="orbSphereMask">
+            <circle cx="300" cy="300" r="300" />
+          </clipPath>
         </defs>
 
-        {/* Задние дуги орбитальных колец (Layer_1 за сферой) */}
+        {/* 3D Орбитальные кольца - задние дуги (за сферой) */}
         <g className="nexa-mascot__rings-back">
+          {/* Задняя дуга кольца 1 */}
           <path
-            d="M 58 116 C 54 94 85 74 146 68 C 176 65 206 68 234 78"
-            stroke="url(#nexaRingGradBlue)"
-            strokeWidth="9"
+            d="M -70 185 C 30 70, 480 320, 670 415"
+            stroke="url(#orbRingGradBlue)"
+            strokeWidth="22"
             strokeLinecap="round"
-            opacity="0.48"
-            filter="url(#nexaSoftNebula)"
+            opacity="0.5"
+            filter="url(#orbRingSoft)"
           />
+          {/* Задняя дуга кольца 2 */}
           <path
-            d="M 90 76 C 120 68 165 66 210 74 C 246 80 268 96 264 116"
-            stroke="url(#nexaRingGradCyan)"
-            strokeWidth="9"
+            d="M 0 490 C 130 620, 520 220, 600 110"
+            stroke="url(#orbRingGradBlue)"
+            strokeWidth="20"
             strokeLinecap="round"
-            opacity="0.52"
-            filter="url(#nexaSoftNebula)"
+            opacity="0.45"
+            filter="url(#orbRingSoft)"
           />
         </g>
 
-        {/* 3D Сфера маскота (Frame 88 / Frame 91) */}
+        {/* 12-слойная переливающаяся сфера по рецепту Figma (Pașii pentru recreare în Figma) */}
         <g className="nexa-mascot__sphere">
-          <circle cx="160" cy="140" r="78" fill="var(--c-nexa-orb-deep)" />
-          <circle cx="160" cy="140" r="78" fill="url(#nexaSphereGrad)" />
+          <g clipPath="url(#orbSphereMask)">
+            {/* Базовая полупрозрачная основа */}
+            <circle cx="300" cy="300" r="300" fill="var(--c-orb-blue)" opacity="0.32" />
 
-          {/* Глубокая тень справа снизу */}
-          <path
-            d="M 160 62 A 78 78 0 0 1 238 140 A 78 78 0 0 1 185 215 C 220 185 225 125 185 85 C 175 75 167 67 160 62 Z"
-            fill="var(--c-nexa-orb-deep)"
-            opacity="0.65"
-          />
+            {/* Layer 2: Albastru (75%, Blur: 70px, 380x320 px, sus-stânga) */}
+            <ellipse
+              className="orb-blob orb-blob--blue"
+              cx="220"
+              cy="180"
+              rx="190"
+              ry="160"
+              fill="var(--c-orb-blue)"
+              opacity="0.75"
+              filter="url(#orbBlur70)"
+            />
 
-          {/* Изогнутая световая полоса/небула (Frame 88) */}
-          <path
-            className="nexa-mascot__highlight"
-            d="M 102 165 Q 155 210 218 148 Q 165 180 102 165 Z"
-            fill="url(#nexaHighlightGrad)"
-            filter="url(#nexaSoftNebula)"
-          />
+            {/* Layer 3: Cyan (70%, Blur: 90px, 420x360 px, sus-centru) */}
+            <ellipse
+              className="orb-blob orb-blob--cyan"
+              cx="300"
+              cy="190"
+              rx="210"
+              ry="180"
+              fill="var(--c-orb-cyan)"
+              opacity="0.70"
+              filter="url(#orbBlur90)"
+            />
 
-          {/* Верхний мягкий блик */}
-          <ellipse
-            cx="145"
-            cy="100"
-            rx="46"
-            ry="20"
-            transform="rotate(-15 145 100)"
-            fill="url(#nexaUpperGlow)"
-            opacity="0.65"
-            filter="url(#nexaSoftNebula)"
-          />
+            {/* Layer 4: Mov (55%, Blur: 100px, 380x380 px, stânga) */}
+            <ellipse
+              className="orb-blob orb-blob--purple"
+              cx="190"
+              cy="290"
+              rx="190"
+              ry="190"
+              fill="var(--c-orb-purple)"
+              opacity="0.55"
+              filter="url(#orbBlur100)"
+            />
 
-          {/* Неоновый шеврон снизу (Frame 91) */}
-          <polygon
-            className="nexa-mascot__chevron"
-            points="154,195 160,206 166,195 162,195 160,201 158,195"
-            fill="var(--c-nexa-turquoise)"
-            opacity="0.9"
-            filter="url(#nexaSoftNebula)"
+            {/* Layer 5: Roz (55%, Blur: 110px, 420x360 px, centru) */}
+            <ellipse
+              className="orb-blob orb-blob--pink"
+              cx="310"
+              cy="300"
+              rx="210"
+              ry="180"
+              fill="var(--c-orb-pink)"
+              opacity="0.55"
+              filter="url(#orbBlur110)"
+            />
+
+            {/* Layer 6: Cyan deschis (65%, Blur: 100px, 420x360 px, dreapta) */}
+            <ellipse
+              className="orb-blob orb-blob--light-cyan"
+              cx="410"
+              cy="290"
+              rx="210"
+              ry="180"
+              fill="var(--c-orb-light-cyan)"
+              opacity="0.65"
+              filter="url(#orbBlur100)"
+            />
+
+            {/* Layer 7: Galben (45%, Blur: 100px, 320x280 px, dreapta-jos) */}
+            <ellipse
+              className="orb-blob orb-blob--yellow"
+              cx="410"
+              cy="420"
+              rx="160"
+              ry="140"
+              fill="var(--c-orb-yellow)"
+              opacity="0.45"
+              filter="url(#orbBlur100)"
+            />
+
+            {/* Layer 8: Albastru închis (65%, Blur: 80px, 380x320 px, jos) */}
+            <ellipse
+              className="orb-blob orb-blob--dark-blue"
+              cx="300"
+              cy="440"
+              rx="190"
+              ry="160"
+              fill="var(--c-orb-dark-blue)"
+              opacity="0.65"
+              filter="url(#orbBlur80)"
+            />
+
+            {/* Layer 10: Lumina de sus (reflexie) (18%, Blur: 60px, 450x220 px, sus) */}
+            <ellipse
+              className="orb-blob orb-blob--top-light"
+              cx="300"
+              cy="150"
+              rx="225"
+              ry="110"
+              fill="var(--c-surface)"
+              opacity="0.18"
+              filter="url(#orbBlur60)"
+            />
+
+            {/* Layer 11: Umbra de jos (glow) (32%, Blur: 80px, 450x180 px, jos) */}
+            <ellipse
+              className="orb-blob orb-blob--bottom-glow"
+              cx="300"
+              cy="460"
+              rx="225"
+              ry="90"
+              fill="var(--c-orb-glow-blue)"
+              opacity="0.32"
+              filter="url(#orbBlur80)"
+            />
+
+            {/* Layer 12: Glass sheen (Figma Glass effect 135°) */}
+            <circle cx="300" cy="300" r="300" fill="url(#orbGlassSheen)" />
+
+            {/* Спекулярный рефракционный блик по верхне-левому краю */}
+            <path
+              d="M 80 220 A 300 300 0 0 1 420 80 A 285 285 0 0 0 110 260 Z"
+              fill="var(--c-surface)"
+              opacity="0.25"
+              filter="url(#orbBlur60)"
+            />
+
+            {/* Неоновый шеврон снизу (символ навигации NEXA) */}
+            <polygon
+              className="nexa-mascot__chevron"
+              points="284,480 300,504 316,480 309,480 300,494 291,480"
+              fill="var(--c-nexa-turquoise)"
+              opacity="0.95"
+              filter="url(#orbRingSoft)"
+            />
+          </g>
+
+          {/* Layer 9: Stroke (contur subtil 25%, 1px, 600x600 px) */}
+          <circle
+            cx="300"
+            cy="300"
+            r="299.5"
+            fill="none"
+            stroke="var(--c-orb-white-stroke)"
+            strokeWidth="1"
           />
         </g>
 
-        {/* Передние дуги орбитальных колец (Layer_1 перед сферой) */}
+        {/* 3D Орбитальные кольца - передние дуги (перед сферой) */}
         <g className="nexa-mascot__rings-front">
-          {/* Левая синяя петля */}
+          {/* Переднее кольцо 1: мягкое свечение и четкое неоновое ядро */}
+          <path
+            className="nexa-mascot__ring-loop-1-glow"
+            d="M -70 185 C 100 320, 460 550, 670 415"
+            stroke="url(#orbRingGradCyan)"
+            strokeWidth="20"
+            strokeLinecap="round"
+            opacity="0.75"
+            filter="url(#orbRingGlow)"
+          />
           <path
             className="nexa-mascot__ring-loop-1"
-            d="M 52 112 C 30 135 25 168 55 190 C 85 212 145 208 215 178 C 248 164 268 145 264 130 C 260 118 245 110 225 105"
-            stroke="url(#nexaRingGradBlue)"
-            strokeWidth="11"
+            d="M -70 185 C 100 320, 460 550, 670 415"
+            stroke="var(--c-nexa-turquoise)"
+            strokeWidth="5.5"
             strokeLinecap="round"
-            filter="url(#nexaMascotBloom)"
+            opacity="0.95"
           />
 
-          {/* Правая бирюзовая петля */}
+          {/* Переднее кольцо 2: мягкое свечение и четкое неоновое ядро */}
+          <path
+            className="nexa-mascot__ring-loop-2-glow"
+            d="M 600 110 C 465 -10, 90 340, 0 490"
+            stroke="url(#orbRingGradCyan)"
+            strokeWidth="18"
+            strokeLinecap="round"
+            opacity="0.7"
+            filter="url(#orbRingGlow)"
+          />
           <path
             className="nexa-mascot__ring-loop-2"
-            d="M 268 112 C 290 135 292 168 262 188 C 230 208 170 198 105 168 C 72 154 50 138 55 125 C 60 114 78 106 100 102"
-            stroke="url(#nexaRingGradCyan)"
-            strokeWidth="10.5"
+            d="M 600 110 C 465 -10, 90 340, 0 490"
+            stroke="var(--c-orb-cyan)"
+            strokeWidth="5"
             strokeLinecap="round"
-            filter="url(#nexaMascotBloom)"
+            opacity="0.9"
           />
         </g>
 
         {/* Живые квантовые искры вокруг орбиты */}
         <g className="nexa-mascot__sparks">
-          <circle cx="56" cy="132" r="3.2" fill="var(--c-nexa-orb-light)" className="spark-1" />
-          <circle cx="266" cy="144" r="2.8" fill="var(--c-nexa-turquoise)" className="spark-2" />
-          <circle cx="204" cy="64" r="2.2" fill="var(--c-surface)" className="spark-3" />
-          <circle cx="114" cy="216" r="3" fill="var(--c-nexa-cyan)" className="spark-4" />
+          <circle cx="-40" cy="180" r="4.5" fill="var(--c-nexa-turquoise)" className="spark-1" filter="url(#orbRingSoft)" />
+          <circle cx="640" cy="420" r="4" fill="var(--c-orb-cyan)" className="spark-2" filter="url(#orbRingSoft)" />
+          <circle cx="580" cy="120" r="3.5" fill="var(--c-surface)" className="spark-3" filter="url(#orbRingSoft)" />
+          <circle cx="20" cy="470" r="4" fill="var(--c-orb-blue)" className="spark-4" filter="url(#orbRingSoft)" />
         </g>
       </svg>
     </div>

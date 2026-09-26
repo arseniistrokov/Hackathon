@@ -911,35 +911,36 @@
   }
 }
 
-/* --- Живой Маскот NEXA (Точное соответствие Figma Frame 91, Frame 88, Layer_1) --- */
+/* --- Живой Маскот NEXA (Точное соответствие Figma рецепту из 12 слоев и кольцам) --- */
 .nexa-mascot {
   position: relative;
-  width: 220px;
-  height: 200px;
+  width: 240px;
+  height: 220px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto var(--space-2);
   cursor: pointer;
   user-select: none;
-  animation: mascot-float 4.6s ease-in-out infinite;
+  animation: mascot-float 4.8s ease-in-out infinite;
   transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nexa-mascot__halo {
   position: absolute;
-  width: 250px;
-  height: 230px;
+  width: 270px;
+  height: 250px;
   border-radius: var(--radius-full);
   background: radial-gradient(
     circle,
-    var(--c-nexa-cyan) 0%,
-    var(--c-nexa-blue) 42%,
-    transparent 72%
+    var(--c-orb-cyan) 0%,
+    var(--c-orb-blue) 40%,
+    var(--c-orb-glow-blue) 62%,
+    transparent 74%
   );
-  opacity: 0.36;
-  filter: blur(28px);
-  animation: mascot-halo-pulse 3.6s ease-in-out infinite alternate;
+  opacity: 0.38;
+  filter: blur(34px);
+  animation: mascot-halo-pulse 3.8s ease-in-out infinite alternate;
   pointer-events: none;
   transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
 }
@@ -948,25 +949,126 @@
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 6px 16px rgba(6, 182, 212, 0.25));
+  filter: drop-shadow(0 8px 24px rgba(22, 142, 234, 0.3));
   transition: filter 0.4s ease;
 }
 
-/* Дыхание и переливы световой волны */
-.nexa-mascot__highlight {
-  animation: mascot-wave-breathe 3.8s ease-in-out infinite alternate;
+/* Внутреннее органическое движение переливающихся облаков маскота ("он живой") */
+.orb-blob {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: animation-duration 0.3s ease;
 }
 
-/* Орбитальное покачивание левого кольца */
-.nexa-mascot__ring-loop-1 {
-  transform-origin: 160px 140px;
-  animation: mascot-orbit-1 6.8s ease-in-out infinite alternate;
+.orb-blob--pink {
+  animation: blob-drift-pink 6.2s ease-in-out infinite alternate;
 }
 
-/* Орбитальное покачивание правого кольца в противофазе */
-.nexa-mascot__ring-loop-2 {
-  transform-origin: 160px 140px;
-  animation: mascot-orbit-2 7.6s ease-in-out infinite alternate;
+.orb-blob--cyan {
+  animation: blob-drift-cyan 5.6s ease-in-out infinite alternate;
+}
+
+.orb-blob--purple {
+  animation: blob-drift-purple 7.0s ease-in-out infinite alternate;
+}
+
+.orb-blob--blue {
+  animation: blob-drift-blue 6.8s ease-in-out infinite alternate;
+}
+
+.orb-blob--light-cyan {
+  animation: blob-drift-light-cyan 6.0s ease-in-out infinite alternate;
+}
+
+.orb-blob--yellow {
+  animation: blob-drift-yellow 5.4s ease-in-out infinite alternate;
+}
+
+.orb-blob--dark-blue {
+  animation: blob-drift-dark-blue 7.4s ease-in-out infinite alternate;
+}
+
+.orb-blob--top-light {
+  animation: blob-drift-light 4.8s ease-in-out infinite alternate;
+}
+
+.orb-blob--bottom-glow {
+  animation: blob-drift-glow 5.2s ease-in-out infinite alternate;
+}
+
+/* Ключевые кадры для органического перелива внутри сферы */
+@keyframes blob-drift-pink {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(16px, -12px) scale(1.08); }
+  100% { transform: translate(-8px, 10px) scale(0.96); }
+}
+
+@keyframes blob-drift-cyan {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-14px, 12px) scale(0.95); }
+  100% { transform: translate(10px, -8px) scale(1.06); }
+}
+
+@keyframes blob-drift-purple {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(12px, 14px) scale(1.07); }
+  100% { transform: translate(-10px, -10px) scale(0.95); }
+}
+
+@keyframes blob-drift-blue {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(10px, -14px) scale(1.05); }
+}
+
+@keyframes blob-drift-light-cyan {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-12px, -10px) scale(1.06); }
+  100% { transform: translate(8px, 12px) scale(0.96); }
+}
+
+@keyframes blob-drift-yellow {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-16px, -10px) scale(1.1); }
+  100% { transform: translate(6px, 12px) scale(0.92); }
+}
+
+@keyframes blob-drift-dark-blue {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(8px, 10px) scale(1.04); }
+}
+
+@keyframes blob-drift-light {
+  0% { opacity: 0.15; transform: translateY(0); }
+  100% { opacity: 0.24; transform: translateY(-6px); }
+}
+
+@keyframes blob-drift-glow {
+  0% { opacity: 0.28; transform: scale(0.97); }
+  100% { opacity: 0.42; transform: scale(1.05); }
+}
+
+/* Орбитальное покачивание колец */
+.nexa-mascot__rings-front,
+.nexa-mascot__rings-back {
+  transform-origin: 300px 300px;
+}
+
+.nexa-mascot__rings-front {
+  animation: mascot-rings-front 6.4s ease-in-out infinite alternate;
+}
+
+.nexa-mascot__rings-back {
+  animation: mascot-rings-back 6.4s ease-in-out infinite alternate;
+}
+
+@keyframes mascot-rings-front {
+  0% { transform: rotate(0deg) scaleY(1); }
+  100% { transform: rotate(-2.5deg) scaleY(1.04); }
+}
+
+@keyframes mascot-rings-back {
+  0% { transform: rotate(0deg) scaleY(1); }
+  100% { transform: rotate(2.5deg) scaleY(1.04); }
 }
 
 /* Мерцание неонового шеврона */
@@ -974,45 +1076,48 @@
   animation: mascot-chevron-pulse 2.8s ease-in-out infinite alternate;
 }
 
-/* Квантовые искры на орбите */
+@keyframes mascot-chevron-pulse {
+  0% { opacity: 0.7; transform: translateY(0); }
+  100% { opacity: 1; transform: translateY(4px); }
+}
+
+/* Квантовые искры */
 .nexa-mascot__sparks circle {
   animation: mascot-spark-twinkle 2.4s ease-in-out infinite alternate;
 }
 
-.nexa-mascot__sparks .spark-2 {
-  animation-delay: 0.6s;
-}
+.nexa-mascot__sparks .spark-2 { animation-delay: 0.6s; }
+.nexa-mascot__sparks .spark-3 { animation-delay: 1.2s; }
+.nexa-mascot__sparks .spark-4 { animation-delay: 1.8s; }
 
-.nexa-mascot__sparks .spark-3 {
-  animation-delay: 1.2s;
-}
-
-.nexa-mascot__sparks .spark-4 {
-  animation-delay: 1.8s;
+@keyframes mascot-spark-twinkle {
+  0% { opacity: 0.25; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
+  100% { opacity: 0.35; transform: scale(0.9); }
 }
 
 /* Интерактивный отклик при наведении: маскот оживает и тянется навстречу */
 .nexa-mascot:hover {
-  transform: translateY(-12px) scale(1.07);
+  transform: translateY(-12px) scale(1.06);
 }
 
 .nexa-mascot:hover .nexa-mascot__halo {
-  opacity: 0.62;
-  filter: blur(34px);
-  transform: scale(1.12);
+  opacity: 0.65;
+  filter: blur(40px);
+  transform: scale(1.15);
 }
 
 .nexa-mascot:hover .nexa-mascot__svg {
-  filter: drop-shadow(0 8px 24px rgba(6, 182, 212, 0.5));
+  filter: drop-shadow(0 10px 32px rgba(84, 217, 242, 0.45));
 }
 
-.nexa-mascot:hover .nexa-mascot__ring-loop-1 {
-  animation-duration: 3.4s;
-}
-
-.nexa-mascot:hover .nexa-mascot__ring-loop-2 {
-  animation-duration: 3.8s;
-}
+.nexa-mascot:hover .orb-blob--pink { animation-duration: 3.1s; }
+.nexa-mascot:hover .orb-blob--cyan { animation-duration: 2.8s; }
+.nexa-mascot:hover .orb-blob--purple { animation-duration: 3.5s; }
+.nexa-mascot:hover .orb-blob--blue { animation-duration: 3.4s; }
+.nexa-mascot:hover .orb-blob--light-cyan { animation-duration: 3.0s; }
+.nexa-mascot:hover .orb-blob--yellow { animation-duration: 2.7s; }
+.nexa-mascot:hover .orb-blob--dark-blue { animation-duration: 3.7s; }
 
 /* Тактильная пружинка при клике */
 .nexa-mascot:active {
@@ -1020,91 +1125,14 @@
   transition-duration: 0.12s;
 }
 
-/* --- Ключевые кадры живой анимации --- */
 @keyframes mascot-float {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-8px) rotate(1.8deg);
-  }
-  50% {
-    transform: translateY(-12px) rotate(0deg);
-  }
-  75% {
-    transform: translateY(-6px) rotate(-1.6deg);
-  }
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-7px) rotate(1.2deg); }
+  50% { transform: translateY(-13px) rotate(0deg); }
+  75% { transform: translateY(-6px) rotate(-1.2deg); }
 }
 
 @keyframes mascot-halo-pulse {
-  0% {
-    opacity: 0.32;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 0.5;
-    transform: scale(1.06);
-  }
-}
-
-@keyframes mascot-wave-breathe {
-  0% {
-    opacity: 0.75;
-    transform: scale(0.98);
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes mascot-orbit-1 {
-  0% {
-    transform: rotate(0deg) scaleY(1);
-    stroke-opacity: 0.85;
-  }
-  50% {
-    stroke-opacity: 1;
-  }
-  100% {
-    transform: rotate(-3deg) scaleY(1.05);
-    stroke-opacity: 0.85;
-  }
-}
-
-@keyframes mascot-orbit-2 {
-  0% {
-    transform: rotate(0deg) scaleY(1);
-    stroke-opacity: 0.85;
-  }
-  50% {
-    stroke-opacity: 1;
-  }
-  100% {
-    transform: rotate(3deg) scaleY(1.05);
-    stroke-opacity: 0.85;
-  }
-}
-
-@keyframes mascot-chevron-pulse {
-  0% {
-    opacity: 0.65;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes mascot-spark-twinkle {
-  0% {
-    opacity: 0.2;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.3);
-  }
-  100% {
-    opacity: 0.3;
-    transform: scale(0.9);
-  }
+  0% { opacity: 0.32; transform: scale(0.96); }
+  100% { opacity: 0.52; transform: scale(1.07); }
 }
