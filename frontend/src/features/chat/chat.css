@@ -7,7 +7,7 @@
   min-height: 100%;
   max-width: var(--width-app);
   margin: 0 auto;
-  padding: max(var(--space-4), env(safe-area-inset-top, 0px))
+  padding: 0
     max(var(--space-4), env(safe-area-inset-right, 0px))
     var(--space-4)
     max(var(--space-4), env(safe-area-inset-left, 0px));
@@ -16,12 +16,17 @@
 
 /* --- шапка ----------------------------------------------------------------- */
 .chat__header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
+  padding-top: max(var(--space-4), env(safe-area-inset-top, 0px));
   padding-bottom: var(--space-4);
+  background: var(--c-page);
   border-bottom: 1px solid var(--c-border);
 }
 
