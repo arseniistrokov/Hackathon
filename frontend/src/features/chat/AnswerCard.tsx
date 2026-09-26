@@ -4,6 +4,7 @@
 import type { AskResponse, ConflictSide, Lang, Meta, Navigation } from "@/api/types"
 import { t } from "@/i18n"
 import { CitationCard } from "./CitationCard"
+import { FeedbackBar } from "../feedback/FeedbackBar"
 
 function MetaRow({ meta, lang }: { meta: Meta; lang: Lang }) {
   const s = t(lang)
@@ -57,6 +58,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         <h3 className="answer__heading">{s.notFoundTitle}</h3>
         <p className="answer__text">{s.notFoundBody(response.meta.corpus_documents, response.meta.passages_used)}</p>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
+        <FeedbackBar queryId={response.meta.query_id} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -80,6 +82,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
           <ConflictColumn side={conflict.b} index={2} lang={lang} />
         </div>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
+        <FeedbackBar queryId={response.meta.query_id} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -106,6 +109,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         </>
       )}
       {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
+      <FeedbackBar queryId={response.meta.query_id} />
       <MetaRow meta={response.meta} lang={lang} />
     </section>
   )

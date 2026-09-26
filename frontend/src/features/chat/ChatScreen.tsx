@@ -5,6 +5,8 @@ import { ask } from "@/api/client"
 import type { AskResponse, Lang } from "@/api/types"
 import { t } from "@/i18n"
 import { AnswerCard } from "./AnswerCard"
+import { MicButton } from "../voice/MicButton"
+import { StatsFooter } from "../stats/StatsFooter"
 import "./chat.css"
 
 const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
@@ -124,11 +126,14 @@ export function ChatScreen() {
             autoComplete="off"
             onChange={(event) => setDraft(event.target.value)}
           />
+          <MicButton lang={lang} onTranscript={(text) => setDraft(text)} />
           <button type="submit" className="composer__submit" disabled={!canSend}>
             {pending ? s.sending : s.send}
           </button>
         </div>
       </form>
+
+      <StatsFooter />
     </div>
   )
 }
