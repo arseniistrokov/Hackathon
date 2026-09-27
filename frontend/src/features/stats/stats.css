@@ -64,3 +64,168 @@
     gap: var(--space-3);
   }
 }
+
+/* --- экран "Despre proiect" ------------------------------------------------ */
+.about {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-7);
+}
+
+.about__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.about__logo {
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+}
+
+.about__back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.about__back:hover {
+  background: var(--c-surface-sunken);
+}
+
+.about__title {
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  color: var(--c-ink);
+}
+
+.about__subtitle {
+  margin-top: var(--space-2);
+  color: var(--c-ink-muted);
+  font-size: var(--fs-md);
+}
+
+.about__status {
+  margin-top: var(--space-5);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-sm);
+}
+
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.about__tile {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+}
+
+.about__tile-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.about__tile-label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.about__tile-icon {
+  display: inline-flex;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+}
+
+.about__tile-value {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  color: var(--c-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.about__secondary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  max-width: 20rem;
+}
+
+.about__model-label {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.about__model-badge {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.about__how {
+  margin-top: var(--space-6);
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+  max-width: var(--width-app);
+}
+
+.about__how-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.about__how-body {
+  margin-top: var(--space-2);
+  color: var(--c-ink-muted);
+  line-height: var(--lh-normal);
+}
+
+.about__footer-note {
+  margin-top: var(--space-6);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+}
+
+@media (max-width: 760px) {
+  .about__grid {
+    grid-template-columns: 1fr;
+  }
+}
