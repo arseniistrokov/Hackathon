@@ -71,6 +71,7 @@
   --c-card-soft-border: #dfe8f6;
   --c-card-soft-hover: #d2e2f7;
   --c-card-soft-text: #2c67c5;
+  --c-card-soft-body: #2c67c5;
 
   /* Градиент аватара пользователя Andrei (Figma 44:8433 / 85:20937: from #2c6ec4 to #15aaa6) */
   --c-avatar-gradient: linear-gradient(90deg, #2c6ec4 0%, #15aaa6 100%);
@@ -144,6 +145,11 @@
   --c-surface: #212121;
   --c-surface-sunken: #181818;
   --c-surface-raised: #303030;
+  --c-card-soft: #15224f;
+  --c-card-soft-border: #15224f;
+  --c-card-soft-hover: #1b2c62;
+  --c-card-soft-text: #b7cefd;
+  --c-card-soft-body: #5189fa;
   --c-border: #3a3a3a;
   --c-border-strong: #4a4a4a;
 
@@ -178,6 +184,11 @@
     --c-surface: #212121;
     --c-surface-sunken: #181818;
     --c-surface-raised: #303030;
+    --c-card-soft: #15224f;
+    --c-card-soft-border: #15224f;
+    --c-card-soft-hover: #1b2c62;
+    --c-card-soft-text: #b7cefd;
+    --c-card-soft-body: #5189fa;
     --c-border: #3a3a3a;
     --c-border-strong: #4a4a4a;
 
