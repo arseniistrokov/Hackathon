@@ -273,9 +273,9 @@ export function ChatScreen() {
       <div className="sidebar__user-card">
         <div className="sidebar__user-info">
           <div className="sidebar__avatar" aria-hidden="true">
-            <span>A</span>
+            <span>{s.guestName.charAt(0)}</span>
           </div>
-          <span className="sidebar__user-name">Andrei Popescu</span>
+          <span className="sidebar__user-name">{s.guestName}</span>
         </div>
         <button
           type="button"
