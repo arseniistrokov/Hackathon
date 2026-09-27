@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     API_BASE_URL: str = ""
     API_KEY: str = ""
     API_MODEL: str = ""
-    LLM_TIMEOUT_S: float = 30.0
+    LLM_TIMEOUT_S: float = 8.0
 
     # retrieval (R1, R2)
     EMBEDDER: Literal["hash", "bge-m3"] = "hash"
@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8000
     LOG_LEVEL: str = "info"
+    RATE_LIMIT_PER_MIN: int = 200
+    CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
 
 
 settings = Settings()

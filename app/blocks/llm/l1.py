@@ -2,6 +2,10 @@
 
 Таймаут LLM_TIMEOUT_S, 1 повтор при сетевой ошибке (ConnectError/TimeoutException),
 0 повторов при невалидном JSON или HTTP-ошибке (второй раз будет то же).
+
+connect ограничен отдельно (не более 3с), чтобы одна попытка не растягивалась на
+connect+read ≈ 2×timeout сама по себе — иначе с ретраем общая длительность запроса
+могла бы доходить до ~4×timeout вместо ожидаемых ~2×timeout.
 """
 
 from __future__ import annotations
@@ -30,9 +34,13 @@ class Translation(BaseModel):
 def _post(
     url: str, payload: dict, timeout: float, headers: dict[str, str] | None = None
 ) -> httpx.Response | None:
+    # connect ограничен отдельно от read/write/pool: иначе одна попытка сама по себе может
+    # растянуться на ~2×timeout (connect почти timeout + read почти timeout), и суммарная
+    # длительность запроса с ретраем доходила бы до ~4×timeout вместо ~2×timeout.
+    request_timeout = httpx.Timeout(timeout, connect=min(timeout, 3.0))
     for attempt in range(2):
         try:
-            response = httpx.post(url, json=payload, timeout=timeout, headers=headers)
+            response = httpx.post(url, json=payload, timeout=request_timeout, headers=headers)
             response.raise_for_status()
             return response
         except (httpx.ConnectError, httpx.TimeoutException):

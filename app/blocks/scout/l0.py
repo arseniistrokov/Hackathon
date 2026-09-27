@@ -85,7 +85,10 @@ def prefilter(chunks: list[Chunk]) -> list[EntityGroup]:
 def load_manual(path: Path) -> list[Conflict]:
     raw_conflicts = json.loads(path.read_text(encoding="utf-8"))
     conn = store.connect()
-    chunks = store.get_chunks(conn, store.all_chunk_ids(conn))
+    try:
+        chunks = store.get_chunks(conn, store.all_chunk_ids(conn))
+    finally:
+        conn.close()
     by_url: dict[str, list[Chunk]] = defaultdict(list)
     for chunk in chunks:
         by_url[chunk.url].append(chunk)

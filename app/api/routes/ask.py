@@ -12,11 +12,12 @@ from collections import defaultdict
 from fastapi import APIRouter, HTTPException, Request
 
 from app.blocks.workflow import ask
+from app.config import settings
 from app.contracts.models import AskRequest, AskResponse
 
 router = APIRouter(tags=["ask"])
 
-_RATE_LIMIT_REQUESTS = 20
+_RATE_LIMIT_REQUESTS = settings.RATE_LIMIT_PER_MIN
 _RATE_LIMIT_WINDOW_S = 60.0
 _request_log: dict[str, list[float]] = defaultdict(list)
 
