@@ -55,14 +55,18 @@ def test_requests_over_limit_are_rejected(monkeypatch: pytest.MonkeyPatch) -> No
 
 
 def test_different_ips_have_independent_limits() -> None:
+    # шаг мельче окна/лимита, чтобы все запросы укладывались в одно скользящее окно
+    # независимо от настроенного RATE_LIMIT_PER_MIN
+    step = ask_route._RATE_LIMIT_WINDOW_S / (2 * ask_route._RATE_LIMIT_REQUESTS)
     assert ask_route._is_rate_limited("1.1.1.1", now=0.0) is False
     for i in range(1, ask_route._RATE_LIMIT_REQUESTS):
-        assert ask_route._is_rate_limited("1.1.1.1", now=float(i)) is False
-    assert ask_route._is_rate_limited("1.1.1.1", now=float(ask_route._RATE_LIMIT_REQUESTS)) is True
+        assert ask_route._is_rate_limited("1.1.1.1", now=step * i) is False
+    assert ask_route._is_rate_limited("1.1.1.1", now=step * ask_route._RATE_LIMIT_REQUESTS) is True
     assert ask_route._is_rate_limited("2.2.2.2", now=0.0) is False
 
 
 def test_window_slides(monkeypatch: pytest.MonkeyPatch) -> None:
+    step = ask_route._RATE_LIMIT_WINDOW_S / (2 * ask_route._RATE_LIMIT_REQUESTS)
     for i in range(ask_route._RATE_LIMIT_REQUESTS + 1):
-        ask_route._is_rate_limited("3.3.3.3", now=float(i))
+        ask_route._is_rate_limited("3.3.3.3", now=step * i)
     assert ask_route._is_rate_limited("3.3.3.3", now=ask_route._RATE_LIMIT_WINDOW_S + 100) is False

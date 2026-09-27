@@ -46,6 +46,7 @@ class Settings(BaseSettings):
     HOST: str = "0.0.0.0"
     PORT: int = 8000
     LOG_LEVEL: str = "info"
+    RATE_LIMIT_PER_MIN: int = 200
 
 
 settings = Settings()
