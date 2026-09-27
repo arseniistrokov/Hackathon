@@ -1,0 +1,47 @@
+{
+  "model": "gemma3-nexo",
+  "train_rows": 300,
+  "validation_rows": 30,
+  "train": {
+    "languages": {
+      "ro": 154,
+      "ru": 146
+    },
+    "enough": {
+      "true": 265,
+      "false": 35
+    },
+    "cross_language_ru_from_ro": 130,
+    "types": {
+      "answered": 210,
+      "hard_negative": 35,
+      "multi_document": 55
+    },
+    "citation_count": {
+      "1": 210,
+      "0": 35,
+      "2": 55
+    },
+    "near_duplicate_questions_jaccard_0_78": 0,
+    "near_duplicate_examples": []
+  },
+  "validation": {
+    "languages": {
+      "ro": 18,
+      "ru": 12
+    },
+    "enough": {
+      "true": 30
+    },
+    "cross_language_ru_from_ro": 11,
+    "types": {
+      "heldout": 30
+    },
+    "citation_count": {
+      "1": 30
+    },
+    "near_duplicate_questions_jaccard_0_78": 0,
+    "near_duplicate_examples": []
+  },
+  "train_validation_near_duplicates": 0
+}
