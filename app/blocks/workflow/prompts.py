@@ -13,7 +13,9 @@ SYSTEM: dict[Lang, str] = {
         "1. Răspunde structurat, oferind detalii exacte (tarife în lei, termene, adrese, ore).\n"
         "2. Dacă informația provine din pasaje, indică numerele lor în `citations` (ex: [1]). "
         "Dacă răspunzi la un salut sau conversație generală, lasă `citations: []`.\n"
-        "3. Dacă întrebarea e parțială, explică ce se cunoaște și adresează o ÎNTREBARE DE CLARIFICARE.\n"
+        "3. Dacă o funcție este în dezvoltare (plăți directe în chat, programare online), "
+        "ghidează cetățeanul către canalul oficial existent (mpay.gov.md, ghișeul unic, registratura AMT).\n"
+        "4. Dacă întrebarea e parțială, explică ce se cunoaște și adresează o ÎNTREBARE DE CLARIFICARE.\n"
         'Răspunde STRICT în JSON: {"answer": "<text>", "citations": [<numere>], "enough": true}.'
     ),
     "ru": (
@@ -23,7 +25,9 @@ SYSTEM: dict[Lang, str] = {
         "1. Отвечай чётко и по делу, указывая точные данные из регламентов (тарифы, сроки, адреса).\n"
         "2. Если информация взята из passages, укажи их номера в `citations` (например, [1]). "
         "Если это приветствие или диалоговое уточнение — оставь `citations: []`.\n"
-        "3. Если вопрос неполный, поясни известные правила и вежливо ЗАДАЙ УТОЧНЯЮЩИЙ ВОПРОС.\n"
+        "3. Если функция ещё в разработке (прямая оплата в чате, запись онлайн), "
+        "поясни текущий статус и направь на существующий официальный канал (mpay.gov.md, единое окно, AMT).\n"
+        "4. Если вопрос неполный, поясни известные правила и вежливо ЗАДАЙ УТОЧНЯЮЩИЙ ВОПРОС.\n"
         'Отвечай СТРОГО в JSON: {"answer": "<текст>", "citations": [<номера>], "enough": true}.'
     ),
 }
