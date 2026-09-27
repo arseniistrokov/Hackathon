@@ -121,6 +121,18 @@ export function ChatScreen() {
     }
   }, [sidebarCollapsed])
 
+  // Модалка поиска: Esc закрывает (клик по подложке уже обрабатывается через onClick на overlay).
+  useEffect(() => {
+    if (!searchOpen) return
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setSearchOpen(false)
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
+  }, [searchOpen])
+
   async function run(question: string): Promise<void> {
     const trimmed = question.trim()
     if (trimmed.length < MIN_QUESTION_LENGTH) return
@@ -354,9 +366,6 @@ export function ChatScreen() {
           <span className="main__mobile-title">{renderLogo(s.logoText)}</span>
           <div className="main__topbar-actions">
             {langSwitch}
-            <button type="button" className="theme-toggle" aria-label="Theme">
-              <SunIcon />
-            </button>
           </div>
         </header>
 
@@ -660,15 +669,6 @@ function PaperclipIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
-  )
-}
-
-function SunIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
-      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }

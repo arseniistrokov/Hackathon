@@ -370,25 +370,6 @@
   color: var(--c-submit-ink);
 }
 
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-  border: 0;
-  border-radius: var(--radius-round);
-  background: transparent;
-  color: var(--c-ink);
-  cursor: pointer;
-  padding: 0;
-  transition: opacity 0.15s ease;
-}
-
-.theme-toggle:hover {
-  opacity: 0.75;
-}
-
 /* --- поток --------------------------------------------------------------- */
 .chat__thread {
   display: flex;
