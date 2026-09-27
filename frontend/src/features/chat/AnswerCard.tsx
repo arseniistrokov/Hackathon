@@ -1,7 +1,7 @@
 // Три состояния ответа: ANSWERED · NOT_FOUND · CONFLICT. Строки — из i18n по языку ОТВЕТА.
 // Опциональные поля (warning, navigation, conflict, section, page, date) рисуются условно:
 // и null от бэкенда, и отсутствующее поле не должны ронять экран.
-import type { AskResponse, ConflictSide, Lang, Meta, Navigation } from "@/api/types"
+import type { AskResponse, Citation, ConflictSide, Lang, Meta, Navigation } from "@/api/types"
 import { t } from "@/i18n"
 import { CitationCard } from "./CitationCard"
 import { FeedbackBar } from "../feedback/FeedbackBar"
@@ -32,7 +32,17 @@ function NavigationRow({ navigation, lang }: { navigation: Navigation; lang: Lan
   )
 }
 
-function ConflictColumn({ side, index, lang }: { side: ConflictSide; index: number; lang: Lang }) {
+function ConflictColumn({
+  side,
+  index,
+  lang,
+  onOpenDocument,
+}: {
+  side: ConflictSide
+  index: number
+  lang: Lang
+  onOpenDocument?: (citation: Citation) => void
+}) {
   const s = t(lang)
   const date = side.date ?? side.citation.date
   return (
@@ -42,12 +52,18 @@ function ConflictColumn({ side, index, lang }: { side: ConflictSide; index: numb
       <span className="conflict-side__date">
         {date ? <time dateTime={date}>{date}</time> : s.undatedLabel}
       </span>
-      <CitationCard citation={side.citation} lang={lang} />
+      <CitationCard citation={side.citation} lang={lang} onOpenDocument={onOpenDocument} />
     </div>
   )
 }
 
-export function AnswerCard({ response }: { response: AskResponse }) {
+export function AnswerCard({
+  response,
+  onOpenDocument,
+}: {
+  response: AskResponse
+  onOpenDocument?: (citation: Citation) => void
+}) {
   const lang = response.language
   const s = t(lang)
 
@@ -78,8 +94,8 @@ export function AnswerCard({ response }: { response: AskResponse }) {
           <dd>{conflict.entity}</dd>
         </dl>
         <div className="conflict-grid">
-          <ConflictColumn side={conflict.a} index={1} lang={lang} />
-          <ConflictColumn side={conflict.b} index={2} lang={lang} />
+          <ConflictColumn side={conflict.a} index={1} lang={lang} onOpenDocument={onOpenDocument} />
+          <ConflictColumn side={conflict.b} index={2} lang={lang} onOpenDocument={onOpenDocument} />
         </div>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
         <FeedbackBar queryId={response.meta.query_id} lang={lang} />
@@ -104,7 +120,12 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         <>
           <h4 className="section-label">{s.sourcesLabel}</h4>
           {response.citations.map((citation) => (
-            <CitationCard key={citation.chunk_id} citation={citation} lang={lang} />
+            <CitationCard
+              key={citation.chunk_id}
+              citation={citation}
+              lang={lang}
+              onOpenDocument={onOpenDocument}
+            />
           ))}
         </>
       )}

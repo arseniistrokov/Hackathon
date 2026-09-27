@@ -73,6 +73,17 @@ export interface Strings {
   searchPlaceholder: string
   searchNoResults: string
   searchCloseAria: string
+  documentViewerCloseAria: string
+  openSource: string
+  closeLabel: string
+  closeSidebarAria: string
+  aboutNavLabel: string
+  backToChatLabel: string
+  aboutTitle: string
+  aboutSubtitle: string
+  aboutFooterNote: string
+  aboutHowItWorksTitle: string
+  aboutHowItWorksBody: string
 }
 
 const ro: Strings = {
@@ -152,6 +163,19 @@ const ro: Strings = {
   searchPlaceholder: "Caută…",
   searchNoResults: "Nimic găsit",
   searchCloseAria: "Închide căutarea",
+  documentViewerCloseAria: "Închide fereastra documentului",
+  openSource: "Deschide sursa oficială",
+  closeLabel: "Închide",
+  closeSidebarAria: "Închide meniul lateral",
+  aboutNavLabel: "Despre proiect",
+  backToChatLabel: "Înapoi la chat",
+  aboutTitle: "Despre proiect",
+  aboutSubtitle: "Asistent municipal Chișinău — statistica serviciului, live.",
+  aboutFooterNote:
+    "Datele sunt actualizate live din serviciul de backend. Pentru detalii tehnice, vezi documentația proiectului.",
+  aboutHowItWorksTitle: "Cum funcționează",
+  aboutHowItWorksBody:
+    "Fiecare răspuns trece prin trei pași: căutare în surse (retrieval) → verificare a fragmentelor găsite → răspuns cu citate exacte din documente oficiale.",
 }
 
 const ru: Strings = {
@@ -231,6 +255,19 @@ const ru: Strings = {
   searchPlaceholder: "Поиск…",
   searchNoResults: "Ничего не найдено",
   searchCloseAria: "Закрыть поиск",
+  documentViewerCloseAria: "Закрыть окно документа",
+  openSource: "Открыть официальный источник",
+  closeLabel: "Закрыть",
+  closeSidebarAria: "Закрыть боковую панель",
+  aboutNavLabel: "О проекте",
+  backToChatLabel: "Назад к чату",
+  aboutTitle: "О проекте",
+  aboutSubtitle: "Муниципальный ассистент Кишинёва — статистика сервиса, вживую.",
+  aboutFooterNote:
+    "Данные обновляются вживую из сервиса бэкенда. Технические детали — в документации проекта.",
+  aboutHowItWorksTitle: "Как это работает",
+  aboutHowItWorksBody:
+    "Каждый ответ проходит три шага: поиск по источникам (retrieval) → проверка найденных фрагментов → ответ с точными цитатами из официальных документов.",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }

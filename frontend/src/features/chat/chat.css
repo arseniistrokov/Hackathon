@@ -178,6 +178,30 @@
   border-top: 1px solid var(--c-sidebar-border);
 }
 
+.sidebar__about-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sidebar__about-link:hover {
+  background: var(--c-sidebar-item-hover);
+  color: var(--c-ink);
+}
+
 .sidebar__footer .lang {
   align-self: flex-start;
 }
@@ -645,36 +669,57 @@
 
 /* --- загрузка и ошибка --------------------------------------------------- */
 .skeleton {
-  padding: var(--space-5);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg);
-  background: var(--c-surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .skeleton__caption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   color: var(--c-ink-muted);
   font-size: var(--fs-sm);
 }
 
+.skeleton__card {
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-card);
+}
+
+/* Шиммер: диагональная светлая полоса едет слева направо поверх пилюли-полоски. */
 .skeleton__bar {
-  height: 0.75rem;
+  height: 0.875rem;
   margin-top: var(--space-3);
-  border-radius: var(--radius-sm);
-  background: var(--c-surface-sunken);
-  animation: pulse 1.4s ease-in-out infinite;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(
+    100deg,
+    var(--c-surface-sunken) 30%,
+    var(--c-surface-raised) 45%,
+    var(--c-accent-soft) 50%,
+    var(--c-surface-raised) 55%,
+    var(--c-surface-sunken) 70%
+  );
+  background-size: 250% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+
+.skeleton__bar:first-child {
+  margin-top: 0;
 }
 
 .skeleton__bar--short {
   width: 45%;
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
+@keyframes shimmer {
+  0% {
+    background-position: 120% 0;
   }
-  50% {
-    opacity: 0.45;
+  100% {
+    background-position: -20% 0;
   }
 }
 
@@ -976,4 +1021,133 @@
 
 .search-modal__item-text {
   font-size: var(--fs-sm);
+}
+
+/* --- панель просмотра документа (Deschide documentul) --------------------- */
+.doc-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: var(--c-backdrop);
+}
+
+.doc-viewer {
+  width: min(48rem, 100%);
+  max-height: min(80vh, 44rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+}
+
+.doc-viewer__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) 0;
+}
+
+.doc-viewer__title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.doc-viewer__close-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+}
+
+.doc-viewer__close-icon:hover {
+  background: var(--c-surface-sunken);
+  color: var(--c-ink);
+}
+
+.doc-viewer__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-3);
+  padding: var(--space-2) var(--space-5) var(--space-4);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  border-bottom: 1px solid var(--c-border);
+}
+
+.doc-viewer__body {
+  padding: var(--space-5);
+  overflow-y: auto;
+}
+
+/* Цитируемый фрагмент подсвечен как маркером — это единственный доступный текст
+   источника (данные строго из citation.passage, без дозагрузки документа). */
+.doc-viewer__passage {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--c-conflict);
+  border-radius: var(--radius-sm);
+  background: var(--c-conflict-soft);
+  color: var(--c-ink);
+  font-family: var(--font-quote);
+  font-size: var(--fs-md);
+  line-height: var(--lh-loose);
+  overflow-wrap: anywhere;
+}
+
+.doc-viewer__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--c-border);
+}
+
+.doc-viewer__source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+.doc-viewer__close-btn {
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.doc-viewer__close-btn:hover {
+  background: var(--c-surface-sunken);
+}
+
+@media (max-width: 760px) {
+  .doc-viewer-overlay {
+    padding: var(--space-3);
+  }
+
+  .doc-viewer {
+    max-height: 90vh;
+  }
 }

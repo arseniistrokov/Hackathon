@@ -4,11 +4,13 @@
 // пустое состояние с шаром-маскотом и подсказками, композер-пилюля снизу.
 import { useEffect, useState } from "react"
 import { ask } from "@/api/client"
-import type { AskResponse, Lang } from "@/api/types"
+import type { AskResponse, Citation, Lang } from "@/api/types"
 import { t } from "@/i18n"
 import { AnswerCard } from "./AnswerCard"
+import { DocumentViewer } from "./DocumentViewer"
 import { MicButton } from "../voice/MicButton"
 import { StatsFooter } from "../stats/StatsFooter"
+import { AboutScreen } from "../stats/AboutScreen"
 import "./chat.css"
 
 const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
@@ -66,6 +68,8 @@ export function ChatScreen() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
+  const [openCitation, setOpenCitation] = useState<Citation | null>(null)
+  const [view, setView] = useState<"chat" | "about">("chat")
   const s = t(lang)
 
   useEffect(() => {
@@ -176,10 +180,10 @@ export function ChatScreen() {
           <button
             type="button"
             className="sidebar__icon-btn"
-            aria-label={s.collapseSidebarAria}
-            onClick={() => setSidebarCollapsed(true)}
+            aria-label={mobileOpen ? s.closeSidebarAria : s.collapseSidebarAria}
+            onClick={() => (mobileOpen ? setMobileOpen(false) : setSidebarCollapsed(true))}
           >
-            <CollapseIcon />
+            {mobileOpen ? <CloseIcon /> : <CollapseIcon />}
           </button>
         </div>
       </div>
@@ -224,6 +228,17 @@ export function ChatScreen() {
       </nav>
 
       <div className="sidebar__footer">
+        <button
+          type="button"
+          className="sidebar__about-link"
+          onClick={() => {
+            setView("about")
+            setMobileOpen(false)
+          }}
+        >
+          <InfoIcon />
+          {s.aboutNavLabel}
+        </button>
         {langSwitch}
         <div className="sidebar__stats">
           <StatsFooter lang={lang} />
@@ -231,6 +246,10 @@ export function ChatScreen() {
       </div>
     </>
   )
+
+  if (view === "about") {
+    return <AboutScreen lang={lang} onBack={() => setView("chat")} />
+  }
 
   return (
     <div className={`app ${sidebarCollapsed ? "app--sidebar-collapsed" : ""}`}>
@@ -316,16 +335,21 @@ export function ChatScreen() {
           {turns.map((turn) => (
             <section className="turn" key={turn.id}>
               <p className="turn__question">{turn.question}</p>
-              <AnswerCard response={turn.response} />
+              <AnswerCard response={turn.response} onOpenDocument={setOpenCitation} />
             </section>
           ))}
 
           {pending && (
             <section className="skeleton" aria-busy="true">
-              <p className="skeleton__caption">{s.loading}</p>
-              <div className="skeleton__bar" />
-              <div className="skeleton__bar" />
-              <div className="skeleton__bar skeleton__bar--short" />
+              <p className="skeleton__caption">
+                <SearchIcon />
+                {s.loading}
+              </p>
+              <div className="skeleton__card">
+                <div className="skeleton__bar" />
+                <div className="skeleton__bar" />
+                <div className="skeleton__bar skeleton__bar--short" />
+              </div>
             </section>
           )}
 
@@ -405,6 +429,10 @@ export function ChatScreen() {
             </ul>
           </div>
         </div>
+      )}
+
+      {openCitation && (
+        <DocumentViewer citation={openCitation} lang={lang} onClose={() => setOpenCitation(null)} />
       )}
     </div>
   )
@@ -496,6 +524,16 @@ function HamburgerIcon() {
       <line x1="4" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <line x1="4" y1="17" x2="20" y2="17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function InfoIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+      <line x1="12" y1="11" x2="12" y2="16.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="12" cy="7.75" r="1.15" fill="currentColor" />
     </svg>
   )
 }
