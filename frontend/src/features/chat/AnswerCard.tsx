@@ -58,7 +58,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         <h3 className="answer__heading">{s.notFoundTitle}</h3>
         <p className="answer__text">{s.notFoundBody(response.meta.corpus_documents, response.meta.passages_used)}</p>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-        <FeedbackBar queryId={response.meta.query_id} />
+        <FeedbackBar queryId={response.meta.query_id} lang={lang} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -82,7 +82,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
           <ConflictColumn side={conflict.b} index={2} lang={lang} />
         </div>
         {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-        <FeedbackBar queryId={response.meta.query_id} />
+        <FeedbackBar queryId={response.meta.query_id} lang={lang} />
         <MetaRow meta={response.meta} lang={lang} />
       </section>
     )
@@ -109,7 +109,7 @@ export function AnswerCard({ response }: { response: AskResponse }) {
         </>
       )}
       {response.navigation && <NavigationRow navigation={response.navigation} lang={lang} />}
-      <FeedbackBar queryId={response.meta.query_id} />
+      <FeedbackBar queryId={response.meta.query_id} lang={lang} />
       <MetaRow meta={response.meta} lang={lang} />
     </section>
   )

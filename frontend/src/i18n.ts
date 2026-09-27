@@ -37,6 +37,23 @@ export interface Strings {
   metaPassages: (retrieved: number, used: number) => string
   metaModel: string
   metaLatency: (ms: number) => string
+  feedbackAriaLabel: string
+  feedbackUseful: string
+  feedbackNotUseful: string
+  feedbackThanks: string
+  feedbackCommentPlaceholder: string
+  feedbackCommentAriaLabel: string
+  feedbackSubmit: string
+  statsAriaLabel: string
+  statsLoading: string
+  statsUnavailable: string
+  statsDocuments: string
+  statsChunks: string
+  statsSites: string
+  statsConflicts: string
+  statsQueries: string
+  statsFeedback: string
+  statsModel: string
 }
 
 const ro: Strings = {
@@ -76,6 +93,23 @@ const ro: Strings = {
   metaPassages: (retrieved, used) => `Fragmente: ${retrieved} verificate · ${used} folosite`,
   metaModel: "Model",
   metaLatency: (ms) => `${(ms / 1000).toFixed(1)} s`,
+  feedbackAriaLabel: "Feedback",
+  feedbackUseful: "Util",
+  feedbackNotUseful: "Nu a ajutat",
+  feedbackThanks: "Mulțumim pentru feedback!",
+  feedbackCommentPlaceholder: "Ce poate fi îmbunătățit? (opțional)",
+  feedbackCommentAriaLabel: "Textul feedback-ului",
+  feedbackSubmit: "Trimite",
+  statsAriaLabel: "Statistica serviciului",
+  statsLoading: "Se încarcă statistica…",
+  statsUnavailable: "Statistica indisponibilă",
+  statsDocuments: "Documente",
+  statsChunks: "Fragmente",
+  statsSites: "Site-uri",
+  statsConflicts: "Conflicte",
+  statsQueries: "Interogări",
+  statsFeedback: "Feedback",
+  statsModel: "Model",
 }
 
 const ru: Strings = {
@@ -115,6 +149,23 @@ const ru: Strings = {
   metaPassages: (retrieved, used) => `Фрагментов: ${retrieved} проверено · ${used} использовано`,
   metaModel: "Модель",
   metaLatency: (ms) => `${(ms / 1000).toFixed(1)} с`,
+  feedbackAriaLabel: "Обратная связь",
+  feedbackUseful: "Полезно",
+  feedbackNotUseful: "Не помогло",
+  feedbackThanks: "Спасибо за отзыв!",
+  feedbackCommentPlaceholder: "Что можно улучшить? (необязательно)",
+  feedbackCommentAriaLabel: "Текст отзыва",
+  feedbackSubmit: "Отправить",
+  statsAriaLabel: "Статистика сервиса",
+  statsLoading: "Загрузка статистики…",
+  statsUnavailable: "Статистика недоступна",
+  statsDocuments: "Документы",
+  statsChunks: "Фрагменты",
+  statsSites: "Сайты",
+  statsConflicts: "Конфликты",
+  statsQueries: "Запросы",
+  statsFeedback: "Отзывы",
+  statsModel: "Модель",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
