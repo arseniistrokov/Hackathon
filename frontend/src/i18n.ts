@@ -55,6 +55,20 @@ export interface Strings {
   statsQueries: string
   statsFeedback: string
   statsModel: string
+  logoText: string
+  logoSubtitle: string
+  searchAria: string
+  collapseSidebarAria: string
+  expandSidebarAria: string
+  menuAria: string
+  newChat: string
+  pinnedLabel: string
+  recentsLabel: string
+  heroLine1: string
+  heroLine2: string
+  composerPlaceholder: string
+  mascotAlt: string
+  interfaceLangLabel: string
 }
 
 const ro: Strings = {
@@ -116,6 +130,20 @@ const ro: Strings = {
   statsQueries: "Interogări",
   statsFeedback: "Feedback",
   statsModel: "Model",
+  logoText: "nexa",
+  logoSubtitle: "Asistent Chișinău",
+  searchAria: "Căutare în conversații",
+  collapseSidebarAria: "Restrânge meniul lateral",
+  expandSidebarAria: "Extinde meniul lateral",
+  menuAria: "Meniu",
+  newChat: "Chat nou",
+  pinnedLabel: "Fixate",
+  recentsLabel: "Recente",
+  heroLine1: "Bună, sunt NEXA",
+  heroLine2: "Cu ce te pot ajuta?",
+  composerPlaceholder: "Întreabă NEXA…",
+  mascotAlt: "Mascotă AI",
+  interfaceLangLabel: "Interfață",
 }
 
 const ru: Strings = {
@@ -177,6 +205,20 @@ const ru: Strings = {
   statsQueries: "Запросы",
   statsFeedback: "Отзывы",
   statsModel: "Модель",
+  logoText: "nexa",
+  logoSubtitle: "Asistent Chișinău",
+  searchAria: "Поиск по беседам",
+  collapseSidebarAria: "Свернуть боковую панель",
+  expandSidebarAria: "Развернуть боковую панель",
+  menuAria: "Меню",
+  newChat: "Новый чат",
+  pinnedLabel: "Закреплённые",
+  recentsLabel: "Недавние",
+  heroLine1: "Привет, я NEXA",
+  heroLine2: "Чем могу помочь?",
+  composerPlaceholder: "Спроси NEXA…",
+  mascotAlt: "AI-маскот",
+  interfaceLangLabel: "Интерфейс",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }

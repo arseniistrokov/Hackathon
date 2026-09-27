@@ -1,93 +1,276 @@
 /* Стили экрана чата. Цвета — исключительно через var(--…) из styles/tokens.css.
-   Литеральные значения цвета в features запрещены и проверяются grep-ом в CI. */
+   Литеральные значения цвета в features запрещены и проверяются grep-ом в CI.
+   Раскладка 1:1 со структурой макета Figma NEXA: сайдбар + контент + композер-пилюля. */
 
-.chat {
+/* --- корневая раскладка: сайдбар + контент -------------------------------- */
+.app {
+  display: flex;
+  align-items: stretch;
+  min-height: 100dvh;
+  background: var(--c-page);
+  gap: var(--space-5);
+  padding: var(--space-5);
+}
+
+.app__backdrop {
+  display: none;
+}
+
+/* --- сайдбар --------------------------------------------------------------- */
+.sidebar {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  max-width: var(--width-app);
-  margin: 0 auto;
-  padding: 0
-    max(var(--space-4), env(safe-area-inset-right, 0px))
-    var(--space-4)
-    max(var(--space-4), env(safe-area-inset-left, 0px));
-  gap: var(--space-5);
+  width: 256px;
+  flex-shrink: 0;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--c-sidebar-bg);
+  gap: var(--space-4);
 }
 
-/* --- шапка ----------------------------------------------------------------- */
-.chat__header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
+.sidebar--collapsed {
+  width: auto;
+  padding: var(--space-2);
+  background: transparent;
+  border-radius: 0;
+}
+
+.sidebar__collapsed-rail {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   gap: var(--space-3);
-  padding-top: max(var(--space-4), env(safe-area-inset-top, 0px));
-  padding-bottom: var(--space-4);
-  background: var(--c-page);
-  border-bottom: 1px solid var(--c-border);
 }
 
-.chat__title {
+.sidebar__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.sidebar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sidebar__logo {
   font-size: var(--fs-xl);
   font-weight: 800;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
 }
 
-.chat__tagline {
-  margin-top: var(--space-2);
-  max-width: var(--measure);
-  color: var(--c-ink-muted);
+.sidebar__logo-x {
+  color: var(--c-brand-x);
+}
+
+.sidebar__logo-subtitle {
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sidebar__top-actions {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.sidebar__icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar__icon-btn:hover {
+  background: var(--c-sidebar-item-hover);
+}
+
+.sidebar__new-chat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap-min);
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-weight: 700;
   font-size: var(--fs-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar__new-chat:hover {
+  background: var(--c-sidebar-item-hover);
+}
+
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+
+.sidebar__section-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--ls-label);
+}
+
+.sidebar__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar__item {
+  display: block;
+  width: 100%;
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-2);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar__item:hover {
+  background: var(--c-sidebar-item-hover);
+}
+
+.sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--c-sidebar-border);
+}
+
+.sidebar__footer .lang {
+  align-self: flex-start;
+}
+
+.sidebar__stats .stats-footer {
+  margin: 0;
+  padding: 0;
+  border-top: 0;
+  max-width: none;
+}
+
+.sidebar__stats .stats-footer__grid {
+  gap: var(--space-1) var(--space-2);
+}
+
+.sidebar__stats .stats-footer__label {
+  display: none;
+}
+
+.sidebar__stats .stats-footer__value {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--c-ink-faint);
+}
+
+/* --- контент --------------------------------------------------------------- */
+.main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.main__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.main__mobile-title {
+  display: none;
+  font-weight: 800;
+  font-size: var(--fs-lg);
+  text-transform: lowercase;
+}
+
+.hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  cursor: pointer;
 }
 
 .chat__disclaimer {
   max-width: var(--measure);
-  color: var(--c-ink-muted);
+  margin-bottom: var(--space-3);
+  color: var(--c-ink-faint);
   font-size: var(--fs-xs);
 }
 
+/* --- переключатель языка: две пилюли, как Log in / Sign up в макете -------- */
 .lang {
   display: flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-.lang__label {
-  color: var(--c-ink-faint);
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-label);
-}
-
-.lang__group {
-  display: flex;
-  gap: var(--space-1);
-  padding: 3px;
-  border: 2px solid var(--c-ink);
-  border-radius: var(--radius-pill);
-  background: var(--c-surface);
-}
-
-.lang__button {
-  min-width: 3.5rem;
-  min-height: calc(var(--tap-min) - 10px);
-  padding: 0 var(--space-3);
+.lang__pill {
+  min-width: 4.5rem;
+  min-height: var(--tap-min);
+  padding: 0 var(--space-4);
   border: 0;
   border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--c-ink-muted);
+  background: var(--c-surface-raised);
+  color: var(--c-ink);
   font-size: var(--fs-sm);
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.lang__button[aria-pressed="true"] {
-  background: var(--c-ink);
-  color: var(--c-on-accent);
+.lang__pill--active {
+  background: var(--c-cta);
+  color: var(--c-cta-ink);
 }
 
 /* --- поток --------------------------------------------------------------- */
@@ -96,57 +279,109 @@
   flex-direction: column;
   flex: 1;
   gap: var(--space-6);
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .chat__empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
+  flex: 1;
+  gap: var(--space-5);
   padding: var(--space-7) var(--space-5);
   text-align: center;
 }
 
-.chat__empty h2 {
+/* Шар-маскот: CSS-градиент blue -> teal с мягким glow (см. tokens.css --mascot-*). */
+.mascot {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 9rem;
+  height: 9rem;
+}
+
+.mascot__glow {
+  position: absolute;
+  inset: -3rem;
+  background: var(--mascot-glow);
+  border-radius: 50%;
+}
+
+.mascot__ball {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  background: var(--mascot-gradient);
+  box-shadow: var(--shadow-raised);
+  animation: mascot-float 6s ease-in-out infinite;
+}
+
+@keyframes mascot-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-0.5rem) rotate(4deg);
+  }
+}
+
+.chat__empty-title {
   max-width: 28rem;
   font-size: var(--fs-2xl);
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
-.chat__empty p {
-  margin-top: var(--space-2);
-  max-width: var(--measure);
-  color: var(--c-ink-muted);
-  font-size: var(--fs-sm);
-}
-
-/* Статичные чипсы-подсказки (нет в API — тексты из i18n, клик подставляет вопрос в композер). */
+/* Светло-голубые карточки-подсказки: клик подставляет вопрос в композер и отправляет. */
 .chat__prompts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  max-width: 44rem;
+  width: 100%;
+}
+
+.chat__prompt-card {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
   gap: var(--space-2);
-  margin-top: var(--space-5);
-  max-width: 40rem;
-}
-
-.chat__prompt {
-  min-height: var(--tap-min);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-pill);
-  background: var(--c-surface);
-  color: var(--c-ink);
-  font-size: var(--fs-sm);
-  font-weight: 600;
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid var(--c-card-soft-border);
+  border-radius: var(--radius-lg);
+  background: var(--c-card-soft);
+  text-align: left;
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
+  transition: box-shadow 0.15s ease, transform 0.1s ease;
 }
 
-.chat__prompt:hover {
-  border-color: var(--c-accent);
-  background: var(--c-accent-soft);
+.chat__prompt-card:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.chat__prompt-card:active {
+  transform: scale(0.99);
+}
+
+.chat__prompt-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--c-accent);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.chat__prompt-card-body {
+  color: var(--c-ink-muted);
+  font-size: var(--fs-xs);
+  line-height: var(--lh-normal);
 }
 
 .turn {
@@ -474,7 +709,7 @@
   cursor: pointer;
 }
 
-/* --- композер (пилюля, как в макете: серая капсула + круглая CTA-кнопка) --- */
+/* --- композер (широкая серая пилюля + круглая синяя CTA-кнопка, как в макете) --- */
 .composer {
   position: sticky;
   bottom: 0;
@@ -485,11 +720,14 @@
   background: var(--c-page);
 }
 
+/* Видимый лейбл в макете не показан — оставляем текст только для скринридеров. */
 .composer__label {
-  color: var(--c-ink-faint);
-  font-size: var(--fs-xs);
-  text-transform: uppercase;
-  letter-spacing: var(--ls-label);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 .composer__row {
@@ -497,7 +735,6 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2);
-  border: 1px solid var(--c-border);
   border-radius: var(--radius-pill);
   background: var(--c-surface-raised);
 }
@@ -525,14 +762,15 @@
   justify-content: center;
   min-width: var(--tap-min);
   min-height: var(--tap-min);
-  padding: 0 var(--space-5);
+  width: var(--tap-min);
+  height: var(--tap-min);
+  flex-shrink: 0;
+  padding: 0;
   border: 0;
-  border-radius: var(--radius-pill);
+  border-radius: 50%;
   background: var(--c-cta);
   color: var(--c-cta-ink);
-  font-weight: 700;
   cursor: pointer;
-  white-space: nowrap;
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
@@ -550,17 +788,86 @@
   cursor: not-allowed;
 }
 
+.composer__submit-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--c-cta-ink);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: composer-spin 0.7s linear infinite;
+}
+
+@keyframes composer-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- мобильная раскладка: сайдбар уходит в overlay, шапка с гамбургером ---- */
+@media (max-width: 760px) {
+  .app {
+    padding: var(--space-3);
+    gap: 0;
+  }
+
+  .app--sidebar-collapsed .sidebar {
+    display: none;
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 25% 0 0;
+    z-index: 50;
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+  }
+
+  .sidebar--mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar--collapsed {
+    transform: translateX(-100%);
+  }
+
+  .app__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    background: var(--c-backdrop);
+  }
+
+  .hamburger {
+    display: inline-flex;
+  }
+
+  .main__mobile-title {
+    display: block;
+    margin-right: auto;
+  }
+
+  .main__topbar {
+    justify-content: flex-start;
+  }
+
+  .chat__prompts {
+    grid-template-columns: 1fr;
+  }
+
+  .mascot {
+    width: 6.5rem;
+    height: 6.5rem;
+  }
+
+  .chat__empty-title {
+    font-size: var(--fs-xl);
+  }
+}
+
 @media (max-width: 420px) {
   .composer__row {
-    flex-wrap: wrap;
     border-radius: var(--radius-lg);
-  }
-
-  .composer__input {
-    flex-basis: 100%;
-  }
-
-  .composer__submit {
-    flex: 1;
   }
 }
