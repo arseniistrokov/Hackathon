@@ -86,11 +86,13 @@ export interface Strings {
   aboutHowItWorksBody: string
   attachBtnAria: string
   attachAddPhotos: string
-  attachUploadComputer: string  recording: string
+  attachUploadComputer: string
+  recording: string
   recognizing: string
   micUnavailable: string
   micStart: string
-  micStop: string}
+  micStop: string
+}
 
 const ro: Strings = {
   appTitle: "Asistentul municipal Chișinău",
@@ -184,7 +186,8 @@ const ro: Strings = {
     "Fiecare răspuns trece prin trei pași: căutare în surse (retrieval) → verificare a fragmentelor găsite → răspuns cu citate exacte din documente oficiale.",
   attachBtnAria: "Atașează fișier",
   attachAddPhotos: "Adaugă fotografii și fișiere",
-  attachUploadComputer: "Încarcă de pe computer",  recording: "Înregistrare…",
+  attachUploadComputer: "Încarcă de pe computer",
+  recording: "Înregistrare…",
   recognizing: "Recunoaștere…",
   micUnavailable: "Microfonul nu este disponibil",
   micStart: "Introducere vocală",
@@ -282,11 +285,13 @@ const ru: Strings = {
     "Каждый ответ проходит три шага: поиск по источникам (retrieval) → проверка найденных фрагментов → ответ с точными цитатами из официальных документов.",
   attachBtnAria: "Прикрепить файл",
   attachAddPhotos: "Добавить фото и файлы",
-  attachUploadComputer: "Загрузить с компьютера",  recording: "Запись…",
+  attachUploadComputer: "Загрузить с компьютера",
+  recording: "Запись…",
   recognizing: "Распознавание…",
   micUnavailable: "Микрофон недоступен",
   micStart: "Голосовой ввод",
-  micStop: "Остановить запись",}
+  micStop: "Остановить запись",
+}
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
 
