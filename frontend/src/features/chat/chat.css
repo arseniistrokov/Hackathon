@@ -531,7 +531,7 @@
 }
 
 .chat__prompt-card-body {
-  color: var(--c-card-soft-text);
+  color: var(--c-card-soft-body);
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.1;
