@@ -258,7 +258,86 @@ def chat_completions(req: ChatCompletionRequest):
             "usage": {"prompt_tokens": 10, "completion_tokens": 60, "total_tokens": 70},
         }
 
-    # 2. Мгновенная реакция на штрафы (консультация + уточняющий вопрос, без цитат)
+    # 2. Мгновенная реакция на вопрос о возможностях ассистента ("что ты можешь" / "ce poti face")
+    capabilities_words_ru = [
+        "что ты можешь",
+        "что ты умеешь",
+        "что ты знаешь",
+        "кто ты",
+        "твои возможности",
+        "чем можешь помочь",
+        "чем ты можешь помочь",
+        "что умеешь",
+        "что можешь",
+        "расскажи о себе",
+        "как ты работаешь",
+        "какие услуги",
+        "список услуг",
+    ]
+    capabilities_words_ro = [
+        "ce poti face",
+        "ce poți face",
+        "ce stii sa faci",
+        "ce știi să faci",
+        "cine esti",
+        "cine ești",
+        "cu ce ma poti ajuta",
+        "cu ce mă poți ajuta",
+        "care sunt capacitatile",
+        "care sunt capacitățile",
+        "despre tine",
+        "cum functionezi",
+        "cum funcționezi",
+    ]
+    is_capabilities = any(w in q_lower for w in capabilities_words_ru) or any(
+        w in q_lower for w in capabilities_words_ro
+    )
+
+    if is_capabilities and not is_translation:
+        if is_ru:
+            cap_text = (
+                "Я официальный цифровой ассистент примэрии города Кишинёв. Моя задача — помогать "
+                "гражданам быстро получать проверенную информацию по городским услугам и регламентам.\n\n"
+                "Вот основные направления, по которым я могу проконсультировать:\n"
+                "• **Общественный транспорт**: стоимость билетов (6 леев), виды абонементов, маршруты RTEC;\n"
+                "• **Примэрия и претуры**: контакты, график работы и часы приёма граждан "
+                "во всех секторах (Ботаника, Центр, Буюканы, Рышкановка, Чеканы) и центральном аппарате;\n"
+                "• **Петиции и обращения**: как подать обращение, сроки рассмотрения (30 рабочих дней);\n"
+                "• **Медицина и здоровье**: как прикрепиться к поликлинике (AMT) и записаться к врачу;\n"
+                "• **Коммунальные службы**: обращение в городские службы (Autosalubritate, Apă-Canal);\n"
+                "• **Штрафы и сборы**: порядок уплаты штрафов через государственную систему MPay.\n\n"
+                "Задайте мне любой вопрос (например: *«Сколько стоит проезд?»* или *«Как подать петицию?»*)."
+            )
+        else:
+            cap_text = (
+                "Sunt asistentul digital oficial al orașului Chișinău. Vă pot ajuta cu informații verificate "
+                "privind serviciile municipale și administrative ale capitalei.\n\n"
+                "Domeniile principale cu care vă pot fi de folos:\n"
+                "• **Transport public**: tarifele biletelor (6 lei) și abonamentele valabile, rutele RTEC;\n"
+                "• **Primăria și preturile**: adresele, orarul și audiența cetățenilor "
+                "în toate sectoarele (Botanica, Centru, Buiucani, Râșcani, Ciocana);\n"
+                "• **Petiții și cereri**: procedura de depunere, termenele de examinare (30 de zile);\n"
+                "• **Sănătate și medicină**: înregistrarea la medicul de familie (AMT) și programări;\n"
+                "• **Servicii comunale**: salubrizare (Autosalubritate) și rețele edilitare;\n"
+                "• **Amenzi și plăți**: procedura de achitare a amenzilor prin serviciul MPay.\n\n"
+                "Cu ce vă pot ajuta astăzi? Puteți adresa orice întrebare specifică."
+            )
+        res_json = json.dumps(
+            {"status": "ANSWERED", "answer": cap_text, "citations": [], "enough": True},
+            ensure_ascii=False,
+        )
+        return {
+            "id": f"chatcmpl-{uuid.uuid4().hex[:12]}",
+            "object": "chat.completion",
+            "created": int(time.time()),
+            "model": req.model,
+            "choices": [
+                {"index": 0, "message": {"role": "assistant", "content": res_json}, "finish_reason": "stop"}
+            ],
+            "usage": {"prompt_tokens": 10, "completion_tokens": 80, "total_tokens": 90},
+        }
+
+    # 3. Мгновенная реакция на штрафы (консультация + уточняющий вопрос, без цитат)
     is_fine = any(w in q_lower for w in ["штраф", "amend", "penalit"])
     if is_fine and not is_translation:
         if is_ru:
@@ -358,6 +437,10 @@ def chat_completions(req: ChatCompletionRequest):
             (
                 ["собак", "животн", "налог", "питомц"],
                 "caini animale taxa intretinere",
+            ),
+            (
+                ["что умеешь", "что можешь", "кто ты", "возможности", "помощь"],
+                "servicii municipale primaria chisinau informatii contacte",
             ),
             (
                 ["привет", "здравствуй", "добрый", "салют", "хай"],
