@@ -57,33 +57,40 @@ def retrieve(query: Query, n: int | None = None) -> list[Passage]:
     """top-N кандидатов (settings.TOP_N) с RRF-скором и sources. Нумерация n=1.. по убыванию скора."""
     top_n = n or settings.TOP_N
     conn = store.connect()
+    try:
+        fts_ids = [
+            chunk_id
+            for chunk_id, _ in store.fts_search(conn, query.search_text, k=top_n, category=query.category)
+        ]
+        vec_ids = _vector_candidates(conn, query.search_text, query.category, top_n)
 
-    fts_ids = [
-        chunk_id
-        for chunk_id, _ in store.fts_search(conn, query.search_text, k=top_n, category=query.category)
-    ]
-    vec_ids = _vector_candidates(conn, query.search_text, query.category, top_n)
+        scores = _rrf_scores(fts_ids, vec_ids)
+        if not scores:
+            return []
 
-    scores = _rrf_scores(fts_ids, vec_ids)
-    if not scores:
-        return []
+        ranked_ids = sorted(scores, key=lambda chunk_id: (-scores[chunk_id], chunk_id))
+        chunks_by_id = {chunk.id: chunk for chunk in store.get_chunks(conn, ranked_ids)}
+        ranked_ids = [chunk_id for chunk_id in ranked_ids if chunk_id in chunks_by_id][:top_n]
 
-    ranked_ids = sorted(scores, key=lambda chunk_id: (-scores[chunk_id], chunk_id))
-    chunks_by_id = {chunk.id: chunk for chunk in store.get_chunks(conn, ranked_ids)}
-    ranked_ids = [chunk_id for chunk_id in ranked_ids if chunk_id in chunks_by_id][:top_n]
-
-    fts_set, vec_set = set(fts_ids), set(vec_ids)
-    passages: list[Passage] = []
-    for rank, chunk_id in enumerate(ranked_ids, start=1):
-        sources: list[Literal["fts", "vec"]] = []
-        if chunk_id in fts_set:
-            sources.append("fts")
-        if chunk_id in vec_set:
-            sources.append("vec")
-        passages.append(
-            Passage(n=rank, chunk=chunks_by_id[chunk_id], score=round(scores[chunk_id], 6), sources=sources)
-        )
-    return passages
+        fts_set, vec_set = set(fts_ids), set(vec_ids)
+        passages: list[Passage] = []
+        for rank, chunk_id in enumerate(ranked_ids, start=1):
+            sources: list[Literal["fts", "vec"]] = []
+            if chunk_id in fts_set:
+                sources.append("fts")
+            if chunk_id in vec_set:
+                sources.append("vec")
+            passages.append(
+                Passage(
+                    n=rank,
+                    chunk=chunks_by_id[chunk_id],
+                    score=round(scores[chunk_id], 6),
+                    sources=sources,
+                )
+            )
+        return passages
+    finally:
+        conn.close()
 
 
 def build_index() -> int:
@@ -92,8 +99,11 @@ def build_index() -> int:
     Вернуть число строк.
     """
     conn = store.connect()
-    ids = store.all_chunk_ids(conn)
-    chunks = store.get_chunks(conn, ids)
+    try:
+        ids = store.all_chunk_ids(conn)
+        chunks = store.get_chunks(conn, ids)
+    finally:
+        conn.close()
     matrix = embed([chunk.text for chunk in chunks])
     store.save_embeddings(ids, matrix, settings.EMB_PATH)
     _index_cache.pop(settings.EMBEDDER, None)

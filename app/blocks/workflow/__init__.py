@@ -35,6 +35,7 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
     query = retrieval.make_query(question, lang)
     cands = retrieval.retrieve(query)
 
+    conn = None
     try:
         conn = store.connect()
         top = rerank.rerank(query, cands)
@@ -47,8 +48,12 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
         return _answered_response(conn, query, top, conflicts, len(cands), t0)
     except Exception:  # noqa: BLE001 — любая ошибка после retrieve = NOT_FOUND, не 500
         log.warning("W1: ask failed after retrieve, falling back to NOT_FOUND", exc_info=True)
-        conn = store.connect()
+        if conn is None:
+            conn = store.connect()
         return _not_found_response(conn, query, len(cands), 0, t0)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def verify_citations(answer: LLMAnswer, passages: list[Passage]) -> list[Passage]:
