@@ -83,8 +83,8 @@ def load_model(adapter_path: str = "models/qlora_adapter") -> None:
         max_seq_length=2048,
         load_in_4bit=True,
     )
-    FastLanguageModel.for_inference(_model)
-    logger.info("Модель успешно загружена и переведена в режим инференса.")
+    _model.eval()
+    logger.info("Модель успешно загружена в режиме eval.")
 
 
 @app.get("/health")
@@ -140,13 +140,17 @@ def chat_completions(req: ChatCompletionRequest):
             return_tensors="pt",
         ).to("cuda")
 
+    import torch
+
     start_t = time.perf_counter()
-    outputs = _model.generate(
-        input_ids=inputs,
-        max_new_tokens=req.max_tokens,
-        temperature=req.temperature,
-        use_cache=True,
-    )
+    with torch.no_grad():
+        outputs = _model.generate(
+            input_ids=inputs,
+            attention_mask=torch.ones_like(inputs),
+            max_new_tokens=req.max_tokens,
+            temperature=req.temperature,
+            use_cache=False,
+        )
     latency_ms = int((time.perf_counter() - start_t) * 1000)
 
     generated_ids = outputs[0][inputs.shape[1] :]

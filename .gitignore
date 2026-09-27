@@ -32,3 +32,5 @@ frontend/dist/
 .vscode/
 .serena/
 .claude/worktrees/
+
+unsloth_compiled_cache/
