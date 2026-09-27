@@ -102,7 +102,7 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
 
         if conflicts and not conflicts[0].resolved_by_date:
             return _conflict_response(conn, query, conflicts[0], len(cands), t0)
-        if not rerank.is_enough(top):
+        if not rerank.is_enough(top, query):
             return _not_found_response(conn, query, len(cands), len(top), t0)
         return _answered_response(conn, query, top, conflicts, len(cands), t0)
     except Exception:  # noqa: BLE001 — любая ошибка после retrieve = NOT_FOUND, не 500

@@ -41,6 +41,8 @@ class Settings(BaseSettings):
 
     # скаут (S1)
     SCOUT: Literal["manual", "llm"] = "manual"
+    # засев ручных конфликтов при старте приложения (W1 hotfix, см. app.blocks.scout.seed_startup_conflicts)
+    SEED_CONFLICTS: bool = True
 
     # восстановление цитат (W1, hotfix для дообученных моделей без citations)
     CITATION_RECOVERY: bool = True

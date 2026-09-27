@@ -78,3 +78,34 @@ def run(chunks: list[Chunk], manual_path: Path | None = None) -> list[Conflict]:
         )
     )
     return unique
+
+
+def seed_startup_conflicts() -> int:
+    """Засев ручных конфликтов при старте приложения (settings.SEED_CONFLICTS=1).
+
+    Нужен, потому что в fixture-режиме БД — in-memory на процесс (см. app.blocks.store):
+    без внутрипроцессного вызова scout конфликты видит только офлайн `python -m app.blocks.scout`,
+    запущенный СНАРУЖИ, что не работает для in-memory БД сервера. idempotent: insert_conflict
+    делает UPSERT по id, повторный вызов не дублирует записи.
+    CORPUS=fixture → data/fixture/conflicts.json. CORPUS=real → data/conflicts_manual.json, если есть.
+    """
+    from app.blocks import store
+
+    if not settings.SEED_CONFLICTS:
+        return 0
+
+    if settings.CORPUS == "fixture":
+        manual_path = settings.FIXTURE_DIR / "conflicts.json"
+    else:
+        manual_path = ROOT / "data" / "conflicts_manual.json"
+        if not manual_path.exists():
+            return 0
+
+    conn = store.connect()
+    try:
+        conflicts = load_manual(manual_path)
+        for conflict in conflicts:
+            store.insert_conflict(conn, conflict)
+        return len(conflicts)
+    finally:
+        conn.close()

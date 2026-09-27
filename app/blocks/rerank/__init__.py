@@ -31,6 +31,20 @@ def rerank(query: Query, passages: list[Passage], k: int | None = None) -> list[
         return l0.rerank(query, passages, top_k)
 
 
-def is_enough(passages: list[Passage]) -> bool:
-    """True, если лучший score ≥ settings.RERANK_THRESHOLD. Пустой список → False."""
-    return bool(passages) and passages[0].score >= settings.RERANK_THRESHOLD
+def is_enough(passages: list[Passage], query: Query | None = None) -> bool:
+    """True, если лучший score ≥ settings.RERANK_THRESHOLD. Пустой список → False.
+
+    `query` необязателен (обратная совместимость контракта R2, старые вызовы без него не меняют
+    поведение): если передан — доп. фильтр против мусорных вопросов не по теме корпуса, у которых
+    высокий score получается на 1 случайном общем слове (напр. "Cine a câștigat campionatul
+    mondial?" против чужого passage о "campionat" в другом контексте). Требуем ≥2 общих значимых
+    (после l0.normalize) токенов top-1 vs текста вопроса — минимальное ужесточение вместо смены
+    порога (единый порог не отделяет весь мусор от демо-вопросов на реальном индексе).
+    """
+    if not passages or passages[0].score < settings.RERANK_THRESHOLD:
+        return False
+    if query is None:
+        return True
+    query_tokens = set(l0.normalize(query.search_text)) | set(l0.normalize(query.text))
+    passage_tokens = set(l0.normalize(passages[0].chunk.text))
+    return len(query_tokens & passage_tokens) >= 2
