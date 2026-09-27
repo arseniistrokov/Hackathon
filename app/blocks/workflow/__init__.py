@@ -72,8 +72,6 @@ def verify_citations(answer: LLMAnswer, passages: list[Passage]) -> list[Passage
         if n in by_n and n not in seen:
             used.append(by_n[n])
             seen.add(n)
-    if not used and passages and settings.LLM != "off":
-        used.append(passages[0])
     return used
 
 
@@ -102,16 +100,19 @@ def _answered_response(
 
     used = verify_citations(llm_answer, top)
     if not used:
-        return _not_found_response(conn, query, passages_retrieved, len(top), t0)
+        if settings.LLM == "off":
+            return _not_found_response(conn, query, passages_retrieved, len(top), t0)
+        citations: list[Citation] = []
+        navigation = None
+    else:
+        citations = [_to_citation(p) for p in used]
+        navigation = store.site_navigation(conn, citations[0].site)
 
-    citations = [_to_citation(p) for p in used]
     warning = None
     if conflicts and conflicts[0].resolved_by_date:
         stale = conflicts[0].b
         date_text = stale.date.isoformat() if stale.date else ""
         warning = prompts.WARNING_STALE_SOURCE[query.lang].format(url=stale.citation.url, date=date_text)
-
-    navigation = store.site_navigation(conn, citations[0].site)
     query_id = uuid.uuid4().hex[:12]
     meta = _meta(conn, passages_retrieved, len(top), query_id, t0)
     store.save_query(

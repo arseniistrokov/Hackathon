@@ -172,7 +172,46 @@ def chat_completions(req: ChatCompletionRequest):
                 extracted = flatten_answer(v)
                 if extracted:
                     return extracted
-        return str(val)
+    def find_grounded_passages(answer: str, user_content: str) -> list[int]:
+        if not answer or not user_content:
+            return []
+        skip_phrases = [
+            "Уточните, пожалуйста", "Vă rugăm să specificați",
+            "Здравствуйте! Я муниципальный ассистент", "Bună ziua! Sunt asistentul municipal",
+            "нет прямого описания", "nu există detalii exhaustive",
+        ]
+        if any(p in answer for p in skip_phrases):
+            return []
+
+        pass_blocks = re.findall(
+            r"\[(\d+)\]\s*\([^\)]*\)\s*\n(.*?)(?=\n\n\[\d+\]|\n</passages>|$)",
+            user_content,
+            re.DOTALL,
+        )
+        if not pass_blocks:
+            return []
+
+        ans_words = set(re.findall(r"\w{4,}", answer.lower()))
+        ans_nums = set(re.findall(r"\b\d+\b", answer))
+        best_n: int | None = None
+        best_overlap = 0
+
+        for n_str, p_text in pass_blocks:
+            p_words = set(re.findall(r"\w{4,}", p_text.lower()))
+            overlap = len(ans_words.intersection(p_words))
+            if overlap > best_overlap:
+                best_overlap = overlap
+                best_n = int(n_str)
+
+        has_num = False
+        if ans_nums and best_n is not None:
+            for n_str, p_text in pass_blocks:
+                if int(n_str) == best_n and ans_nums.intersection(set(re.findall(r"\b\d+\b", p_text))):
+                    has_num = True
+
+        if best_overlap >= 3 or (best_overlap >= 1 and has_num):
+            return [best_n] if best_n is not None else []
+        return []
 
     if is_translation:
         # Извлекаем русский текст запроса
@@ -239,7 +278,7 @@ def chat_completions(req: ChatCompletionRequest):
                             "tarifele în transportul public, programarea la medicul de familie, "
                             "perfectarea actelor sau depunerea petițiilor. Cu ce vă pot fi de folos?"
                         )
-                    parsed = {"status": "ANSWERED", "answer": greet_text, "citations": [1], "enough": True}
+                    parsed = {"status": "ANSWERED", "answer": greet_text, "citations": [], "enough": True}
                 elif is_fine:
                     if is_ru:
                         fine_text = (
@@ -260,7 +299,7 @@ def chat_completions(req: ChatCompletionRequest):
                             "este vorba (parcare, călătorie fără bilet în transport sau altă contravenție), "
                             "pentru a vă putea ghida corect?"
                         )
-                    parsed = {"status": "ANSWERED", "answer": fine_text, "citations": [1], "enough": True}
+                    parsed = {"status": "ANSWERED", "answer": fine_text, "citations": [], "enough": True}
                 else:
                     if "answer" in parsed:
                         parsed["answer"] = flatten_answer(parsed["answer"])
@@ -287,16 +326,21 @@ def chat_completions(req: ChatCompletionRequest):
                             )
                         parsed["status"] = "ANSWERED"
                         parsed["answer"] = conversational_answer
-                        parsed["citations"] = [1]
+                        parsed["citations"] = []
                         parsed["enough"] = True
                     else:
                         parsed["status"] = "ANSWERED"
                         parsed["enough"] = True
                         cits = parsed.get("citations")
-                        if not cits or not isinstance(cits, list):
-                            parsed["citations"] = [1]
-                        else:
-                            parsed["citations"] = [int(c) for c in cits if str(c).isdigit()] or [1]
+                        valid_cits = []
+                        if cits and isinstance(cits, list):
+                            valid_cits = [int(c) for c in cits if str(c).isdigit()]
+                        if not valid_cits:
+                            user_msg = next(
+                                (m.content for m in req.messages if "<passages>" in m.content), ""
+                            )
+                            valid_cits = find_grounded_passages(answer_text, user_msg)
+                        parsed["citations"] = valid_cits
 
                 clean_json = json.dumps(parsed, ensure_ascii=False)
         except Exception:
