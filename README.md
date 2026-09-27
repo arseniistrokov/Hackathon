@@ -4,6 +4,11 @@ Evidence-grounded двуязычный (RO/RU) ассистент по 40 офи
 
 > Модель формулирует ответ. Evidence определяет, имеет ли она право его дать.
 
+## Живое демо
+- **NEXA (веб, RO/RU, голос):** https://especially-charleston-nevada-menu.trycloudflare.com
+- Для команды в Tailscale: http://100.124.53.28:8080
+- Стенд: реальный корпус (35 сайтов Annex 1, 372 документа), дообученная Qwen2.5-3B QLoRA через LLM=api, офлайн-распознавание речи faster-whisper. Вопросы для проверки — `docs/pitch/demo_questions.md`.
+
 ## Старт
 ```
 cp .env.example .env              # всё по умолчанию = L0: без сети, моделей и ключей
