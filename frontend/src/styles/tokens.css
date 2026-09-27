@@ -9,9 +9,12 @@
 
 :root {
   /* --- цвет ------------------------------------------------------------- */
-  --c-page: #f4f6f8;
+  /* Поверхности сдвинуты к нейтральному светло-серому фону макета (Figma:
+     композер #e6e6e6, карточки-подсказки #eef2fb) — вместо прежнего чисто-белого. */
+  --c-page: #f1f2f5;
   --c-surface: #ffffff;
   --c-surface-sunken: #eef2f5;
+  --c-surface-raised: #e9eaee;
   --c-border: #d5dde4;
   --c-border-strong: #b6c3cd;
 
@@ -36,8 +39,15 @@
 
   --c-focus: #1d7fbd;
 
+  /* Акцентная кнопка отправки/микрофона — яркий зелёный из макета Figma (NEXA),
+     сознательно отдельный токен от --c-accent: это "action" цвет, а не смысловой статус. */
+  --c-cta: #3ede56;
+  --c-cta-hover: #2fc946;
+  --c-cta-ink: #0d2b12;
+
   /* --- типографика ------------------------------------------------------ */
-  --font-ui: system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Inter — шрифт макета (Google Fonts, подключён в index.html). */
+  --font-ui: "Inter", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-quote: Georgia, "Times New Roman", serif;
 
   --fs-xs: 0.8125rem;
@@ -45,6 +55,7 @@
   --fs-md: 1.0625rem;
   --fs-lg: 1.3125rem;
   --fs-xl: 1.625rem;
+  --fs-2xl: 2rem;
 
   --lh-tight: 1.25;
   --lh-normal: 1.55;
@@ -61,9 +72,11 @@
   --space-6: 2rem;
   --space-7: 3rem;
 
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Радиусы укрупнены под макет Figma (карточки ~10px, композер/пилюли ~30px). */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
 
   --measure: 65ch;
   --width-app: 46rem;
