@@ -30,7 +30,7 @@ class Settings(BaseSettings):
     API_BASE_URL: str = ""
     API_KEY: str = ""
     API_MODEL: str = ""
-    LLM_TIMEOUT_S: float = 30.0
+    LLM_TIMEOUT_S: float = 8.0
 
     # retrieval (R1, R2)
     EMBEDDER: Literal["hash", "bge-m3"] = "hash"
