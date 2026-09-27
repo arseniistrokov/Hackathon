@@ -13,6 +13,9 @@ import ts from "typescript"
 const __filename = fileURLToPath(import.meta.url)
 // @ts-ignore
 const __dirname = path.dirname(__filename)
+// @ts-ignore
+const { t } = await import("../../i18n.ts")
+
 
 let passed = 0
 let failed = 0
@@ -66,13 +69,16 @@ const transpileResult = ts.transpileModule(sourceCode, {
 const customRequire = (id: string) => {
   if (id === "react") return React
   if (id.endsWith(".css")) return {}
+  if (id.includes("i18n")) return { t }
+  if (id.includes("client")) return { transcribe: async () => ({ text: "" }) }
   return {}
 }
 
 const moduleObj = { exports: {} as Record<string, any> }
 const runner = new Function("require", "module", "exports", "React", transpileResult.outputText)
 runner(customRequire, moduleObj, moduleObj.exports, React)
-const { MicButton, resolveSpeechLang, isSpeechRecognitionSupported } = moduleObj.exports
+const { MicButton, resolveSpeechLang, isSpeechRecognitionSupported, isMediaRecorderSupported } = moduleObj.exports
+
 
 // Мок для SpeechRecognition
 class MockSpeechRecognition {
@@ -226,6 +232,36 @@ test("mic.css использует --tap-min и MicButton не содержит 
   // MicButton не должен импортировать ask или вызывать отправку
   assert(!sourceCode.includes("ask("), "MicButton не должен вызывать ask()")
   assert(!sourceCode.includes("postJson"), "MicButton не должен отправлять HTTP запросы")
+})
+
+// -----------------------------------------------------------------------------
+// ТЕСТ 7: Поддержка MediaRecorder и экспорт вспомогательной функции
+// -----------------------------------------------------------------------------
+test("isMediaRecorderSupported экспортируется и корректно проверяет наличие API", () => {
+  assert(typeof isMediaRecorderSupported === "function", "isMediaRecorderSupported должна быть функцией")
+  const origWindow = (globalThis as any).window
+  try {
+    (globalThis as any).window = {}
+    assert(!isMediaRecorderSupported(), "без navigator.mediaDevices возвращает false")
+  } finally {
+    (globalThis as any).window = origWindow
+  }
+})
+
+// -----------------------------------------------------------------------------
+// ТЕСТ 8: Наличие строк i18n для голосового ввода
+// -----------------------------------------------------------------------------
+test("i18n содержит ключи recording, recognizing, micUnavailable для RO и RU", () => {
+  const roStrings = t("ro")
+  const ruStrings = t("ru")
+
+  assertEqual(roStrings.recording, "Înregistrare…", "RO recording")
+  assertEqual(roStrings.recognizing, "Recunoaștere…", "RO recognizing")
+  assertEqual(roStrings.micUnavailable, "Microfonul nu este disponibil", "RO micUnavailable")
+
+  assertEqual(ruStrings.recording, "Запись…", "RU recording")
+  assertEqual(ruStrings.recognizing, "Распознавание…", "RU recognizing")
+  assertEqual(ruStrings.micUnavailable, "Микрофон недоступен", "RU micUnavailable")
 })
 
 console.log(`\nИТОГ ТЕСТОВ MicButton: ${passed} пройдено, ${failed} упало.`)
