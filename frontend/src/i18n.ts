@@ -84,6 +84,9 @@ export interface Strings {
   aboutFooterNote: string
   aboutHowItWorksTitle: string
   aboutHowItWorksBody: string
+  attachBtnAria: string
+  attachAddPhotos: string
+  attachUploadComputer: string
   recording: string
   recognizing: string
   micUnavailable: string
@@ -181,12 +184,14 @@ const ro: Strings = {
   aboutHowItWorksTitle: "Cum funcționează",
   aboutHowItWorksBody:
     "Fiecare răspuns trece prin trei pași: căutare în surse (retrieval) → verificare a fragmentelor găsite → răspuns cu citate exacte din documente oficiale.",
+  attachBtnAria: "Atașează fișier",
+  attachAddPhotos: "Adaugă fotografii și fișiere",
+  attachUploadComputer: "Încarcă de pe computer",
   recording: "Înregistrare…",
   recognizing: "Recunoaștere…",
   micUnavailable: "Microfonul nu este disponibil",
   micStart: "Introducere vocală",
-  micStop: "Oprește înregistrarea",
-}
+  micStop: "Oprește înregistrarea",}
 
 const ru: Strings = {
   appTitle: "Муниципальный ассистент Кишинёва",
@@ -278,6 +283,9 @@ const ru: Strings = {
   aboutHowItWorksTitle: "Как это работает",
   aboutHowItWorksBody:
     "Каждый ответ проходит три шага: поиск по источникам (retrieval) → проверка найденных фрагментов → ответ с точными цитатами из официальных документов.",
+  attachBtnAria: "Прикрепить файл",
+  attachAddPhotos: "Добавить фото и файлы",
+  attachUploadComputer: "Загрузить с компьютера",
   recording: "Запись…",
   recognizing: "Распознавание…",
   micUnavailable: "Микрофон недоступен",
