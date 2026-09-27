@@ -84,6 +84,9 @@ export interface Strings {
   aboutFooterNote: string
   aboutHowItWorksTitle: string
   aboutHowItWorksBody: string
+  attachBtnAria: string
+  attachAddPhotos: string
+  attachUploadComputer: string
 }
 
 const ro: Strings = {
@@ -176,6 +179,9 @@ const ro: Strings = {
   aboutHowItWorksTitle: "Cum funcționează",
   aboutHowItWorksBody:
     "Fiecare răspuns trece prin trei pași: căutare în surse (retrieval) → verificare a fragmentelor găsite → răspuns cu citate exacte din documente oficiale.",
+  attachBtnAria: "Atașează fișier",
+  attachAddPhotos: "Adaugă fotografii și fișiere",
+  attachUploadComputer: "Încarcă de pe computer",
 }
 
 const ru: Strings = {
@@ -268,6 +274,9 @@ const ru: Strings = {
   aboutHowItWorksTitle: "Как это работает",
   aboutHowItWorksBody:
     "Каждый ответ проходит три шага: поиск по источникам (retrieval) → проверка найденных фрагментов → ответ с точными цитатами из официальных документов.",
+  attachBtnAria: "Прикрепить файл",
+  attachAddPhotos: "Добавить фото и файлы",
+  attachUploadComputer: "Загрузить с компьютера",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }

@@ -2,7 +2,7 @@
 // Уровень L0/L1 переключает только api/client.ts — здесь про моки ничего не известно.
 // Раскладка перенесена 1:1 со структуры макета Figma NEXA (chatpage-44-8433): сайдбар слева,
 // пустое состояние с шаром-маскотом и подсказками, композер-пилюля снизу.
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { ask } from "@/api/client"
 import type { AskResponse, Citation, Lang } from "@/api/types"
 import { t } from "@/i18n"
@@ -70,7 +70,47 @@ export function ChatScreen() {
   const [searchQuery, setSearchQuery] = useState("")
   const [openCitation, setOpenCitation] = useState<Citation | null>(null)
   const [view, setView] = useState<"chat" | "about">("chat")
+  const [attachOpen, setAttachOpen] = useState(false)
+  const attachRef = useRef<HTMLDivElement | null>(null)
+  const attachToggleRef = useRef<HTMLButtonElement | null>(null)
+  const threadEndRef = useRef<HTMLDivElement | null>(null)
+  const lastTurnRef = useRef<HTMLElement | null>(null)
   const s = t(lang)
+
+  useEffect(() => {
+    if (pending) {
+      threadEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" })
+    } else if (turns.length > 0) {
+      lastTurnRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [turns, pending])
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node
+      if (
+        attachRef.current &&
+        !attachRef.current.contains(target) &&
+        attachToggleRef.current &&
+        !attachToggleRef.current.contains(target)
+      ) {
+        setAttachOpen(false)
+      }
+    }
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setAttachOpen(false)
+      }
+    }
+    if (attachOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+      document.addEventListener("keydown", handleKeyDown)
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside)
+        document.removeEventListener("keydown", handleKeyDown)
+      }
+    }
+  }, [attachOpen])
 
   useEffect(() => {
     try {
@@ -322,8 +362,10 @@ export function ChatScreen() {
                 {s.quickPrompts.slice(0, 2).map((prompt) => (
                   <button key={prompt} type="button" className="chat__prompt-card" onClick={() => void run(prompt)}>
                     <span className="chat__prompt-card-head">
-                      {prompt}
-                      <ChevronIcon />
+                      <span className="chat__prompt-card-title">{prompt}</span>
+                      <span className="chat__prompt-card-chevron">
+                        <ChevronIcon />
+                      </span>
                     </span>
                     <span className="chat__prompt-card-body">{s.emptyBody}</span>
                   </button>
@@ -332,8 +374,12 @@ export function ChatScreen() {
             </section>
           )}
 
-          {turns.map((turn) => (
-            <section className="turn" key={turn.id}>
+          {turns.map((turn, index) => (
+            <section
+              className="turn"
+              key={turn.id}
+              ref={index === turns.length - 1 ? (element) => { lastTurnRef.current = element } : null}
+            >
               <p className="turn__question">{turn.question}</p>
               <AnswerCard response={turn.response} onOpenDocument={setOpenCitation} />
             </section>
@@ -362,13 +408,44 @@ export function ChatScreen() {
               </button>
             </section>
           )}
+
+          <div ref={threadEndRef} />
         </main>
 
         <form className="composer" onSubmit={onSubmit}>
           <label className="composer__label" htmlFor="question">
             {s.questionLabel}
           </label>
+          {attachOpen && (
+            <div className="composer__attach-popup" ref={attachRef} role="dialog" aria-label={s.attachBtnAria}>
+              <button
+                type="button"
+                className="composer__attach-btn"
+                onClick={() => setAttachOpen(false)}
+              >
+                <PaperclipIcon />
+                <span>{s.attachAddPhotos}</span>
+              </button>
+              <button
+                type="button"
+                className="composer__attach-btn composer__attach-btn--secondary"
+                onClick={() => setAttachOpen(false)}
+              >
+                <span>{s.attachUploadComputer}</span>
+              </button>
+            </div>
+          )}
           <div className="composer__row">
+            <button
+              ref={attachToggleRef}
+              type="button"
+              className={`composer__attach-btn-toggle ${attachOpen ? "composer__attach-btn-toggle--open" : ""}`}
+              aria-label={s.attachBtnAria}
+              aria-expanded={attachOpen}
+              onClick={() => setAttachOpen((prev) => !prev)}
+            >
+              <PlusIcon />
+            </button>
             <input
               id="question"
               className="composer__input"
@@ -545,3 +622,27 @@ function LogoMarkIcon() {
     </svg>
   )
 }
+
+function PlusIcon() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function PaperclipIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+

@@ -2,14 +2,16 @@
    Литеральные значения цвета в features запрещены и проверяются grep-ом в CI.
    Раскладка 1:1 со структурой макета Figma NEXA: сайдбар + контент + композер-пилюля. */
 
-/* --- корневая раскладка: сайдбар + контент -------------------------------- */
+/* --- корневая раскладка: сайдбар + контент (Figma 58:2226 / 44:8433) ------- */
 .app {
   display: flex;
   align-items: stretch;
-  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
   background: var(--c-page);
-  gap: var(--space-5);
-  padding: var(--space-5);
+  gap: 0;
+  padding: 0;
 }
 
 .app__backdrop {
@@ -20,18 +22,22 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  width: 256px;
+  width: 277px;
   flex-shrink: 0;
-  padding: var(--space-4);
-  border-radius: var(--radius-lg);
+  height: 100%;
+  max-height: 100%;
+  padding: var(--space-5) var(--space-4);
   background: var(--c-sidebar-bg);
+  border-right: 1px solid var(--c-sidebar-border);
   gap: var(--space-4);
+  overflow: hidden;
 }
 
 .sidebar--collapsed {
-  width: auto;
-  padding: var(--space-2);
-  background: transparent;
+  width: 79px;
+  padding: var(--space-5) var(--space-2);
+  background: var(--c-sidebar-bg);
+  border-right: 1px solid var(--c-sidebar-border);
   border-radius: 0;
 }
 
@@ -47,20 +53,22 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2);
+  min-height: 40px;
 }
 
 .sidebar__brand {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0;
   min-width: 0;
 }
 
 .sidebar__logo {
-  font-size: var(--fs-xl);
+  font-size: 1.75rem;
   font-weight: 800;
   letter-spacing: -0.02em;
   text-transform: lowercase;
+  line-height: 1.1;
 }
 
 .sidebar__logo-x {
@@ -69,8 +77,11 @@
 
 .sidebar__logo-subtitle {
   color: var(--c-ink-faint);
-  font-size: var(--fs-xs);
+  font-size: 0.6875rem;
   font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-top: 2px;
   overflow-wrap: anywhere;
 }
 
@@ -233,7 +244,10 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
-  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  padding: var(--space-4) var(--space-6) var(--space-4);
+  overflow: hidden;
 }
 
 .main__topbar {
@@ -242,6 +256,7 @@
   justify-content: flex-end;
   gap: var(--space-3);
   padding-bottom: var(--space-3);
+  min-height: 48px;
 }
 
 .main__mobile-title {
@@ -265,10 +280,12 @@
 }
 
 .chat__disclaimer {
-  max-width: var(--measure);
-  margin-bottom: var(--space-3);
+  max-width: 941px;
+  width: 100%;
+  margin: 0 auto var(--space-3);
   color: var(--c-ink-faint);
   font-size: var(--fs-xs);
+  text-align: left;
 }
 
 /* --- переключатель языка: две пилюли, как Log in / Sign up в макете -------- */
@@ -305,6 +322,7 @@
   gap: var(--space-6);
   overflow-y: auto;
   min-height: 0;
+  padding: 0 var(--space-2) var(--space-6);
 }
 
 .chat__empty {
@@ -318,14 +336,16 @@
   text-align: center;
 }
 
-/* Шар-маскот: CSS-градиент blue -> teal с мягким glow (см. tokens.css --mascot-*). */
+/* Шар-маскот: крупная (~300-340px) неровная капля/тор с ярким трехцветным
+   градиентом (маджента/пурпур -> голубой -> бирюза), радиальным бликом стекла и glow. */
 .mascot {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 9rem;
-  height: 9rem;
+  width: var(--mascot-size, 19rem);
+  height: var(--mascot-size, 19rem);
+  margin-bottom: var(--space-2);
 }
 
 .mascot__glow {
@@ -333,59 +353,90 @@
   inset: -3rem;
   background: var(--mascot-glow);
   border-radius: 50%;
+  filter: blur(24px);
+  pointer-events: none;
 }
 
 .mascot__ball {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+  border-radius: 46% 54% 50% 50% / 40% 45% 55% 60%;
   background: var(--mascot-gradient);
-  box-shadow: var(--shadow-raised);
-  animation: mascot-float 6s ease-in-out infinite;
+  box-shadow: var(--mascot-shadow);
+  animation: mascot-float 7s ease-in-out infinite;
+}
+
+.mascot__ball::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: inherit;
+  background: var(--mascot-highlight);
+  pointer-events: none;
+}
+
+.mascot__ball::after {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 50% 50% 52% 48% / 46% 52% 48% 54%;
+  background: var(--mascot-center);
+  filter: blur(3px);
+  pointer-events: none;
 }
 
 @keyframes mascot-float {
   0%,
   100% {
-    transform: translateY(0) rotate(0deg);
+    transform: translateY(0) rotate(0deg) scale(1);
+    border-radius: 46% 54% 50% 50% / 40% 45% 55% 60%;
   }
-  50% {
-    transform: translateY(-0.5rem) rotate(4deg);
+  33% {
+    transform: translateY(-8px) rotate(2deg) scale(1.02);
+    border-radius: 52% 48% 46% 54% / 48% 42% 58% 52%;
+  }
+  66% {
+    transform: translateY(-4px) rotate(-2deg) scale(0.99);
+    border-radius: 44% 56% 54% 46% / 42% 50% 50% 58%;
   }
 }
 
 .chat__empty-title {
-  max-width: 28rem;
+  max-width: 32rem;
   font-size: var(--fs-2xl);
   font-weight: 800;
   letter-spacing: -0.01em;
+  line-height: var(--lh-tight);
 }
 
-/* Светло-голубые карточки-подсказки: клик подставляет вопрос в композер и отправляет. */
+/* Светло-голубые карточки-подсказки: 2 колонки по ~467px (макет Frame 104, 941px) */
 .chat__prompts {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-4);
-  max-width: 44rem;
+  max-width: 941px;
   width: 100%;
 }
 
 .chat__prompt-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4) var(--space-5);
+  justify-content: flex-start;
+  gap: var(--space-3);
+  padding: 24px;
+  min-height: 140px;
   border: 1px solid var(--c-card-soft-border);
   border-radius: var(--radius-lg);
   background: var(--c-card-soft);
   text-align: left;
   cursor: pointer;
-  transition: box-shadow 0.15s ease, transform 0.1s ease;
+  transition: box-shadow 0.15s ease, transform 0.1s ease, border-color 0.15s ease;
 }
 
 .chat__prompt-card:hover {
   box-shadow: var(--shadow-card);
+  border-color: var(--c-card-soft-hover);
 }
 
 .chat__prompt-card:active {
@@ -394,24 +445,43 @@
 
 .chat__prompt-card-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  width: 100%;
   color: var(--c-accent);
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
   font-weight: 700;
+}
+
+.chat__prompt-card-title {
+  flex: 1;
+  text-align: left;
+}
+
+.chat__prompt-card-chevron {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-accent);
+  margin-top: 3px;
 }
 
 .chat__prompt-card-body {
   color: var(--c-ink-muted);
-  font-size: var(--fs-xs);
+  font-size: var(--fs-sm);
   line-height: var(--lh-normal);
+  text-align: left;
 }
 
 .turn {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  max-width: 941px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .turn__question {
@@ -729,6 +799,9 @@
   border-left-width: 3px;
   border-radius: var(--radius-lg);
   background: var(--c-error-soft);
+  max-width: 941px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .error__title {
@@ -754,15 +827,19 @@
   cursor: pointer;
 }
 
-/* --- композер (широкая серая пилюля + круглая синяя CTA-кнопка, как в макете) --- */
+/* --- композер (широкая серая пилюля + кнопка + / отправка из Figma 58:2226 / 85:16663) --- */
 .composer {
   position: sticky;
   bottom: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4) 0 max(var(--space-4), env(safe-area-inset-bottom, 0px));
+  padding: var(--space-3) 0 max(var(--space-3), env(safe-area-inset-bottom, 0px));
   background: var(--c-page);
+  max-width: 941px;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 10;
 }
 
 /* Видимый лейбл в макете не показан — оставляем текст только для скринридеров. */
@@ -775,24 +852,105 @@
   white-space: nowrap;
 }
 
+/* Попап прикрепления файлов (макет 85:16663) */
+.composer__attach-popup {
+  position: absolute;
+  bottom: calc(100% + var(--space-2));
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 10px 22px;
+  border-radius: var(--radius-pill);
+  background: var(--c-attach-popup-bg);
+  box-shadow: var(--shadow-raised);
+  z-index: 20;
+  animation: attach-pop 0.15s ease-out;
+}
+
+@keyframes attach-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.composer__attach-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--c-attach-popup-ink);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  cursor: pointer;
+  padding: var(--space-1) 0;
+  transition: opacity 0.15s ease;
+}
+
+.composer__attach-btn:hover {
+  opacity: 0.85;
+}
+
+.composer__attach-btn--secondary {
+  color: var(--c-attach-popup-muted);
+  font-weight: 500;
+}
+
 .composer__row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-2);
+  padding: 6px var(--space-3) 6px var(--space-2);
   border-radius: var(--radius-pill);
-  background: var(--c-surface-raised);
+  background: var(--c-composer-bg);
+  min-height: 56px;
+}
+
+.composer__attach-btn-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.15s ease;
+}
+
+.composer__attach-btn-toggle:hover {
+  background: var(--c-surface);
+}
+
+.composer__attach-btn-toggle--open {
+  transform: rotate(45deg);
+  background: var(--c-surface);
 }
 
 .composer__input {
   flex: 1;
   min-width: 0;
   min-height: var(--tap-min);
-  padding: var(--space-3) var(--space-4);
+  padding: var(--space-2) var(--space-2);
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
-  font-size: var(--fs-sm);
+  font-size: var(--fs-md);
+  color: var(--c-ink);
+}
+
+.composer__input::placeholder {
+  color: var(--c-composer-placeholder);
 }
 
 .composer__input:focus-visible {
@@ -805,22 +963,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: var(--tap-min);
-  min-height: var(--tap-min);
-  width: var(--tap-min);
-  height: var(--tap-min);
+  min-width: 44px;
+  min-height: 44px;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
   padding: 0;
   border: 0;
   border-radius: 50%;
-  background: var(--c-cta);
-  color: var(--c-cta-ink);
+  background: var(--c-submit);
+  color: var(--c-submit-ink);
   cursor: pointer;
   transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .composer__submit:hover:not(:disabled) {
-  background: var(--c-cta-hover);
+  background: var(--c-submit-hover);
 }
 
 .composer__submit:active:not(:disabled) {
@@ -828,15 +986,16 @@
 }
 
 .composer__submit:disabled {
-  background: var(--c-border-strong);
-  color: var(--c-ink-faint);
+  background: var(--c-submit);
+  color: var(--c-submit-ink);
   cursor: not-allowed;
+  opacity: 0.45;
 }
 
 .composer__submit-spinner {
   width: 1rem;
   height: 1rem;
-  border: 2px solid var(--c-cta-ink);
+  border: 2px solid var(--c-submit-ink);
   border-top-color: transparent;
   border-radius: 50%;
   animation: composer-spin 0.7s linear infinite;
@@ -851,8 +1010,12 @@
 /* --- мобильная раскладка: сайдбар уходит в overlay, шапка с гамбургером ---- */
 @media (max-width: 760px) {
   .app {
-    padding: var(--space-3);
+    padding: 0;
     gap: 0;
+  }
+
+  .main {
+    padding: var(--space-2) var(--space-3) var(--space-2);
   }
 
   .app--sidebar-collapsed .sidebar {
@@ -861,7 +1024,7 @@
 
   .sidebar {
     position: fixed;
-    inset: 0 25% 0 0;
+    inset: 0 20% 0 0;
     z-index: 50;
     border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
     transform: translateX(-100%);
@@ -902,12 +1065,22 @@
   }
 
   .mascot {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: 8rem;
+    height: 8rem;
   }
 
   .chat__empty-title {
     font-size: var(--fs-xl);
+  }
+
+  .composer {
+    max-width: 100%;
+  }
+
+  .composer__attach-popup {
+    left: 0;
+    right: 0;
+    justify-content: space-around;
   }
 }
 
