@@ -11,6 +11,7 @@ import json
 import logging
 import re
 import sqlite3
+import uuid
 from datetime import date
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -21,8 +22,21 @@ if TYPE_CHECKING:
 from app.config import settings
 from app.contracts.models import Chunk, Citation, Conflict, ConflictSide, Navigation, RawPage, Stats
 
-_fixture_template: sqlite3.Connection | None = None
+_fixture_uri: str | None = None
+_fixture_anchor: sqlite3.Connection | None = None
+"""Единственное «якорное» соединение, держащее shared-cache in-memory БД живой. Никогда не
+закрывается вызывающим кодом (см. _FixtureConnection.close ниже) — только reset_fixture()."""
 log = logging.getLogger(__name__)
+
+
+class _FixtureConnection(sqlite3.Connection):
+    """close() — no-op: fixture-БД общая на процесс, закрытие одной "ручки" не должно рвать
+    остальные (см. save_query/save_feedback — иначе они теряются между запросами). Реальное
+    закрытие — только у якоря, через reset_fixture()."""
+
+    def close(self) -> None:  # noqa: D102 — see class docstring
+        pass
+
 
 _EMAIL_RE = re.compile(r"[\w.+-]+@[\w-]+\.[A-Za-z]{2,}")
 _IDNP_RE = re.compile(r"(?<!\d)\d{13}(?!\d)")  # IDNP: 13 цифр (Молдова)
@@ -61,20 +75,50 @@ def connect() -> sqlite3.Connection:
 
 
 def _connect_fixture() -> sqlite3.Connection:
-    global _fixture_template
+    """Все connect() в fixture-режиме делят один и тот же shared-cache in-memory SQLite:
+    save_query/save_feedback/insert_conflict одного вызова видны следующему (иначе /api/stats
+    всегда 0, а CONFLICT недостижим — данные терялись в отдельной backup-копии на каждый connect()).
 
-    if _fixture_template is not None:
-        conn = sqlite3.connect(":memory:", check_same_thread=False)
-        conn.row_factory = sqlite3.Row
-        _fixture_template.backup(conn)
-        return conn
+    Каждый вызов возвращает НОВЫЙ объект Connection (не один и тот же), но привязанный к общей
+    БД через `cache=shared`; "якорное" соединение (_fixture_anchor) держит эту БД живой, пока
+    процесс не завершится или тест не вызовет reset_fixture(). close() у возвращаемого соединения
+    не закрывает саму БД (см. _FixtureConnection) — данные переживают отдельные запросы.
+    """
+    global _fixture_anchor, _fixture_uri
 
+    if _fixture_anchor is None:
+        # Каждое поколение fixture-БД получает новое имя: старые "утёкшие" (no-op close())
+        # соединения от предыдущего поколения не мешают reset_fixture() дать чистый лист.
+        _fixture_uri = f"file:rtk_fixture_{uuid.uuid4().hex}?mode=memory&cache=shared"
+        _fixture_anchor = _build_fixture_db(_fixture_uri)
+
+    conn = sqlite3.connect(
+        _fixture_uri, uri=True, check_same_thread=False, factory=_FixtureConnection
+    )
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
+    return conn
+
+
+def reset_fixture() -> None:
+    """Только для тестов: закрыть якорное соединение и сбросить fixture-БД. Следующий connect()
+    пересоздаст корпус с нуля — так тесты, рассчитывающие на изоляцию, не видят чужих записей."""
+    global _fixture_anchor, _fixture_uri
+
+    if _fixture_anchor is not None:
+        _fixture_anchor.close()
+    _fixture_anchor = None
+    _fixture_uri = None
+
+
+def _build_fixture_db(uri: str) -> sqlite3.Connection:
     import yaml
 
     from app.blocks import chunker, fetch
 
-    conn = sqlite3.connect(":memory:", check_same_thread=False)
+    conn = sqlite3.connect(uri, uri=True, check_same_thread=False)
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON")
     init_schema(conn)
     pages = fetch.load_raw(settings.FIXTURE_DIR / "mini_corpus")
     sites = yaml.safe_load(settings.SITES_PATH.read_text(encoding="utf-8"))
@@ -132,11 +176,7 @@ def _connect_fixture() -> sqlite3.Connection:
             ),
         )
     conn.commit()
-    _fixture_template = conn
-    instance = sqlite3.connect(":memory:", check_same_thread=False)
-    instance.row_factory = sqlite3.Row
-    conn.backup(instance)
-    return instance
+    return conn
 
 
 def init_schema(conn: sqlite3.Connection) -> None:
