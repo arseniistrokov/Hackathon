@@ -6,6 +6,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   min-width: var(--tap-min);
   min-height: var(--tap-min);
   padding: var(--space-2);
@@ -28,10 +29,27 @@
   outline-offset: 2px;
 }
 
-.mic-btn--listening {
+.mic-btn--listening,
+.mic-btn--recording {
   background: var(--c-error-soft);
   color: var(--c-error);
   animation: mic-pulse 1.5s infinite;
+}
+
+.mic-btn--recognizing {
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+}
+
+.mic-btn__dot {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: var(--radius-pill);
+  background-color: var(--c-error);
+  animation: mic-dot-pulse 1s infinite alternate;
 }
 
 @keyframes mic-pulse {
@@ -43,6 +61,17 @@
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes mic-dot-pulse {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 

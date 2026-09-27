@@ -79,3 +79,10 @@ export interface Stats {
   feedback_down: number
   model: string
 }
+
+export interface TranscribeResponse {
+  text: string
+  lang?: string | null
+  duration_ms?: number
+}
+

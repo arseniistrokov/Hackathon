@@ -8,7 +8,7 @@ import answeredRuFromRoDoc from "../../../data/fixture/mock_responses/answered_r
 import answeredWithWarning from "../../../data/fixture/mock_responses/answered_with_warning.json"
 import conflict from "../../../data/fixture/mock_responses/conflict.json"
 import notFound from "../../../data/fixture/mock_responses/not_found.json"
-import type { AskResponse, FeedbackRequest, Lang, Stats } from "./types"
+import type { AskResponse, FeedbackRequest, Lang, Stats, TranscribeResponse } from "./types"
 
 const TIMEOUT_MS = 30_000
 const MOCK_LATENCY_MS = 400
@@ -117,3 +117,27 @@ export async function getStats(): Promise<Stats> {
   }
   return getJson<Stats>("/api/stats")
 }
+
+const TRANSCRIBE_TIMEOUT_MS = 20_000
+
+export async function transcribe(blob: Blob, lang?: Lang | null): Promise<TranscribeResponse> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), TRANSCRIBE_TIMEOUT_MS)
+  const formData = new FormData()
+  formData.append("audio", blob, "recording.webm")
+  if (lang) {
+    formData.append("lang", lang)
+  }
+  try {
+    const response = await fetch("/api/transcribe", {
+      method: "POST",
+      body: formData,
+      signal: controller.signal,
+    })
+    if (!response.ok) throw new Error(`/api/transcribe → ${response.status}`)
+    return (await response.json()) as TranscribeResponse
+  } finally {
+    clearTimeout(timer)
+  }
+}
+

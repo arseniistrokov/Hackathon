@@ -48,6 +48,25 @@ uv run python -m app.blocks.eval --all
 Golden-набор (`data/fixture/golden.jsonl`) калиброван под fixture-корпус: на `CORPUS=real`
 Recall@5/Citation закономерно ниже (другие document_id/чанки), а не показатель регресса.
 
+## Голосовой ввод офлайн (STT)
+
+Для локального распознавания речи (RO/RU) без отправки аудио во внешние сервисы используется `faster-whisper`. Основной путь ввода в веб-интерфейсе — захват аудио через MediaRecorder и транскрибация на локальном бэкенде (`POST /api/transcribe`), с автоматическим откатом на браузерный Web Speech API при отключённом STT или отсутствии поддержки.
+
+1. Установите зависимости STT:
+```bash
+uv sync --extra stt
+```
+
+2. Настройте параметры в `.env`:
+```bash
+STT=whisper
+WHISPER_MODEL=medium      # base (~145MB), small (~480MB), medium (~1.5GB), large-v3 (~3GB для мощных GPU)
+WHISPER_DEVICE=auto       # auto / cpu / cuda
+WHISPER_COMPUTE=int8      # int8 / float16
+```
+
+> **Примечание:** При первом запуске модель автоматически загружается из Hugging Face в локальный кэш. Все последующие транскрибации выполняются локально без подключения к внешним API.
+
 ## Куда смотреть
 - `docs/CONTEXT.md` — решения проекта, единственный источник правды.
 - `docs/BLOCKS.md` — карта блоков, владельцы, статус.
@@ -57,3 +76,4 @@ Recall@5/Citation закономерно ниже (другие document_id/ча
 - `AGENTS.md` — правила для CLI-агентов.
 
 Сейчас в репозитории только каркас C0: модели контрактов, порты блоков с `NotImplementedError`, fixture, контракты и референсы. Реализация блоков — по контрактам.
+

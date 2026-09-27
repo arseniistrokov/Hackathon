@@ -15,4 +15,5 @@ def health() -> dict[str, str]:
         "llm": settings.LLM,
         "embedder": settings.EMBEDDER,
         "reranker": settings.RERANKER,
+        "stt": settings.STT,
     }
