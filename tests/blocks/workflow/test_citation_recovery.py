@@ -67,6 +67,39 @@ def test_recovery_no_overlap_gives_not_found(shared_conn, monkeypatch: pytest.Mo
     assert response.citations == []
 
 
+def test_recovery_caps_at_citation_recovery_max(shared_conn, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Даже если answer пересекается с >2 фрагментами, остаются не более CITATION_RECOVERY_MAX
+    с наибольшим rerank-score (устаревшие/менее релевантные совпадения отсекаются)."""
+    from app.blocks import retrieval
+
+    query = retrieval.make_query("Care este termenul de examinare a petiției?")
+    cands = retrieval.retrieve(query)
+    import app.blocks.rerank as rerank_mod
+
+    top = rerank_mod.rerank(query, cands)
+    assert len(top) >= 3, "нужно ≥3 passages в top для проверки лимита"
+
+    # answer пересекается по словам сразу с несколькими top passages (общие термины/числа)
+    shared_words = " ".join(sorted(_word_tokens_from_all(top)))
+    monkeypatch.setattr(
+        llm,
+        "complete_json",
+        lambda *a, **k: LLMAnswer(answer=shared_words, citations=[], enough=True),
+    )
+    response = workflow.ask("Care este termenul de examinare a petiției?")
+    assert response.status == "ANSWERED"
+    assert len(response.citations) <= settings.CITATION_RECOVERY_MAX
+
+
+def _word_tokens_from_all(passages) -> set[str]:
+    from app.blocks.workflow import _word_tokens
+
+    words: set[str] = set()
+    for p in passages:
+        words |= _word_tokens(p.chunk.text)
+    return words
+
+
 def test_recovery_disabled_by_flag_gives_not_found(
     shared_conn, monkeypatch: pytest.MonkeyPatch
 ) -> None:

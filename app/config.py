@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     # восстановление цитат (W1, hotfix для дообученных моделей без citations)
     CITATION_RECOVERY: bool = True
     CITATION_RECOVERY_MIN_OVERLAP: float = 0.15
+    CITATION_RECOVERY_MAX: int = 2
 
     # STT (локальный faster-whisper)
     STT: Literal["off", "whisper"] = "off"

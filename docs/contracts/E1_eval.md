@@ -107,7 +107,8 @@ class AskResponse(BaseModel):
     answer: str  # NOT_FOUND → пусто; CONFLICT → короткое объяснение, что источники расходятся
     citations: list[Citation] = []
     conflict: Conflict | None = None
-    warning: str | None = None  # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    warning: str | None = None
     navigation: Navigation | None = None
     meta: Meta
 ```

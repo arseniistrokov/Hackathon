@@ -64,6 +64,10 @@ def recover_citations(answer: str, top: list[Passage]) -> list[Passage]:
     Совпадение с фрагментом = лексическое пересечение нормализованных токенов (≥4 символа, без
     стоп-слов) не ниже CITATION_RECOVERY_MIN_OVERLAP ДОЛИ токенов ответа, ИЛИ общее число
     (год/сумма/срок и т.п.) между answer и фрагментом. Ни одного совпадения → пусто (NOT_FOUND).
+
+    Среди совпавших оставляем не более CITATION_RECOVERY_MAX с наибольшим rerank-score (p.score),
+    иначе при нескольких пересекающихся фрагментах (напр. старый и новый тариф) в цитаты попадают
+    устаревшие источники только из-за лексического совпадения.
     """
     if not settings.CITATION_RECOVERY or not answer.strip():
         return []
@@ -80,7 +84,8 @@ def recover_citations(answer: str, top: list[Passage]) -> list[Passage]:
         number_hit = bool(answer_numbers & _number_tokens(passage_text))
         if overlap_ratio >= settings.CITATION_RECOVERY_MIN_OVERLAP or number_hit:
             matched.append(p)
-    return matched
+    matched.sort(key=lambda p: (-p.score, p.n))
+    return matched[: settings.CITATION_RECOVERY_MAX]
 
 
 def ask(question: str, lang: Lang | None = None) -> AskResponse:

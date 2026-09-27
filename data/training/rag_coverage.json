@@ -1,0 +1,637 @@
+{
+  "checked_at": "2026-09-26",
+  "source_list": "data/sites.yaml (Annex 1)",
+  "source_count": 40,
+  "sites_with_page_pairs": 37,
+  "sites_with_usable_content": 34,
+  "sites_with_limited_or_unavailable_content": 6,
+  "sites": [
+    {
+      "site": "chisinau.md",
+      "label": "Primăria Chișinău · Transparență",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://www.chisinau.md/ro/transparenta",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/chisinau.md/transparenta.md",
+          "url": "https://www.chisinau.md/ro/transparenta",
+          "title": "Pagina oficială a Municipiului Chișinău"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "suburbii.chisinau.md",
+      "label": "Suburbiile Chișinăului",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://suburbii.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/suburbii.chisinau.md/ccesul-in-orasul-codru-pe-str-sihastrului-de-la-soseaua-hancesti-din-chisinau-si.md",
+          "url": "https://suburbii.chisinau.md/ccesul-in-orasul-codru-pe-str-sihastrului-de-la-soseaua-hancesti-din-chisinau-si-pana-la-strada-livadarilor-din-suburbie-a-intrat-in-reparatie-capitala-proiect-finantat-de-primaria-chisinau/",
+          "title": "ccesul-in-orasul-codru-pe-str-sihastrului-de-la-soseaua-hancesti-din-chisinau-si-pana-la-strada-livadarilor-din-suburbie-a-intrat-in-reparatie-capitala-proiect-finantat-de-primaria-chisinau"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "proiecte.chisinau.md",
+      "label": "Proiecte Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://proiecte.chisinau.md/",
+      "page_count": 2,
+      "pages": [
+        {
+          "file": "rag_memory/proiecte.chisinau.md/newprojects.md",
+          "url": "https://proiecte.chisinau.md/ro/newprojects",
+          "title": "Proiecte noi"
+        },
+        {
+          "file": "rag_memory/proiecte.chisinau.md/taxare-electronica.md",
+          "url": "https://proiecte.chisinau.md/ro/pv-610-taxarea-electronica-prin-sms-si-qr-code",
+          "title": "Taxarea electronică prin SMS și QR-Code"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "mobilitatechisinau.md",
+      "label": "Mobilitate Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://mobilitatechisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/mobilitatechisinau.md/index.md",
+          "url": "https://mobilitatechisinau.md/?page_id=9580",
+          "title": "Reorganizare - mobilitatechisinau.md"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "rtec.md",
+      "label": "RTEC · troleibuze și autobuze",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://rtec.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/rtec.md/tarife.md",
+          "url": "https://rtec.md/tarife/",
+          "title": "Tarife – REGIA TRANSPORT ELECTRIC"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "autourban.md",
+      "label": "Autourban · rute suburbane",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://autourban.md/ro/rute/suburbane",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/autourban.md/suburbane.md",
+          "url": "https://autourban.md/ru/rute/suburbane",
+          "title": "Пригородные маршруты"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "exdrupo.md",
+      "label": "Exdrupo · drumuri",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://exdrupo.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/exdrupo.md/achizitii-publice-2.md",
+          "url": "https://exdrupo.md/achizitii-publice-2/",
+          "title": "Achiziții publice"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "dgaurf.md",
+      "label": "Direcția arhitectură, urbanism și relații funciare",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://dgaurf.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/dgaurf.md/documentatii-de-urbanism.md",
+          "url": "https://dgaurf.md/ro/documentatii-de-urbanism",
+          "title": "Documentații de urbanism"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "dglca.md",
+      "label": "Direcția locativ-comunală și amenajare",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://dglca.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/dglca.md/rapoarte-de-activitate.md",
+          "url": "https://dglca.md/documente-strategice/rapoarte-de-activitate",
+          "title": "Rapoarte de activitate - Direcția Generală Locativ-Comunală și Amenajare"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "autosalubritate.md",
+      "label": "Autosalubritate · deșeuri",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://autosalubritate.md/informatie-de-contact/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/autosalubritate.md/index.md",
+          "url": "https://autosalubritate.md/",
+          "title": "Autosalubritate | Servicii evacuare deșeuri Chișinău"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "acc.md",
+      "label": "Apă-Canal Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://www.acc.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/acc.md/profile.md",
+          "url": "https://www.acc.md/profile",
+          "title": "Activitatea de bază"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "agsv.md",
+      "label": "Asociația de gospodărire a spațiilor verzi",
+      "wave": 2,
+      "status": "unavailable_http_503",
+      "configured_url": "https://agsv.md/diagrama-defrisare-curatare-a-arborilor-2/",
+      "page_count": 0,
+      "pages": [],
+      "note": "Origin returned HTTP 503 during the crawl; no factual page captured."
+    },
+    {
+      "site": "chisinauedu.dgets.md",
+      "label": "DGETS Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://chisinauedu.dgets.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/chisinauedu.dgets.md/index.md",
+          "url": "https://chisinauedu.dgets.md/",
+          "title": "Direcția Generală Educație, Tineret și Sport Chișinău | DGETS"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "detsriscani.md",
+      "label": "DETS Rîșcani",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://detsriscani.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/detsriscani.md/bugetul-institutiei-anul-2026.md",
+          "url": "https://detsriscani.md/bugetul-institutiei-anul-2026/",
+          "title": "Bugetul Instituției Anul 2026 | Direcția Educație, Tineret și Sport din Sectorul Rîșcani al Municipiului Chișinău"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "detsciocana.educ.md",
+      "label": "DETS Ciocana",
+      "wave": 2,
+      "status": "unavailable_empty_loader",
+      "configured_url": "https://detsciocana.educ.md/",
+      "page_count": 0,
+      "pages": [],
+      "note": "The live site returned an empty/infinite loading shell; no factual page captured."
+    },
+    {
+      "site": "detscentru.md",
+      "label": "DETS Centru",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://detscentru.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/detscentru.md/raport-privind-executarea-bugetului-conform-clasificatiei-economice-la-situatia-.md",
+          "url": "https://detscentru.md/raport-privind-executarea-bugetului-conform-clasificatiei-economice-la-situatia-din-28-02-2026/",
+          "title": "Raport privind executarea bugetului conform clasificației economice la situația din 28.02.2026"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "buiucanidets.md",
+      "label": "DETS Buiucani",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://buiucanidets.md",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/buiucanidets.md/bugetul-2026.md",
+          "url": "https://buiucanidets.md/bugetul-2026/",
+          "title": "Bugetul 2026"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "detsbotanica.md",
+      "label": "DETS Botanica",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://detsbotanica.md",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/detsbotanica.md/2025-fisa-executarii-contului-curent.md",
+          "url": "https://detsbotanica.md/2025-fisa-executarii-contului-curent/",
+          "title": "2025 Rapoarte financiare privind executarea bugetului"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "educatieonline.md",
+      "label": "Educație Online",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://educatieonline.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/educatieonline.md/Manuals.md",
+          "url": "https://educatieonline.md/Manuals",
+          "title": "Educație Online - Resurse educaționale deschise"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "extrascolar.md",
+      "label": "Extrașcolar",
+      "wave": 2,
+      "status": "limited_navigation_only",
+      "configured_url": "https://extrascolar.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/extrascolar.md/categories.md",
+          "url": "https://extrascolar.md/categories",
+          "title": "Catalog Online - Activități Extrașcolare"
+        }
+      ],
+      "note": "Captured page is mostly navigation and does not expose a reliable service listing."
+    },
+    {
+      "site": "egradinita.md",
+      "label": "eGrădinița",
+      "wave": 2,
+      "status": "javascript_shell_only",
+      "configured_url": "https://egradinita.md/",
+      "page_count": 0,
+      "pages": [],
+      "note": "The site returned only the JavaScript application bootstrap; no substantive text captured."
+    },
+    {
+      "site": "escoala.chisinau.md",
+      "label": "eȘcoala",
+      "wave": 2,
+      "status": "javascript_shell_only",
+      "configured_url": "https://escoala.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/escoala.chisinau.md/index.md",
+          "url": "https://escoala.chisinau.md/",
+          "title": "E-școală - Admitere online în clasa I"
+        }
+      ],
+      "note": "The page contains only the JavaScript application bootstrap; no admission rules captured."
+    },
+    {
+      "site": "dgams.md",
+      "label": "Direcția generală asistență medicală și socială",
+      "wave": 2,
+      "status": "inactive_site_message",
+      "configured_url": "https://dgams.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/dgams.md/protectia-civila.md",
+          "url": "https://dgams.md/protectia-civila/",
+          "title": "Protecția civilă"
+        }
+      ],
+      "note": "The captured page says the hosting service is unpaid; it is not usable as current service information."
+    },
+    {
+      "site": "help.chisinau.md",
+      "label": "Help Chișinău · asistență socială",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://help.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/help.chisinau.md/healthcare-2.md",
+          "url": "https://help.chisinau.md/en/healthcare-2/",
+          "title": "healthcare-2"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "amt-botanica.md",
+      "label": "AMT Botanica",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://amt-botanica.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/amt-botanica.md/centrul-medicilor-de-familie-nr-2.md",
+          "url": "https://amt-botanica.md/subdiviziuni/centrul-medicilor-de-familie-nr-2/",
+          "title": "centrul-medicilor-de-familie-nr-2"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "amt-centru.md",
+      "label": "AMT Centru",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://amt-centru.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/amt-centru.md/centrul-de-interventie-timpurie.md",
+          "url": "https://amt-centru.md/servicii-2/centrul-de-interventie-timpurie/",
+          "title": "Centrul de Intervenție Timpurie » Instituția Medico-Sanitară Publică Asociația Medicală Teritorială Centru"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "amtbuiucani.md",
+      "label": "AMT Buiucani",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://amtbuiucani.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/amtbuiucani.md/anul-2026.md",
+          "url": "https://amtbuiucani.md/anul-2026/",
+          "title": "Anul 2026 | Instituția Medico-Sanitară Publică Asociația Medicală Teritorială"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "amt-ciocana.md",
+      "label": "AMT Ciocana",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://amt-ciocana.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/amt-ciocana.md/servicii.html.md",
+          "url": "https://amt-ciocana.md/servicii.html",
+          "title": "Servicii medicale prestate"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "amtriscani.md",
+      "label": "AMT Rîșcani",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "http://amtriscani.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/amtriscani.md/ru.md",
+          "url": "http://amtriscani.md/ru/",
+          "title": "IMSP AMT Rîșcani"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "botanica.md",
+      "label": "Pretura Botanica",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://www.botanica.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/botanica.md/audienta.md",
+          "url": "https://botanica.md/Audien%C8%9Ba-cet%C4%83%C8%9Benilor",
+          "title": "Audiența cetățenilor"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "chisinaucentru.md",
+      "label": "Pretura Centru",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://chisinaucentru.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/chisinaucentru.md/lista-strazilor-centru.md",
+          "url": "https://chisinaucentru.md/lista-strazilor-centru/",
+          "title": "Lista străzilor Centru"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "ciocana.md",
+      "label": "Pretura Ciocana",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://ciocana.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/ciocana.md/orarul-audientelor.md",
+          "url": "https://ciocana.md/orarul-audientelor",
+          "title": "Orarul audiențelor"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "rascani.md",
+      "label": "Pretura Rîșcani",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://rascani.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/rascani.md/adresa-str-kiev-3-tel-373-22-44-10-98-mail-preturariscanigmailcom.md",
+          "url": "https://rascani.md/adresa-str-kiev-3-tel-373-22-44-10-98-mail-preturariscanigmailcom",
+          "title": "Adresa: str. Kiev 3 | tel: +373 (22) 44 10 98 | mail: pretura.riscani@gmail.com - sectorului Rîșcani"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "preturabuiucani.md",
+      "label": "Pretura Buiucani",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://preturabuiucani.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/preturabuiucani.md/depune-o-petitie.md",
+          "url": "https://preturabuiucani.md/depune-o-petitie/",
+          "title": "depune-o-petitie"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "comert.chisinau.md",
+      "label": "Comerț Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://comert.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/comert.chisinau.md/taxe-locale.md",
+          "url": "https://comert.chisinau.md/taxe-locale/",
+          "title": "Taxe locale"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "visit.chisinau.md",
+      "label": "Visit Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://visit.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/visit.chisinau.md/turismul-mice.md",
+          "url": "https://visit.chisinau.md/turismul-mice/",
+          "title": "Turismul MICE – Chisinau"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "invest.chisinau.md",
+      "label": "Invest Chișinău",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://invest.chisinau.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/invest.chisinau.md/profile-investitionale.md",
+          "url": "https://invest.chisinau.md/harta-investitionala/profile-investitionale/",
+          "title": "profile-investitionale"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "e-tineret.md",
+      "label": "e-Tineret · programe pentru tineri",
+      "wave": 1,
+      "status": "captured",
+      "configured_url": "https://e-tineret.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/e-tineret.md/servicii-voluntariat.md",
+          "url": "https://e-tineret.md/servicii-voluntariat/",
+          "title": "servicii-voluntariat"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "infocom.md",
+      "label": "Infocom",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "http://www.infocom.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/infocom.md/index.html.md",
+          "url": "http://www.infocom.md/index.html",
+          "title": "Centrul Municipal de Calcul al Serviciilor Comunale"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    },
+    {
+      "site": "liftservice.md",
+      "label": "Liftservice",
+      "wave": 2,
+      "status": "captured",
+      "configured_url": "https://liftservice.md/",
+      "page_count": 1,
+      "pages": [
+        {
+          "file": "rag_memory/liftservice.md/administratia-directiei.md",
+          "url": "https://liftservice.md/administratia-directiei",
+          "title": "DESPRE NOI - ÎMS “LIFTSERVICE”"
+        }
+      ],
+      "note": "At least one paired Markdown and metadata page is included; recheck dates for time-sensitive facts."
+    }
+  ]
+}

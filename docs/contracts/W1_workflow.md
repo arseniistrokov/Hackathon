@@ -90,7 +90,8 @@ class AskResponse(BaseModel):
     answer: str  # NOT_FOUND → пусто; CONFLICT → короткое объяснение, что источники расходятся
     citations: list[Citation] = []
     conflict: Conflict | None = None
-    warning: str | None = None  # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    warning: str | None = None
     navigation: Navigation | None = None
     meta: Meta
 
@@ -133,7 +134,9 @@ class LLMAnswer(BaseModel):
     """Схема, по которой модель обязана ответить (ollama format / json_schema). Ничего кроме этого."""
 
     answer: str = Field(description="Ответ на языке вопроса. Только факты из passages.")
-    citations: list[int] = Field(default_factory=list, description="Номера passages [n], на которых основан ответ")
+    citations: list[int] = Field(
+        default_factory=list, description="Номера passages [n], на которых основан ответ"
+    )
     enough: bool = Field(description="false, если в passages нет ответа на вопрос")
 
 
