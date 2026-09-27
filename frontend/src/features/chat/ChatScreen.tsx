@@ -9,328 +9,145 @@ import "./chat.css"
 
 export function NexaMascot() {
   return (
-    <div className="nexa-mascot" role="img" aria-label="NEXA AI Mascot">
-      <div className="nexa-mascot__halo" aria-hidden="true" />
-      <svg
-        className="nexa-mascot__svg"
-        viewBox="0 0 600 600"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <defs>
-          {/* Базовый 3D сферический градиент света и тени */}
-          <radialGradient id="nexaSphere3D" cx="35%" cy="28%" r="72%">
-            <stop offset="0%" stopColor="var(--c-orb-cyan)" />
-            <stop offset="35%" stopColor="var(--c-orb-blue)" />
-            <stop offset="70%" stopColor="var(--c-orb-dark-blue)" />
-            <stop offset="100%" stopColor="var(--c-nexa-orb-deep)" />
-          </radialGradient>
+    <div className="nexa-orb-container" role="img" aria-label="NEXA AI Core">
+      {/* Мягкое фоновое рассеянное свечение */}
+      <div className="nexa-orb-halo" aria-hidden="true" />
 
-          {/* Неоновые градиенты для колец */}
-          <linearGradient id="orbRingGradBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="var(--c-orb-blue)" />
-            <stop offset="50%" stopColor="var(--c-orb-cyan)" />
-            <stop offset="100%" stopColor="var(--c-nexa-turquoise)" />
-          </linearGradient>
+      {/* Живая квантовая 3D сфера по референсу Figma */}
+      <div className="nexa-orb-body">
+        <svg
+          className="nexa-orb-svg"
+          viewBox="0 0 400 400"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <radialGradient id="nexaCoreGradient" cx="38%" cy="32%" r="68%">
+              <stop offset="0%" stopColor="var(--c-orb-cyan)" />
+              <stop offset="30%" stopColor="var(--c-orb-blue)" />
+              <stop offset="70%" stopColor="var(--c-nexa-purple)" />
+              <stop offset="100%" stopColor="var(--c-nexa-orb-deep)" />
+            </radialGradient>
 
-          <linearGradient id="orbRingGradCyan" x1="100%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="var(--c-nexa-turquoise)" />
-            <stop offset="45%" stopColor="var(--c-orb-cyan)" />
-            <stop offset="100%" stopColor="var(--c-orb-blue)" />
-          </linearGradient>
+            <radialGradient id="nexaWave1" cx="30%" cy="30%" r="50%">
+              <stop offset="0%" stopColor="var(--c-orb-light-cyan)" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="var(--c-nexa-cyan)" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="var(--c-nexa-blue)" stopOpacity="0" />
+            </radialGradient>
 
-          {/* Изогнутая световая волна по центру */}
-          <linearGradient id="orbWaveGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0" />
-            <stop offset="30%" stopColor="var(--c-surface)" stopOpacity="0.85" />
-            <stop offset="70%" stopColor="var(--c-orb-cyan)" stopOpacity="0.75" />
-            <stop offset="100%" stopColor="var(--c-nexa-turquoise)" stopOpacity="0" />
-          </linearGradient>
+            <radialGradient id="nexaWave2" cx="70%" cy="70%" r="55%">
+              <stop offset="0%" stopColor="var(--c-orb-pink)" stopOpacity="0.75" />
+              <stop offset="45%" stopColor="var(--c-orb-purple)" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="var(--c-nexa-orb-deep)" stopOpacity="0" />
+            </radialGradient>
 
-          {/* Glass Sheen под углом 135° */}
-          <linearGradient id="orbGlassSheen" x1="15%" y1="15%" x2="85%" y2="85%">
-            <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0.32" />
-            <stop offset="40%" stopColor="var(--c-surface)" stopOpacity="0.08" />
-            <stop offset="80%" stopColor="var(--c-surface)" stopOpacity="0" />
-          </linearGradient>
+            <linearGradient id="nexaSheenGrad" x1="10%" y1="10%" x2="90%" y2="90%">
+              <stop offset="0%" stopColor="var(--c-surface)" stopOpacity="0.6" />
+              <stop offset="35%" stopColor="var(--c-surface)" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="var(--c-surface)" stopOpacity="0" />
+            </linearGradient>
 
-          {/* Мягкие размытия для слоев сферы */}
-          <filter id="orbBlurSoft" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="8" />
-          </filter>
-          <filter id="orbBlurMed" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="22" />
-          </filter>
-          <filter id="orbBlurLarge" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="35" />
-          </filter>
+            <linearGradient id="nexaEnergyWave" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="var(--c-nexa-turquoise)" stopOpacity="0.8" />
+              <stop offset="50%" stopColor="var(--c-orb-pink)" stopOpacity="0.6" />
+              <stop offset="100%" stopColor="var(--c-nexa-cyan)" stopOpacity="0.7" />
+            </linearGradient>
 
-          {/* Свечение колец */}
-          <filter id="orbRingGlow" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="6" result="blur" />
-            <feComposite in="SourceGraphic" in2="blur" operator="over" />
-          </filter>
-          <filter id="orbRingSoft" x="-30%" y="-30%" width="160%" height="160%">
-            <feGaussianBlur stdDeviation="4.5" />
-          </filter>
+            <filter id="nexaBlurSoft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="6" />
+            </filter>
+            <filter id="nexaBlurMedium" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="16" />
+            </filter>
 
-          {/* Маска сферы */}
-          <clipPath id="orbSphereMask">
-            <circle cx="300" cy="300" r="180" />
-          </clipPath>
-        </defs>
+            <clipPath id="nexaSphereClip">
+              <circle cx="200" cy="200" r="140" />
+            </clipPath>
+          </defs>
 
-        {/* 3D Орбитальные кольца - задние дуги (за сферой, математически точные эллипсы) */}
-        <g className="nexa-mascot__rings-back">
-          {/* Задняя дуга кольца 1 (наклон -24°) */}
-          <g transform="rotate(-24 300 300)">
-            <path
-              d="M 45 300 A 255 70 0 0 1 555 300"
-              stroke="url(#orbRingGradBlue)"
-              strokeWidth="12"
-              strokeLinecap="round"
-              opacity="0.45"
-              filter="url(#orbRingSoft)"
+          <g clipPath="url(#nexaSphereClip)">
+            <circle cx="200" cy="200" r="140" fill="url(#nexaCoreGradient)" />
+
+            <circle
+              className="nexa-blob-anim nexa-blob-anim--1"
+              cx="160"
+              cy="150"
+              r="105"
+              fill="url(#nexaWave1)"
+              filter="url(#nexaBlurMedium)"
             />
-            <path
-              d="M 45 300 A 255 70 0 0 1 555 300"
-              stroke="var(--c-orb-cyan)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              opacity="0.6"
-            />
-          </g>
-
-          {/* Задняя дуга кольца 2 (наклон +36°) */}
-          <g transform="rotate(36 300 300)">
-            <path
-              d="M 55 300 A 245 62 0 0 1 545 300"
-              stroke="url(#orbRingGradBlue)"
-              strokeWidth="11"
-              strokeLinecap="round"
-              opacity="0.4"
-              filter="url(#orbRingSoft)"
-            />
-            <path
-              d="M 55 300 A 245 62 0 0 1 545 300"
-              stroke="var(--c-orb-blue)"
-              strokeWidth="2"
-              strokeLinecap="round"
-              opacity="0.55"
-            />
-          </g>
-        </g>
-
-        {/* 3D Сфера маскота с переливающимися слоями */}
-        <g className="nexa-mascot__sphere">
-          <g clipPath="url(#orbSphereMask)">
-            {/* Базовая 3D глубина */}
-            <circle cx="300" cy="300" r="180" fill="url(#nexaSphere3D)" />
-
-            {/* Внутренние цветные облака по рецепту Figma с живым движением */}
-            <ellipse
-              className="orb-blob orb-blob--blue"
+            <circle
+              className="nexa-blob-anim nexa-blob-anim--2"
               cx="240"
-              cy="225"
-              rx="115"
-              ry="95"
-              fill="var(--c-orb-blue)"
-              opacity="0.75"
-              filter="url(#orbBlurMed)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--cyan"
-              cx="300"
               cy="230"
-              rx="125"
-              ry="110"
-              fill="var(--c-orb-cyan)"
-              opacity="0.7"
-              filter="url(#orbBlurLarge)"
+              r="110"
+              fill="url(#nexaWave2)"
+              filter="url(#nexaBlurMedium)"
             />
             <ellipse
-              className="orb-blob orb-blob--purple"
-              cx="235"
-              cy="295"
-              rx="115"
-              ry="115"
-              fill="var(--c-orb-purple)"
-              opacity="0.55"
-              filter="url(#orbBlurLarge)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--pink"
-              cx="305"
-              cy="300"
-              rx="125"
-              ry="110"
-              fill="var(--c-orb-pink)"
-              opacity="0.55"
-              filter="url(#orbBlurLarge)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--light-cyan"
-              cx="365"
-              cy="290"
-              rx="125"
-              ry="110"
-              fill="var(--c-orb-light-cyan)"
-              opacity="0.65"
-              filter="url(#orbBlurLarge)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--yellow"
-              cx="365"
-              cy="375"
-              rx="95"
-              ry="85"
-              fill="var(--c-orb-yellow)"
-              opacity="0.45"
-              filter="url(#orbBlurLarge)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--dark-blue"
-              cx="300"
-              cy="385"
-              rx="115"
-              ry="95"
-              fill="var(--c-orb-dark-blue)"
-              opacity="0.65"
-              filter="url(#orbBlurMed)"
-            />
-
-            {/* Световые рефлексы и глубина */}
-            <ellipse
-              className="orb-blob orb-blob--top-light"
-              cx="300"
-              cy="210"
-              rx="135"
-              ry="65"
-              fill="var(--c-surface)"
-              opacity="0.22"
-              filter="url(#orbBlurMed)"
-            />
-            <ellipse
-              className="orb-blob orb-blob--bottom-glow"
-              cx="300"
-              cy="400"
-              rx="135"
-              ry="55"
-              fill="var(--c-orb-glow-blue)"
-              opacity="0.35"
-              filter="url(#orbBlurMed)"
-            />
-
-            {/* Изогнутая световая волна небулы */}
-            <ellipse
-              className="orb-blob orb-blob--wave"
-              cx="300"
-              cy="320"
-              rx="130"
-              ry="38"
-              transform="rotate(-15 300 320)"
-              fill="url(#orbWaveGrad)"
-              opacity="0.75"
-              filter="url(#orbBlurSoft)"
-            />
-
-            {/* Glass sheen 135° */}
-            <circle cx="300" cy="300" r="180" fill="url(#orbGlassSheen)" />
-
-            {/* Верхне-левый стеклянный блик */}
-            <ellipse
-              cx="270"
+              className="nexa-blob-anim nexa-blob-anim--3"
+              cx="200"
               cy="200"
-              rx="100"
-              ry="35"
-              transform="rotate(-30 270 200)"
+              rx="120"
+              ry="75"
+              transform="rotate(25 200 200)"
+              fill="var(--c-orb-cyan)"
+              opacity="0.55"
+              filter="url(#nexaBlurMedium)"
+            />
+
+            <path
+              className="nexa-wave-anim nexa-wave-anim--a"
+              d="M 80 180 Q 150 120 200 180 T 320 180"
+              stroke="url(#nexaEnergyWave)"
+              strokeWidth="4"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.8"
+              filter="url(#nexaBlurSoft)"
+            />
+            <path
+              className="nexa-wave-anim nexa-wave-anim--b"
+              d="M 90 220 Q 160 270 210 210 T 310 220"
+              stroke="url(#nexaEnergyWave)"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              fill="none"
+              opacity="0.75"
+              filter="url(#nexaBlurSoft)"
+            />
+
+            <circle cx="200" cy="200" r="140" fill="url(#nexaSheenGrad)" />
+            <ellipse
+              cx="175"
+              cy="135"
+              rx="65"
+              ry="32"
+              transform="rotate(-20 175 135)"
               fill="var(--c-surface)"
-              opacity="0.28"
-              filter="url(#orbBlurSoft)"
-            />
-
-            {/* Неоновый шеврон снизу */}
-            <polygon
-              className="nexa-mascot__chevron"
-              points="292,415 300,428 308,415 305,415 300,423 295,415"
-              fill="var(--c-nexa-turquoise)"
-              opacity="0.95"
-              filter="url(#orbRingSoft)"
+              opacity="0.4"
+              filter="url(#nexaBlurSoft)"
             />
           </g>
 
-          {/* Тонкий стеклянный ободок */}
           <circle
-            cx="300"
-            cy="300"
-            r="179.5"
+            cx="200"
+            cy="200"
+            r="139.5"
             fill="none"
-            stroke="var(--c-orb-white-stroke)"
-            strokeWidth="1"
+            stroke="var(--c-white-translucent)"
+            strokeWidth="1.2"
           />
-        </g>
-
-        {/* 3D Орбитальные кольца - передние дуги (перед сферой, математически точные эллипсы) */}
-        <g className="nexa-mascot__rings-front">
-          {/* Передняя дуга кольца 1 (наклон -24°) */}
-          <g transform="rotate(-24 300 300)">
-            <path
-              className="nexa-mascot__ring-glow-1"
-              d="M 45 300 A 255 70 0 0 0 555 300"
-              stroke="url(#orbRingGradCyan)"
-              strokeWidth="12"
-              strokeLinecap="round"
-              opacity="0.7"
-              filter="url(#orbRingGlow)"
-            />
-            <path
-              className="nexa-mascot__ring-loop-1"
-              d="M 45 300 A 255 70 0 0 0 555 300"
-              stroke="var(--c-nexa-turquoise)"
-              strokeWidth="3.6"
-              strokeLinecap="round"
-              opacity="0.95"
-            />
-          </g>
-
-          {/* Передняя дуга кольца 2 (наклон +36°) */}
-          <g transform="rotate(36 300 300)">
-            <path
-              className="nexa-mascot__ring-glow-2"
-              d="M 55 300 A 245 62 0 0 0 545 300"
-              stroke="url(#orbRingGradCyan)"
-              strokeWidth="10"
-              strokeLinecap="round"
-              opacity="0.65"
-              filter="url(#orbRingGlow)"
-            />
-            <path
-              className="nexa-mascot__ring-loop-2"
-              d="M 55 300 A 245 62 0 0 0 545 300"
-              stroke="var(--c-orb-cyan)"
-              strokeWidth="3.2"
-              strokeLinecap="round"
-              opacity="0.9"
-            />
-          </g>
-        </g>
-
-        {/* Квантовые искры */}
-        <g className="nexa-mascot__sparks">
-          <circle cx="65" cy="205" r="3.5" fill="var(--c-nexa-turquoise)" className="spark-1" filter="url(#orbRingSoft)" />
-          <circle cx="535" cy="395" r="3.2" fill="var(--c-orb-cyan)" className="spark-2" filter="url(#orbRingSoft)" />
-          <circle cx="495" cy="155" r="2.8" fill="var(--c-surface)" className="spark-3" filter="url(#orbRingSoft)" />
-          <circle cx="105" cy="445" r="3" fill="var(--c-orb-blue)" className="spark-4" filter="url(#orbRingSoft)" />
-        </g>
-      </svg>
+        </svg>
+      </div>
     </div>
   )
 }
 
 export const NexaOrb = NexaMascot
 
-const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
+const MIN_QUESTION_LENGTH = 2
 
 interface Turn {
   id: number
@@ -396,7 +213,7 @@ export function ChatScreen({
   onQuickAsk,
   currentLang,
   onLangChange,
-  showHeader = !currentLang,
+  showHeader = false,
   onQueryAsked,
   onResetRegistered,
 }: ChatScreenProps = {}) {
@@ -406,6 +223,7 @@ export function ChatScreen({
   const [pending, setPending] = useState(false)
   const [failed, setFailed] = useState(false)
   const [lastQuestion, setLastQuestion] = useState("")
+  const [showAttachPill, setShowAttachPill] = useState(false)
   const s = t(lang)
 
   const lastRunRef = useRef<{ q: string; time: number } | null>(null)
@@ -418,6 +236,7 @@ export function ChatScreen({
         setDraft("")
         setPending(false)
         setFailed(false)
+        setShowAttachPill(false)
         lastRunRef.current = null
         lastInitialRef.current = undefined
       })
@@ -460,6 +279,7 @@ export function ChatScreen({
     setPending(true)
     setFailed(false)
     setLastQuestion(question)
+    setShowAttachPill(false)
     onQueryAsked?.(question)
     try {
       const response = await ask(question, lang)
@@ -483,7 +303,7 @@ export function ChatScreen({
   const showEmpty = turns.length === 0 && !pending && !failed
 
   return (
-    <div className="chat">
+    <div className="nexa-chat-screen">
       {showHeader && (
         <header className="chat__header">
           <div>
@@ -512,12 +332,55 @@ export function ChatScreen({
         </header>
       )}
 
-      <main className="chat__thread">
+      <main className="nexa-chat-screen__thread">
         {showEmpty && (
-          <section className="welcome" aria-label="NEXA Welcome">
+          <section className="nexa-welcome" aria-label="NEXA Welcome">
             <NexaOrb />
-            <h1 className="welcome__title">{lang === "ru" ? "Привет, я NEXA" : "HI, Im NEXA"}</h1>
-            <h2 className="welcome__subtitle">{lang === "ru" ? "Чем я могу помочь?" : "How can i help you?"}</h2>
+            <h1 className="nexa-welcome__title">{lang === "ru" ? "Привет, я NEXA" : "Hi, I'm NEXA"}</h1>
+            <h2 className="nexa-welcome__subtitle">{lang === "ru" ? "Чем я могу помочь?" : "How can I help you?"}</h2>
+
+            {/* Карточки готовых вопросов по референсу Figma */}
+            <div className="nexa-hero-cards" role="region" aria-label="Suggested prompts">
+              <button
+                type="button"
+                className="nexa-hero-card"
+                onClick={() => void run(lang === "ru" ? "Тарифы на проезд в троллейбусе" : "Tarife călătorie troleibuz RTEC")}
+              >
+                <div className="nexa-hero-card__header">
+                  <span className="nexa-hero-card__title">
+                    {lang === "ru" ? "Тарифы и проезд RTEC .." : "Tarife transport public și RTEC .."}
+                  </span>
+                  <svg className="nexa-hero-card__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+                <p className="nexa-hero-card__desc">
+                  {lang === "ru"
+                    ? "Тарифы RTEC и автобусов, маршруты, проездные абонементы и правила оплаты проезда в муниципии Кишинёв."
+                    : "Tarife RTEC și autobuze, rute, abonamente de călătorie și orare de circulație în municipiul Chișinău."}
+                </p>
+              </button>
+
+              <button
+                type="button"
+                className="nexa-hero-card"
+                onClick={() => void run(lang === "ru" ? "В какой срок рассматривается петиция в примэрии?" : "Care este termenul de examinare a unei petiții?")}
+              >
+                <div className="nexa-hero-card__header">
+                  <span className="nexa-hero-card__title">
+                    {lang === "ru" ? "Сроки рассмотрения петиций .." : "Termenul de examinare a petițiilor .."}
+                  </span>
+                  <svg className="nexa-hero-card__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+                <p className="nexa-hero-card__desc">
+                  {lang === "ru"
+                    ? "Процедура и установленные законодательством сроки рассмотрения петиций и обращений граждан в примэрии."
+                    : "Procedura și termenele legale de examinare a petițiilor și cererilor cetățenilor adresate primăriei."}
+                </p>
+              </button>
+            </div>
           </section>
         )}
 
@@ -552,27 +415,53 @@ export function ChatScreen({
 
       {!showEmpty && chipsSlot}
 
-      <form className="composer" onSubmit={onSubmit}>
-        <div className="composer__input-wrapper">
-          <input
-            id="question"
-            className="composer__input"
-            type="text"
-            value={draft}
-            placeholder={lang === "ru" ? "Спросите NEXA о чём угодно..." : "Ask NEXA anything .."}
-            maxLength={1000}
-            autoComplete="off"
-            onChange={(event) => setDraft(event.target.value)}
-          />
-        </div>
-        <div className="composer__bottom-bar">
-          <button type="button" className="composer__attach-btn" onClick={() => {}} title="Attach">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+      <div className="nexa-composer-container">
+        {/* Всплывающая плашка добавления файлов (Figma black pill) */}
+        {showAttachPill && (
+          <div className="nexa-attach-pill">
+            <button
+              type="button"
+              className="nexa-attach-pill__btn"
+              onClick={() => setShowAttachPill(false)}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+              </svg>
+              <span className="nexa-attach-pill__bold">Add photos & files</span>
+              <span className="nexa-attach-pill__muted">Upload from computer</span>
+            </button>
+          </div>
+        )}
+
+        {/* Форма ввода (Figma pill composer) */}
+        <form className="nexa-composer-pill" onSubmit={onSubmit}>
+          <button
+            type="button"
+            className="nexa-composer-plus-btn"
+            onClick={() => setShowAttachPill((prev) => !prev)}
+            title="Attach file"
+            aria-label="Attach file"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+              <line x1="12" y1="5" x2="12" y2="19" />
+              <line x1="5" y1="12" x2="19" y2="12" />
             </svg>
-            <span>{s.attachLabel}</span>
           </button>
-          <div className="composer__actions">
+
+          <div className="nexa-composer-input-wrapper">
+            <input
+              id="question"
+              className="nexa-composer-input"
+              type="text"
+              value={draft}
+              placeholder={lang === "ru" ? "Спросите NEXA о чём угодно..." : "Ask NEXA anything.."}
+              maxLength={1000}
+              autoComplete="off"
+              onChange={(event) => setDraft(event.target.value)}
+            />
+          </div>
+
+          <div className="nexa-composer-actions">
             <MicButton
               lang={lang}
               onTranscript={(text) => setDraft(text)}
@@ -580,7 +469,7 @@ export function ChatScreen({
             />
             <button
               type="submit"
-              className={`composer__submit ${pending ? "composer__submit--pending" : ""}`}
+              className={`nexa-composer-submit-btn ${pending ? "nexa-composer-submit-btn--pending" : ""}`}
               disabled={!canSend}
               aria-label={pending ? s.sending : s.send}
               title={pending ? s.sending : s.send}
@@ -590,15 +479,15 @@ export function ChatScreen({
                   <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
                 </svg>
               ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <line x1="12" y1="19" x2="12" y2="5" />
                   <polyline points="5 12 12 5 19 12" />
                 </svg>
               )}
             </button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

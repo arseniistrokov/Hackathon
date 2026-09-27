@@ -124,6 +124,15 @@
   --shadow-raised: 0 4px 12px rgba(22, 33, 43, 0.08), 0 12px 32px rgba(22, 33, 43, 0.08);
   --shadow-floating: 0 10px 30px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
 
+  --c-nexa-card-bg: #edf3fc;
+  --c-nexa-card-border: #dbeafe;
+  --c-nexa-card-hover: #e2edfd;
+  --c-nexa-input-bg: #eef2f5;
+  --c-nexa-popover-bg: #ffffff;
+  --c-nexa-popover-border: #e2e8f0;
+  --c-nexa-avatar-bg: #0ea5e9;
+  --c-nexa-active-item: #e5e9ee;
+
   /* Точка, на которой CONFLICT расходится в две колонки (критерий приёмки 2). */
   --bp-wide: 768px;
 }

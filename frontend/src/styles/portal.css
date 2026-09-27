@@ -119,12 +119,7 @@
   color: var(--c-accent);
 }
 
-.portal-topbar__lang-badge {
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  line-height: 1;
-}
+
 
 /* --- nexa боковая панель (max-width: 280px) ------------------------------- */
 .nexa-sidebar-overlay {
@@ -1158,3 +1153,1067 @@
   0% { opacity: 0.32; transform: scale(0.96); }
   100% { opacity: 0.52; transform: scale(1.07); }
 }
+
+/* ==========================================================================
+   NEXA FIGMA REDESIGN STYLES
+   ========================================================================== */
+
+/* --- Topbar Settings Button ----------------------------------------------- */
+.portal-topbar__settings-btn {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.portal-topbar__settings-btn:hover {
+  border-color: var(--c-nexa-blue);
+  color: var(--c-nexa-blue);
+  background: var(--c-accent-soft);
+}
+
+/* --- Collapsible Sidebar Styles ------------------------------------------- */
+.nexa-sidebar--collapsed {
+  width: 64px !important;
+  max-width: 64px !important;
+  padding: var(--space-3) var(--space-2) !important;
+  align-items: center !important;
+}
+
+.nexa-sidebar--collapsed .nexa-new-chat-btn {
+  justify-content: center !important;
+  padding: var(--space-2) !important;
+}
+
+.nexa-collapsed-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.nexa-collapsed-logo-btn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  transition: background 0.15s ease;
+}
+
+.nexa-collapsed-logo-btn:hover {
+  background: var(--c-surface-sunken);
+}
+
+.nexa-collapsed-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  width: 100%;
+}
+
+.nexa-collapsed-item {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  border: 0;
+  background: transparent;
+  color: var(--c-ink-muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nexa-collapsed-item:hover {
+  background: var(--c-surface-sunken);
+  color: var(--c-ink);
+}
+
+.nexa-sidebar__brand-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-left: auto;
+}
+
+.nexa-tool-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-md);
+  color: var(--c-ink-faint);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nexa-tool-btn:hover {
+  background: var(--c-surface-sunken);
+  color: var(--c-ink);
+}
+
+/* --- Sidebar Scroll Area & Sections --------------------------------------- */
+.nexa-sidebar__scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.nexa-sidebar__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.nexa-sidebar__section-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-ink-faint);
+  padding: var(--space-1) var(--space-2);
+}
+
+.nexa-item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nexa-chat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--radius-md);
+  position: relative;
+  transition: background 0.15s ease;
+}
+
+.nexa-chat-row:hover {
+  background: var(--c-surface-sunken);
+}
+
+.nexa-chat-row__btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 0;
+  background: transparent;
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  min-width: 0;
+}
+
+.nexa-chat-row__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nexa-bubble-icon {
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--c-ink-faint);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.nexa-chat-row__actions {
+  display: none;
+  align-items: center;
+  gap: 2px;
+  padding-right: var(--space-2);
+}
+
+.nexa-chat-row:hover .nexa-chat-row__actions {
+  display: flex;
+}
+
+.nexa-row-action-btn {
+  background: transparent;
+  border: 0;
+  color: var(--c-ink-faint);
+  cursor: pointer;
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nexa-row-action-btn:hover {
+  color: var(--c-ink);
+  background: var(--c-border);
+}
+
+/* --- User profile pill in sidebar footer ---------------------------------- */
+.nexa-user-pill {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--c-surface-sunken);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 6px 12px 6px 6px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.nexa-user-pill:hover {
+  background: var(--c-border);
+}
+
+.nexa-sidebar--collapsed .nexa-user-pill {
+  padding: 4px !important;
+  justify-content: center !important;
+  border-radius: var(--radius-full) !important;
+}
+
+/* --- Profile Popover Menu (Figma reference) ------------------------------- */
+.nexa-popover-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+
+.nexa-profile-popover {
+  position: fixed;
+  bottom: 64px;
+  left: 16px;
+  width: 240px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  padding: var(--space-2);
+  z-index: 95;
+  box-sizing: border-box;
+}
+
+.nexa-popover-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nexa-popover-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--c-ink);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.nexa-popover-item:hover {
+  background: var(--c-surface-sunken);
+}
+
+.nexa-popover-item--user {
+  padding: var(--space-1) var(--space-2);
+}
+
+.nexa-popover-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--c-nexa-blue), var(--c-nexa-cyan));
+  color: var(--c-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.nexa-popover-text {
+  flex: 1;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--c-ink);
+}
+
+.nexa-popover-icon {
+  color: var(--c-ink-muted);
+  flex-shrink: 0;
+}
+
+.nexa-popover-arrow {
+  margin-left: auto;
+  color: var(--c-ink-faint);
+}
+
+.nexa-popover-divider {
+  height: 1px;
+  background: var(--c-border);
+  margin: var(--space-1) 0;
+}
+
+.nexa-popover-back-btn {
+  background: transparent;
+  border: 0;
+  color: var(--c-ink-faint);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  padding: var(--space-1) var(--space-2);
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: var(--space-1);
+}
+
+.nexa-account-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  font-size: var(--fs-xs);
+  color: var(--c-ink);
+}
+
+.nexa-account-item--active {
+  background: var(--c-surface-sunken);
+  font-weight: 600;
+}
+
+.nexa-account-email {
+  color: var(--c-ink-muted);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nexa-checkmark {
+  margin-left: auto;
+  color: var(--c-ink);
+}
+
+/* --- Modals: Overlay & Common --------------------------------------------- */
+.nexa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--c-overlay-dim);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--space-4);
+  box-sizing: border-box;
+}
+
+/* --- Edit Profile Modal (Figma Frame 92) ----------------------------------- */
+.nexa-edit-profile-card {
+  background: var(--c-surface);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-sizing: border-box;
+}
+
+.nexa-edit-profile-title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--c-ink-muted);
+  margin: 0;
+}
+
+.nexa-edit-profile-avatar-wrap {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-2) 0;
+}
+
+.nexa-large-avatar {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--c-nexa-blue), var(--c-nexa-cyan));
+  color: var(--c-surface);
+  font-size: 3rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nexa-avatar-camera-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+  color: var(--c-ink);
+}
+
+.nexa-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nexa-form-label {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-faint);
+  font-weight: 600;
+}
+
+.nexa-form-input {
+  width: 100%;
+  background: var(--c-surface-sunken);
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--c-ink);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.nexa-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.nexa-btn-cancel {
+  background: var(--c-surface-sunken);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 8px 18px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-ink);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.nexa-btn-cancel:hover {
+  background: var(--c-border);
+}
+
+.nexa-btn-save {
+  background: var(--c-black-pill, #000000);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 8px 22px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-surface);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.nexa-btn-save:hover {
+  opacity: 0.88;
+}
+
+/* --- Search Modal (Figma reference) --------------------------------------- */
+.nexa-search-card {
+  background: var(--c-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  width: 100%;
+  max-width: 580px;
+  box-shadow: var(--shadow-raised);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  box-sizing: border-box;
+}
+
+.nexa-search-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: var(--space-2);
+}
+
+.nexa-search-input {
+  flex: 1;
+  border: 0;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--c-ink);
+  outline: none;
+  background: transparent;
+}
+
+.nexa-search-close-btn {
+  background: transparent;
+  border: 0;
+  font-size: var(--fs-md);
+  color: var(--c-ink-faint);
+  cursor: pointer;
+  padding: var(--space-1);
+}
+
+.nexa-search-title {
+  font-size: var(--fs-xs);
+  color: var(--c-ink-faint);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.nexa-search-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.nexa-search-item-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease;
+}
+
+.nexa-search-item-btn:hover {
+  background: var(--c-surface-sunken);
+}
+
+.nexa-search-item-text {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--c-ink);
+  line-height: 1.4;
+}
+
+/* --- NEXA Organic Living Orb (Figma reference) ---------------------------- */
+.nexa-orb-container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-2);
+  user-select: none;
+  pointer-events: none;
+  animation: nexa-orb-float 4.2s ease-in-out infinite;
+}
+
+.nexa-orb-halo {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border-radius: var(--radius-full);
+  background: radial-gradient(
+    circle,
+    var(--c-nexa-cyan) 0%,
+    var(--c-nexa-purple) 42%,
+    transparent 72%
+  );
+  opacity: 0.35;
+  filter: blur(28px);
+  animation: nexa-orb-halo-pulse 3.4s ease-in-out infinite alternate;
+}
+
+.nexa-orb-body {
+  position: relative;
+  width: 116px;
+  height: 116px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nexa-orb-svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes nexa-orb-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes nexa-orb-halo-pulse {
+  0% { transform: scale(0.94); opacity: 0.28; }
+  100% { transform: scale(1.08); opacity: 0.44; }
+}
+
+.nexa-blob-anim--1 {
+  animation: nexa-blob-1 6s ease-in-out infinite alternate;
+}
+
+.nexa-blob-anim--2 {
+  animation: nexa-blob-2 5.2s ease-in-out infinite alternate;
+}
+
+.nexa-blob-anim--3 {
+  animation: nexa-blob-3 7s ease-in-out infinite alternate;
+}
+
+@keyframes nexa-blob-1 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(14px, -12px); }
+}
+
+@keyframes nexa-blob-2 {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-12px, 14px); }
+}
+
+@keyframes nexa-blob-3 {
+  0% { transform: rotate(25deg) scale(0.95); opacity: 0.45; }
+  100% { transform: rotate(35deg) scale(1.08); opacity: 0.65; }
+}
+
+.nexa-wave-anim--a {
+  animation: nexa-wave-a 4s ease-in-out infinite alternate;
+}
+
+.nexa-wave-anim--b {
+  animation: nexa-wave-b 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes nexa-wave-a {
+  0% { opacity: 0.6; transform: translateY(0); }
+  100% { opacity: 0.9; transform: translateY(6px); }
+}
+
+@keyframes nexa-wave-b {
+  0% { opacity: 0.55; transform: translateY(0); }
+  100% { opacity: 0.85; transform: translateY(-6px); }
+}
+
+/* --- Hero Prompt Cards (Figma reference) ---------------------------------- */
+.nexa-hero-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  max-width: 760px;
+  width: 100%;
+  margin: var(--space-5) auto 0;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .nexa-hero-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+}
+
+.nexa-hero-card {
+  background: var(--c-nexa-card-bg);
+  border: 1px solid var(--c-nexa-card-border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+}
+
+.nexa-hero-card:hover {
+  background: var(--c-nexa-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.nexa-hero-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.nexa-hero-card__title {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: var(--c-ink);
+}
+
+.nexa-hero-card__chevron {
+  color: var(--c-nexa-blue);
+  flex-shrink: 0;
+}
+
+.nexa-hero-card__desc {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--c-ink-muted);
+}
+
+/* --- Composer & Attach Pill Container ------------------------------------- */
+.composer-container {
+  position: sticky;
+  bottom: var(--space-4);
+  z-index: 15;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+/* Черная плашка добавления файлов */
+.nexa-attach-pill {
+  align-self: flex-start;
+  margin-left: 12px;
+  animation: attach-slide-up 0.18s ease-out;
+}
+
+@keyframes attach-slide-up {
+  0% { opacity: 0; transform: translateY(6px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.nexa-attach-pill__btn {
+  background: var(--c-black-pill, #000000);
+  color: var(--c-surface);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--shadow-raised);
+  transition: opacity 0.15s ease;
+}
+
+.nexa-attach-pill__btn:hover {
+  opacity: 0.9;
+}
+
+.nexa-attach-pill__bold {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.nexa-attach-pill__muted {
+  font-size: 12px;
+  color: var(--c-ink-faint);
+  font-weight: 400;
+}
+
+/* Форма инпута: округлая вытянутая капсула (pill) */
+.chat .nexa-composer-pill {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  background: var(--c-nexa-input-bg) !important;
+  border: 0 !important;
+  border-radius: var(--radius-full) !important;
+  padding: 8px 10px 8px 16px !important;
+  gap: 10px !important;
+  box-shadow: none !important;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.chat .nexa-composer-pill:focus-within {
+  box-shadow: var(--shadow-card) !important;
+  background: var(--c-surface-sunken) !important;
+}
+
+.composer__plus-btn {
+  background: transparent;
+  border: 0;
+  color: var(--c-ink);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.composer__plus-btn:hover {
+  background: var(--c-border);
+  transform: scale(1.08);
+}
+
+.chat .nexa-composer-pill .composer__input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chat .nexa-composer-pill .composer__input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--c-ink);
+  font-size: 1rem;
+  font-weight: 500;
+  font-family: inherit;
+  outline: none;
+  padding: 0;
+}
+
+.chat .nexa-composer-pill .composer__input::placeholder {
+  color: var(--c-ink-faint);
+  font-weight: 500;
+}
+
+.chat .nexa-composer-pill .composer__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.chat .nexa-composer-pill .composer__submit {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--c-nexa-blue) !important;
+  color: var(--c-surface) !important;
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.chat .nexa-composer-pill .composer__submit:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* --- Dedicated isolated Nexa Chat Screen ---------------------------------- */
+.nexa-chat-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4);
+  padding-bottom: calc(90px + var(--space-4));
+  box-sizing: border-box;
+}
+
+.nexa-chat-screen__thread {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-5);
+}
+
+.nexa-welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-6) var(--space-4) var(--space-2);
+  margin: auto 0;
+  min-height: 52vh;
+}
+
+.nexa-welcome__title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  margin: var(--space-3) 0 0 0;
+  line-height: 1.15;
+}
+
+.nexa-welcome__subtitle {
+  font-size: 2.15rem;
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  margin: 0 0 var(--space-4) 0;
+  line-height: 1.15;
+}
+
+.nexa-composer-container {
+  position: sticky;
+  bottom: var(--space-4);
+  z-index: 25;
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.nexa-composer-pill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: var(--c-nexa-input-bg, #eef2f5);
+  border: 0;
+  border-radius: var(--radius-full);
+  padding: 8px 10px 8px 16px;
+  gap: 12px;
+  box-shadow: none;
+  transition: box-shadow 0.15s ease, background 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.nexa-composer-pill:focus-within {
+  box-shadow: var(--shadow-card);
+  background: var(--c-surface-sunken);
+}
+
+.nexa-composer-plus-btn {
+  background: transparent;
+  border: 0;
+  color: var(--c-ink);
+  cursor: pointer;
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.nexa-composer-plus-btn:hover {
+  background: var(--c-border);
+  transform: scale(1.08);
+}
+
+.nexa-composer-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.nexa-composer-input {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--c-ink);
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-family: inherit;
+  outline: none;
+  padding: 0;
+}
+
+.nexa-composer-input::placeholder {
+  color: var(--c-ink-faint);
+  font-weight: 500;
+}
+
+.nexa-composer-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.nexa-composer-submit-btn {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: var(--radius-full);
+  background: var(--c-nexa-blue);
+  color: var(--c-surface);
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.nexa-composer-submit-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.nexa-composer-submit-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+
