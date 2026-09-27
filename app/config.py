@@ -47,6 +47,12 @@ class Settings(BaseSettings):
     CITATION_RECOVERY_MIN_OVERLAP: float = 0.15
     CITATION_RECOVERY_MAX: int = 2
 
+    # STT (локальный faster-whisper)
+    STT: Literal["off", "whisper"] = "off"
+    WHISPER_MODEL: str = "medium"
+    WHISPER_DEVICE: str = "auto"
+    WHISPER_COMPUTE: str = "int8"
+
     # сервер
     HOST: str = "0.0.0.0"
     PORT: int = 8000

@@ -84,6 +84,11 @@ export interface Strings {
   aboutFooterNote: string
   aboutHowItWorksTitle: string
   aboutHowItWorksBody: string
+  recording: string
+  recognizing: string
+  micUnavailable: string
+  micStart: string
+  micStop: string
 }
 
 const ro: Strings = {
@@ -176,6 +181,11 @@ const ro: Strings = {
   aboutHowItWorksTitle: "Cum funcționează",
   aboutHowItWorksBody:
     "Fiecare răspuns trece prin trei pași: căutare în surse (retrieval) → verificare a fragmentelor găsite → răspuns cu citate exacte din documente oficiale.",
+  recording: "Înregistrare…",
+  recognizing: "Recunoaștere…",
+  micUnavailable: "Microfonul nu este disponibil",
+  micStart: "Introducere vocală",
+  micStop: "Oprește înregistrarea",
 }
 
 const ru: Strings = {
@@ -268,6 +278,11 @@ const ru: Strings = {
   aboutHowItWorksTitle: "Как это работает",
   aboutHowItWorksBody:
     "Каждый ответ проходит три шага: поиск по источникам (retrieval) → проверка найденных фрагментов → ответ с точными цитатами из официальных документов.",
+  recording: "Запись…",
+  recognizing: "Распознавание…",
+  micUnavailable: "Микрофон недоступен",
+  micStart: "Голосовой ввод",
+  micStop: "Остановить запись",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
