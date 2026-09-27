@@ -47,6 +47,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
     LOG_LEVEL: str = "info"
     RATE_LIMIT_PER_MIN: int = 200
+    CORS_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
 
 
 settings = Settings()
