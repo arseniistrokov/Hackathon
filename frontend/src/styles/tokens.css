@@ -1,15 +1,12 @@
 /* Токены блока U1. Единственный источник цвета, типографики и отступов для frontend/src/features/**.
    В features запрещены #hex и rgb( — только var(--…). CI проверяет grep-ом.
 
-   Палитра выбрана под предмет: муниципальный ассистент, официальный, но не казённый.
-   Нейтрали сдвинуты в синеву (чистый серый читается как «не выбирали»).
-   Главное смысловое решение: NOT_FOUND окрашен нейтральным сланцем, а НЕ красным.
-   Заблокированная генерация — это заявленная фича продукта, и выглядеть как сбой она не должна.
-   Красный зарезервирован ровно за одним случаем: сеть или бэкенд действительно упали. */
+   Палитра согласована по Figma-спецификации (дизайн-система 44:8433, 85:19204, 85:16663, 13:565).
+   NOT_FOUND окрашен нейтральным сланцем: честный отказ базы, а не авария. */
 
 :root {
   /* --- цвет ------------------------------------------------------------- */
-  /* Фон страницы: чистый белый под финальный макет Figma 58:2226 / 44:8433 */
+  /* Фон страницы: чистый белый под макет Figma 44:8433 / 58:2226 */
   --c-page: #ffffff;
   --c-surface: #ffffff;
   --c-surface-sunken: #f8fafc;
@@ -17,13 +14,13 @@
   --c-border: #e2e8f0;
   --c-border-strong: #cbd5e1;
 
-  --c-ink: #16212b;
+  --c-ink: #000000;
   --c-ink-muted: #53616e;
-  --c-ink-faint: #8a96a3;
+  --c-ink-faint: #818181;
 
-  --c-accent: #0f5d8c;
-  --c-accent-hover: #0c4b72;
-  --c-accent-soft: #eaf2fb;
+  --c-accent: #2c67c5;
+  --c-accent-hover: #2458c4;
+  --c-accent-soft: #dfe8f6;
   --c-on-accent: #ffffff;
 
   /* ANSWERED — акцент. CONFLICT — охра: «посмотри сам», не «ошибка». */
@@ -36,60 +33,64 @@
   --c-error: #a32b2b;
   --c-error-soft: #fbeaea;
 
-  --c-focus: #1d7fbd;
+  --c-focus: #2c67c5;
 
-  /* Акцентный цвет кнопок/пилюль (Figma: синий #2f6fee для Sign up/язык) */
-  --c-cta: #2f6fee;
+  /* Акцентный цвет кнопок/пилюль (Figma: #2c67c5 для Sign up/языка и кнопки отправки в 44:8433) */
+  --c-cta: #2c67c5;
   --c-cta-hover: #2458c4;
   --c-cta-ink: #ffffff;
 
-  /* Фирменная зелёная "x" в логотипе nexa и кнопка отправки из 58:2226 (#3ede56) */
-  --c-brand-x: #3ede56;
-  --c-submit: #3ede56;
-  --c-submit-hover: #32c748;
+  /* Кнопка отправки из основного макета 44:8433 / 85:19204 (#2c67c5) */
+  --c-submit: #2c67c5;
+  --c-submit-hover: #2458c4;
   --c-submit-ink: #ffffff;
   --c-submit-disabled: #cbd5e1;
   --c-submit-disabled-ink: #ffffff;
 
-  /* Композер из макета Figma 58:2226 (#e6e6e6) */
+  /* Фирменная зелёная/бирюзовая "x" в логотипе nexa (Figma 13:565 / 13:823) */
+  --c-brand-x: #3ede56;
+  --c-brand-x-top: #15aaa6;
+  --c-brand-x-bottom: #3ede56;
+
+  /* Композер из макета Figma 44:8433 (#e6e6e6) */
   --c-composer-bg: #e6e6e6;
-  --c-composer-placeholder: #888888;
+  --c-composer-placeholder: #818181;
 
-  /* Попап добавления файла из макета Figma 85:16663 (#16212b / темный pill) */
-  --c-attach-popup-bg: #16212b;
+  /* Попап добавления файла из макета Figma 85:16663 / 85:17045 (чистый чёрный #000000) */
+  --c-attach-popup-bg: #000000;
   --c-attach-popup-ink: #ffffff;
-  --c-attach-popup-muted: #94a3b8;
+  --c-attach-popup-muted: #818181;
 
-  /* Боковая панель: светлый серый (#f5f6f8), гармонирующий с белой страницей */
-  --c-sidebar-bg: #f5f6f8;
-  --c-sidebar-item-hover: #e8ecf2;
-  --c-sidebar-border: #eaedf1;
+  /* Боковая панель: серый фон карточки из макета 44:8433 (#e6e6e6) */
+  --c-sidebar-bg: #e6e6e6;
+  --c-sidebar-item-hover: #dcdcdc;
+  --c-sidebar-border: #e6e6e6;
 
-  /* Карточки-подсказки (Figma Frame 104: мягкий светло-голубой #e3ecfb) */
-  --c-card-soft: #e3ecfb;
-  --c-card-soft-border: #d2e1f9;
-  --c-card-soft-hover: #d8e5f8;
+  /* Карточки-подсказки (Figma Frame 104 / 85:16481: #dfe8f6 с текстом #2c67c5) */
+  --c-card-soft: #dfe8f6;
+  --c-card-soft-border: #dfe8f6;
+  --c-card-soft-hover: #d2e2f7;
+  --c-card-soft-text: #2c67c5;
 
-  /* Градиент аватара пользователя Andrei (Figma 58:2226: from #2c6ec4 to #15aaa6) */
-  --c-avatar-gradient: linear-gradient(135deg, #2c6ec4 0%, #15aaa6 100%);
+  /* Градиент аватара пользователя Andrei (Figma 44:8433 / 85:20937: from #2c6ec4 to #15aaa6) */
+  --c-avatar-gradient: linear-gradient(90deg, #2c6ec4 0%, #15aaa6 100%);
 
   /* --- типографика ------------------------------------------------------ */
-  /* Inter — шрифт макета (Google Fonts, подключён в index.html). */
   --font-ui: "Inter", system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-quote: Georgia, "Times New Roman", serif;
 
   --fs-xs: 0.8125rem;
   --fs-sm: 0.9375rem;
   --fs-md: 1.0625rem;
-  --fs-lg: 1.3125rem;
-  --fs-xl: 1.625rem;
+  --fs-lg: 1.25rem;
+  --fs-xl: 1.5rem;
   --fs-2xl: 2rem;
 
-  --lh-tight: 1.25;
-  --lh-normal: 1.55;
-  --lh-loose: 1.7;
+  --lh-tight: 1.1;
+  --lh-normal: 1.4;
+  --lh-loose: 1.6;
 
-  --ls-label: 0.06em;
+  --ls-label: 0.04em;
 
   /* --- размеры и ритм --------------------------------------------------- */
   --space-1: 0.25rem;
@@ -100,42 +101,38 @@
   --space-6: 2rem;
   --space-7: 3rem;
 
-  /* Радиусы укрупнены под макет Figma (карточки ~10px, композер/пилюли ~30px). */
-  --radius-sm: 8px;
+  /* Радиусы по макету Figma (карточки 20px, композер 50px, кнопки 30px / 100px). */
+  --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 20px;
-  --radius-pill: 999px;
+  --radius-pill: 50px;
+  --radius-round: 100px;
 
   --measure: 65ch;
   --width-app: 46rem;
-  /* README фронта требует ≥ 48 px (контракт U1 — ≥ 44); берём строгую цифру. */
-  --tap-min: 48px;
+  --tap-min: 44px;
 
   --shadow-card: 0 1px 2px rgba(22, 33, 43, 0.06), 0 1px 8px rgba(22, 33, 43, 0.04);
   --shadow-raised: 0 4px 6px -1px rgba(22, 33, 43, 0.08), 0 10px 24px -3px rgba(22, 33, 43, 0.12);
+  --shadow-icon-faint: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 
-  /* Точка, на которой CONFLICT расходится в две колонки (критерий приёмки 2). */
+  /* Точка адаптива для двух колонок */
   --bp-wide: 768px;
-
-  /* Точка перехода на мобильную раскладку (сайдбар прячется в overlay). */
   --bp-sidebar: 760px;
 
-  /* Полупрозрачная подложка мобильного оверлея сайдбара. */
-  --c-backdrop: rgba(22, 33, 43, 0.35);
+  --c-backdrop: rgba(0, 0, 0, 0.35);
 
-  /* Шар-маскот: крупная (~300-340px) неровная капля/тор с ярким трехцветным
-     градиентом (маджента/пурпур -> глубокий синий -> бирюза/циан), полупрозрачным центром
-     и белым радиальным бликом стекла, точь-в-точь по макету Figma 58:2226 / 85:19204. */
-  --mascot-size: 19rem;
-  --mascot-glow: radial-gradient(circle, rgba(168, 85, 247, 0.28) 0%, rgba(56, 189, 248, 0.22) 45%, rgba(6, 182, 212, 0) 70%);
+  /* Шар-маскот: 155×155px (макет 44:8433 / 85:19956) с blur-[75px] свечением под ним */
+  --mascot-size: 155px;
+  --mascot-glow: radial-gradient(circle, rgba(168, 85, 247, 0.55) 0%, rgba(56, 189, 248, 0.45) 45%, rgba(6, 182, 212, 0) 75%);
   --mascot-gradient:
     radial-gradient(ellipse at 35% 25%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 24%, transparent 45%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.25) 35%, transparent 58%),
     conic-gradient(from 200deg at 50% 50%, #c026d3 0deg, #9333ea 70deg, #2563eb 150deg, #06b6d4 230deg, #38bdf8 300deg, #c026d3 360deg);
   --mascot-shadow:
-    inset -12px -12px 28px rgba(37, 99, 235, 0.35),
-    inset 12px 12px 28px rgba(217, 70, 239, 0.35),
-    0 16px 36px rgba(56, 189, 248, 0.25);
-  --mascot-highlight: radial-gradient(ellipse at 32% 22%, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 55%);
+    inset -8px -8px 20px rgba(37, 99, 235, 0.4),
+    inset 8px 8px 20px rgba(217, 70, 239, 0.4),
+    0 10px 25px rgba(56, 189, 248, 0.3);
+  --mascot-highlight: radial-gradient(ellipse at 32% 22%, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0) 55%);
   --mascot-center: radial-gradient(circle at 48% 48%, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.35) 60%, transparent 100%);
 }
