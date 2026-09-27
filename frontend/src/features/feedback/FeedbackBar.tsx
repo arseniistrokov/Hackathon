@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { sendFeedback } from "@/api/client"
-import type { FeedbackRequest } from "@/api/types"
+import type { FeedbackRequest, Lang } from "@/api/types"
+import { t } from "@/i18n"
 import "./feedback.css"
 
 export interface FeedbackBarProps {
   queryId: string
+  lang?: Lang
   onSubmit?: () => void
   initialRating?: 1 | -1 | null
   initialSubmitted?: boolean
@@ -27,11 +29,13 @@ export function validateComment(text: string): string {
 
 export function FeedbackBar({
   queryId,
+  lang = "ru",
   onSubmit,
   initialRating = null,
   initialSubmitted = false,
   sendFeedbackFn = sendFeedback,
 }: FeedbackBarProps) {
+  const s = t(lang)
   const [rating, setRating] = useState<1 | -1 | null>(initialRating)
   const [comment, setComment] = useState("")
   const [isSubmitted, setIsSubmitted] = useState(initialSubmitted)
@@ -57,21 +61,21 @@ export function FeedbackBar({
       setIsSubmitted(true)
       onSubmit?.()
     } catch (err) {
-      console.error("Ошибка при отправке отзыва:", err)
+      console.error("Feedback submit error:", err)
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="feedback" aria-label="Обратная связь">
+    <div className="feedback" aria-label={s.feedbackAriaLabel}>
       <div className="feedback__rating-group">
         <button
           type="button"
           className={`feedback__btn ${rating === 1 ? "feedback__btn--active" : ""}`}
           disabled={isSubmitted || isSubmitting}
           onClick={() => handleRating(1)}
-          aria-label="Полезно"
+          aria-label={s.feedbackUseful}
           aria-pressed={rating === 1}
         >
           👍
@@ -81,7 +85,7 @@ export function FeedbackBar({
           className={`feedback__btn ${rating === -1 ? "feedback__btn--active" : ""}`}
           disabled={isSubmitted || isSubmitting}
           onClick={() => handleRating(-1)}
-          aria-label="Не помогло"
+          aria-label={s.feedbackNotUseful}
           aria-pressed={rating === -1}
         >
           👎
@@ -90,7 +94,7 @@ export function FeedbackBar({
 
       {isSubmitted && (
         <p className="feedback__message" role="status">
-          Спасибо за отзыв!
+          {s.feedbackThanks}
         </p>
       )}
 
@@ -101,10 +105,10 @@ export function FeedbackBar({
             value={comment}
             onChange={(e) => setComment(validateComment(e.target.value))}
             maxLength={2000}
-            placeholder="Что можно улучшить? (необязательно)"
+            placeholder={s.feedbackCommentPlaceholder}
             disabled={isSubmitting}
             rows={2}
-            aria-label="Текст отзыва"
+            aria-label={s.feedbackCommentAriaLabel}
           />
           <div className="feedback__actions">
             <button
@@ -112,7 +116,7 @@ export function FeedbackBar({
               className="feedback__submit-btn"
               disabled={isSubmitting}
             >
-              Отправить
+              {s.feedbackSubmit}
             </button>
           </div>
         </form>

@@ -1,4 +1,4 @@
-// Порт блока U1: ask / sendFeedback / getStats. Переключатель уровня — VITE_USE_MOCK (по умолчанию true = L0).
+// Порт блока U1: ask / sendFeedback / getStats. Переключатель уровня — VITE_USE_MOCK (по умолчанию false = L1).
 // L0: ответы из data/fixture/mock_responses (tsconfig include + resolveJsonModule уже настроены каркасом).
 // L1: реальный /api через vite proxy. Ошибка сети НЕ подменяется моком: экран обязан показать состояние
 // error с «повторить» (порт U1 и QA 11), а выдавать фикстуру за настоящий ответ на демо нельзя.
@@ -10,10 +10,10 @@ import conflict from "../../../data/fixture/mock_responses/conflict.json"
 import notFound from "../../../data/fixture/mock_responses/not_found.json"
 import type { AskResponse, FeedbackRequest, Lang, Stats } from "./types"
 
-const TIMEOUT_MS = 10_000
+const TIMEOUT_MS = 30_000
 const MOCK_LATENCY_MS = 400
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false"
+export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true"
 
 const MOCKS: Record<string, AskResponse> = {
   answered_ro: answeredRo as AskResponse,
@@ -106,7 +106,7 @@ export async function getStats(): Promise<Stats> {
     // chunks и model — из meta моков. Свои значения не выдумываем.
     return {
       corpus_documents: 14,
-      corpus_chunks: 52,
+      corpus_chunks: 60,
       sites: 8,
       conflicts: 2,
       queries: 0,

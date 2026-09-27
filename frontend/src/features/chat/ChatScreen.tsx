@@ -137,7 +137,7 @@ export function ChatScreen() {
         </div>
       </form>
 
-      <StatsFooter />
+      <StatsFooter lang={lang} />
     </div>
   )
 }
