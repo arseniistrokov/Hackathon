@@ -67,6 +67,43 @@ WHISPER_COMPUTE=int8      # int8 / float16
 
 > **Примечание:** При первом запуске модель автоматически загружается из Hugging Face в локальный кэш. Все последующие транскрибации выполняются локально без подключения к внешним API.
 
+## Что работает
+- Гибридный поиск FTS5 + hash-эмбеддинги → RRF (R1), лексический reranker с гейтом NOT_FOUND (R2).
+- Детерминированный workflow `/ask` с NOT_FOUND/CONFLICT, `verify_citations` + `recover_citations` по дословным цитатам (W1).
+- Модель — дообученный Qwen2.5-3B (QLoRA) через `LLM=api`, защитный системный промпт RO/RU (L1).
+- Хранилище: SQLite (in-memory на fixture, файл на реальном корпусе), fetch 40 сайтов (волна 1+2), chunker, скаут конфликтов с автозасевом при старте, API с rate limit/CORS (D1, I1, I2, S1, A1).
+- Фронтенд NEXA по Figma: чат с тремя состояниями, карточки цитат, просмотр документа, feedback, статистика, «Despre proiect», поиск, мобильная вёрстка, тёмная тема (U1, U2).
+- Офлайн голосовой ввод faster-whisper с фолбэком на Web Speech API (U2).
+- Реальный корпус: 35 из 40 сайтов Annex 1, 372 документа, 5111 фрагментов (см. ниже); демо-вопросы — `docs/pitch/demo_questions.md`.
+- Не готово: golden set под реальный корпус (G1) и `data/conflicts_manual.json` — eval и презентация на нём делаются позже.
+
+## Запуск демо
+```
+cp .env.example .env
+```
+В `.env` для реального ответа модели:
+```
+LLM=api
+API_BASE_URL=...
+API_KEY=...
+API_MODEL=qwen2.5-3b-qlora
+LLM_TIMEOUT_S=30
+```
+Реальный корпус:
+```
+sed -i 's/^CORPUS=fixture/CORPUS=real/' .env
+uv run python scripts/index.py --source both --reset
+```
+Голос офлайн:
+```
+uv sync --extra stt   # STT=whisper, WHISPER_MODEL=small в .env
+```
+Сборка и единый процесс (uvicorn раздаёт бэкенд и собранный фронт):
+```
+cd frontend && npm run build && cd ..
+uv run uvicorn app.main:app
+```
+
 ## Куда смотреть
 - `docs/CONTEXT.md` — решения проекта, единственный источник правды.
 - `docs/BLOCKS.md` — карта блоков, владельцы, статус.
@@ -74,6 +111,4 @@ WHISPER_COMPUTE=int8      # int8 / float16
 - `docs/contracts/<ID>_*.md` — контракт блока, вставляется целиком в нейронку.
 - `docs/WORKFLOW.md` — ветки, цикл задачи, ревью.
 - `AGENTS.md` — правила для CLI-агентов.
-
-Сейчас в репозитории только каркас C0: модели контрактов, порты блоков с `NotImplementedError`, fixture, контракты и референсы. Реализация блоков — по контрактам.
 

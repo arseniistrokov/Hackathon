@@ -51,19 +51,19 @@
 <!-- BLOCKS:START -->
 | Блок | Название | Владелец | Запасной | Зависит от | Уровни | L0 | L1 | PR |
 |---|---|---|---|---|---|---|---|---|
-| [`C0`](contracts/C0_skeleton.md) | Каркас проекта | Арсений | Никита | — | L0: Всё выше. · L1: — | ☐ | ☐ |  |
-| [`D1`](contracts/D1_store.md) | SQLite + FTS5 + матрица эмбеддингов | Никита | Арсений | I2 | L0: `:memory:` из fixture. Всё, кроме `save_… · L1: `CORPUS=real` → файл `DB_PATH`, WAL, инд… | ☐ | ☐ |  |
-| [`I2`](contracts/I2_chunker.md) | Нарезка страниц на chunks | Никита | Арсений | — | L0: Всё выше. У этого блока нет L1: чистая ф… · L1: — | ☐ | ☐ |  |
-| [`I1`](contracts/I1_fetch.md) | Скачивание 40 сайтов | Никита | Арсений | — | L0: `load_raw` и `save_raw` (round-trip на f… · L1: Сеть. Порядок источников: WP REST (если … | ☐ | ☐ |  |
-| [`S1`](contracts/S1_scout.md) | Скаут конфликтов (офлайн) | Никита | Арсений | D1, L1, I2 | L0: `prefilter` + `load_manual` (SCOUT=manua… · L1: SCOUT=llm: `judge` через `app.blocks.llm… | ☐ | ☐ |  |
-| [`A1`](contracts/A1_api.md) | Роуты /feedback и /stats | Никита | Арсений | D1, W1 | L0: Оба роута на fixture-базе в памяти. · L1: — | ☐ | ☐ |  |
-| [`E1`](contracts/E1_eval.md) | Eval: цифра до любого тюнинга | Арсений | Никита | W1 | L0: Строковые метрики на fixture golden. · L1: `--judge` через L1. | ☐ | ☐ |  |
-| [`L1`](contracts/L1_llm.md) | Вызов модели: ollama / api / off | Арсений | Никита | — | L0: `LLM=off`: `complete_json` → `None`, `tr… · L1: `LLM=ollama` и `LLM=api` как выше. Модел… | ☐ | ☐ |  |
-| [`R1`](contracts/R1_retrieval.md) | Гибридный поиск: FTS5 + numpy косинус → RRF | Арсений | Никита | D1, L1 | L0: hash-эмбеддинги, FTS через D1, RRF, `mak… · L1: bge-m3; перевод ru→ro через L1; категори… | ☐ | ☐ |  |
-| [`R2`](contracts/R2_rerank.md) | Reranker = механизм NOT_FOUND | Арсений | Никита | — | L0: lexical. · L1: bge-reranker-v2-m3. | ☐ | ☐ |  |
-| [`W1`](contracts/W1_workflow.md) | Детерминированный workflow /ask | Арсений | Никита | R1, R2, L1, D1 | L0: Весь путь на fixture с L0 соседей: экстр… · L1: То же с L1 соседей: генерация через L1, … | ☐ | ☐ |  |
-| [`U1`](contracts/U1_chat.md) | Экран чата: три состояния ответа | Паша | Арсений | A1 | L0: Моки (каркас уже рисует минимум; довести… · L1: `VITE_USE_MOCK=false` против реального `… | ☐ | ☐ |  |
-| [`U2`](contracts/U2_extras.md) | Пальцы, микрофон, футер статистики | Паша | Арсений | U1, A1 | L0: На моках: `sendFeedback` в mock-режиме р… · L1: Реальный API. | ☐ | ☐ |  |
+| [`C0`](contracts/C0_skeleton.md) | Каркас проекта | Арсений | Никита | — | L0: Всё выше. · L1: — | ✅ | ☐ |  |
+| [`D1`](contracts/D1_store.md) | SQLite + FTS5 + матрица эмбеддингов | Никита | Арсений | I2 | L0: `:memory:` из fixture. Всё, кроме `save_… · L1: `CORPUS=real` → файл `DB_PATH`, WAL, инд… | ✅ | ✅ |  |
+| [`I2`](contracts/I2_chunker.md) | Нарезка страниц на chunks | Никита | Арсений | — | L0: Всё выше. У этого блока нет L1: чистая ф… · L1: — | ✅ | ☐ |  |
+| [`I1`](contracts/I1_fetch.md) | Скачивание 40 сайтов | Никита | Арсений | — | L0: `load_raw` и `save_raw` (round-trip на f… · L1: Сеть. Порядок источников: WP REST (если … | ✅ | ✅ |  |
+| [`S1`](contracts/S1_scout.md) | Скаут конфликтов (офлайн) | Никита | Арсений | D1, L1, I2 | L0: `prefilter` + `load_manual` (SCOUT=manua… · L1: SCOUT=llm: `judge` через `app.blocks.llm… | ✅ | ✅ |  |
+| [`A1`](contracts/A1_api.md) | Роуты /feedback и /stats | Никита | Арсений | D1, W1 | L0: Оба роута на fixture-базе в памяти. · L1: — | ✅ | ☐ |  |
+| [`E1`](contracts/E1_eval.md) | Eval: цифра до любого тюнинга | Арсений | Никита | W1 | L0: Строковые метрики на fixture golden. · L1: `--judge` через L1. | ✅ | ☐ |  |
+| [`L1`](contracts/L1_llm.md) | Вызов модели: ollama / api / off | Арсений | Никита | — | L0: `LLM=off`: `complete_json` → `None`, `tr… · L1: `LLM=ollama` и `LLM=api` как выше. Модел… | ✅ | ✅ |  |
+| [`R1`](contracts/R1_retrieval.md) | Гибридный поиск: FTS5 + numpy косинус → RRF | Арсений | Никита | D1, L1 | L0: hash-эмбеддинги, FTS через D1, RRF, `mak… · L1: bge-m3; перевод ru→ro через L1; категори… | ✅ | ✅ |  |
+| [`R2`](contracts/R2_rerank.md) | Reranker = механизм NOT_FOUND | Арсений | Никита | — | L0: lexical. · L1: bge-reranker-v2-m3. | ✅ | ✅ |  |
+| [`W1`](contracts/W1_workflow.md) | Детерминированный workflow /ask | Арсений | Никита | R1, R2, L1, D1 | L0: Весь путь на fixture с L0 соседей: экстр… · L1: То же с L1 соседей: генерация через L1, … | ✅ | ✅ |  |
+| [`U1`](contracts/U1_chat.md) | Экран чата: три состояния ответа | Паша | Арсений | A1 | L0: Моки (каркас уже рисует минимум; довести… · L1: `VITE_USE_MOCK=false` против реального `… | ✅ | ✅ |  |
+| [`U2`](contracts/U2_extras.md) | Пальцы, микрофон, футер статистики | Паша | Арсений | U1, A1 | L0: На моках: `sendFeedback` в mock-режиме р… · L1: Реальный API. | ✅ | ✅ |  |
 | [`G1`](contracts/G1_golden.md) | Golden set, конфликтная пара, страницы навигации | Дизайнеры | Арсений | — | L0: Сб до 15:00: 15 вопросов по первой волне… · L1: Сб до 20:00: 30–40, hidden отмечены, вто… | ☐ | ☐ |  |
 | [`P1`](contracts/P1_pitch.md) | Презентация, стоимость, демо-сценарий, backup-видео | Дизайнеры | Арсений | E1 | L0: Сб вечер: slides.md, demo_script.md, men… · L1: Вс 09:00–12:00: cost.md с ценами, цифры … | ☐ | ☐ |  |
 <!-- BLOCKS:END -->
