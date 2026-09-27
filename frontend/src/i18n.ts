@@ -93,6 +93,8 @@ export interface Strings {
   micUnavailable: string
   micStart: string
   micStop: string
+  themeLight: string
+  themeDark: string
 }
 
 const ro: Strings = {
@@ -193,7 +195,10 @@ const ro: Strings = {
   recognizing: "Recunoaștere…",
   micUnavailable: "Microfonul nu este disponibil",
   micStart: "Introducere vocală",
-  micStop: "Oprește înregistrarea",}
+  micStop: "Oprește înregistrarea",
+  themeLight: "Comută la tema luminoasă",
+  themeDark: "Comută la tema întunecată",
+}
 
 const ru: Strings = {
   appTitle: "Муниципальный ассистент Кишинёва",
@@ -294,6 +299,8 @@ const ru: Strings = {
   micUnavailable: "Микрофон недоступен",
   micStart: "Голосовой ввод",
   micStop: "Остановить запись",
+  themeLight: "Переключить на светлую тему",
+  themeDark: "Переключить на тёмную тему",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }

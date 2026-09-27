@@ -57,6 +57,35 @@ function loadCollapsed(): boolean {
   }
 }
 
+type Theme = "light" | "dark"
+
+const THEME_STORAGE_KEY = "nexa-theme"
+
+function getInitialTheme(): Theme {
+  try {
+    const saved = localStorage.getItem(THEME_STORAGE_KEY)
+    if (saved === "light" || saved === "dark") {
+      return saved
+    }
+  } catch {
+    // localStorage may be disabled
+  }
+  if (typeof window !== "undefined" && window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
+    return "dark"
+  }
+  return "light"
+}
+
+// Immediate application to documentElement so it applies synchronously upon script evaluation
+if (typeof document !== "undefined") {
+  try {
+    const initial = getInitialTheme()
+    document.documentElement.setAttribute("data-theme", initial)
+  } catch {
+    // ignore
+  }
+}
+
 export function ChatScreen() {
   const [lang, setLang] = useState<Lang>("ro")
   const [draft, setDraft] = useState("")
@@ -72,6 +101,7 @@ export function ChatScreen() {
   const [openCitation, setOpenCitation] = useState<Citation | null>(null)
   const [view, setView] = useState<"chat" | "about">("chat")
   const [attachOpen, setAttachOpen] = useState(false)
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
   const attachRef = useRef<HTMLDivElement | null>(null)
   const attachToggleRef = useRef<HTMLButtonElement | null>(null)
   const threadEndRef = useRef<HTMLDivElement | null>(null)
@@ -132,6 +162,46 @@ export function ChatScreen() {
     document.addEventListener("keydown", handleKeyDown)
     return () => document.removeEventListener("keydown", handleKeyDown)
   }, [searchOpen])
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(THEME_STORAGE_KEY)
+      if (saved === "light" || saved === "dark") {
+        document.documentElement.setAttribute("data-theme", saved)
+        setTheme(saved)
+        return
+      }
+    } catch {
+      // ignore
+    }
+    const mq = window.matchMedia("(prefers-color-scheme: dark)")
+    const handler = (e: MediaQueryListEvent) => {
+      try {
+        if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+          const sysTheme = e.matches ? "dark" : "light"
+          setTheme(sysTheme)
+          document.documentElement.setAttribute("data-theme", sysTheme)
+        }
+      } catch {
+        // ignore
+      }
+    }
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
+  function toggleTheme(): void {
+    const nextTheme: Theme = theme === "dark" ? "light" : "dark"
+    setTheme(nextTheme)
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, nextTheme)
+    } catch {
+      // ignore
+    }
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute("data-theme", nextTheme)
+    }
+  }
 
   async function run(question: string): Promise<void> {
     const trimmed = question.trim()
@@ -366,6 +436,14 @@ export function ChatScreen() {
           <span className="main__mobile-title">{renderLogo(s.logoText)}</span>
           <div className="main__topbar-actions">
             {langSwitch}
+            <button
+              type="button"
+              className="theme-toggle"
+              aria-label={theme === "dark" ? s.themeLight : s.themeDark}
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? <MoonIcon /> : <SunIcon />}
+            </button>
           </div>
         </header>
 
@@ -672,5 +750,34 @@ function PaperclipIcon() {
     </svg>
   )
 }
+
+function SunIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+      <path
+        d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+function MoonIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 
 
