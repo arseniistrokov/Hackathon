@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     # скаут (S1)
     SCOUT: Literal["manual", "llm"] = "manual"
 
+    # восстановление цитат (W1, hotfix для дообученных моделей без citations)
+    CITATION_RECOVERY: bool = True
+    CITATION_RECOVERY_MIN_OVERLAP: float = 0.15
+
     # сервер
     HOST: str = "0.0.0.0"
     PORT: int = 8000
