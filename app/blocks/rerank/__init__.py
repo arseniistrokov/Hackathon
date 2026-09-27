@@ -47,4 +47,7 @@ def is_enough(passages: list[Passage], query: Query | None = None) -> bool:
         return True
     query_tokens = set(l0.normalize(query.search_text)) | set(l0.normalize(query.text))
     passage_tokens = set(l0.normalize(passages[0].chunk.text))
-    return len(query_tokens & passage_tokens) >= 2
+    # Кросс-языковой запрос (ru → ro-корпус): search_text — короткий перевод (словарь/модель),
+    # общих токенов физически мало, поэтому достаточно одного; порог score выше уже проверен.
+    min_common = 1 if query.lang != "ro" else 2
+    return len(query_tokens & passage_tokens) >= min_common
