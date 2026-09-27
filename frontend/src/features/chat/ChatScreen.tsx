@@ -34,7 +34,8 @@ export function ChatScreen() {
       const response = await ask(question, lang)
       setTurns((previous) => [...previous, { id: previous.length + 1, question, response }])
       setDraft("")
-    } catch {
+    } catch (err) {
+      console.error("Ask request failed:", err)
       setFailed(true)
     } finally {
       setPending(false)

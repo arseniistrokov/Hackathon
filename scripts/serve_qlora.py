@@ -143,12 +143,14 @@ def chat_completions(req: ChatCompletionRequest):
     import torch
 
     start_t = time.perf_counter()
+    gen_max_tokens = min(req.max_tokens, 64) if is_translation else min(req.max_tokens, 256)
     with torch.no_grad():
         outputs = _model.generate(
             input_ids=inputs,
             attention_mask=torch.ones_like(inputs),
-            max_new_tokens=req.max_tokens,
+            max_new_tokens=gen_max_tokens,
             temperature=req.temperature,
+            pad_token_id=_tokenizer.pad_token_id or _tokenizer.eos_token_id,
             use_cache=False,
         )
     latency_ms = int((time.perf_counter() - start_t) * 1000)

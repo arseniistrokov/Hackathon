@@ -10,7 +10,7 @@ import conflict from "../../../data/fixture/mock_responses/conflict.json"
 import notFound from "../../../data/fixture/mock_responses/not_found.json"
 import type { AskResponse, FeedbackRequest, Lang, Stats } from "./types"
 
-const TIMEOUT_MS = 10_000
+const TIMEOUT_MS = 60_000
 const MOCK_LATENCY_MS = 400
 
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false"
