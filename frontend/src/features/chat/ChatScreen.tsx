@@ -85,6 +85,18 @@ export function ChatScreen() {
           <section className="chat__empty">
             <h2>{s.emptyTitle}</h2>
             <p>{s.emptyBody}</p>
+            <div className="chat__prompts">
+              {s.quickPrompts.map((prompt) => (
+                <button
+                  key={prompt}
+                  type="button"
+                  className="chat__prompt"
+                  onClick={() => setDraft(prompt)}
+                >
+                  {prompt}
+                </button>
+              ))}
+            </div>
           </section>
         )}
 

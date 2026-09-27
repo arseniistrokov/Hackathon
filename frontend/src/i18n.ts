@@ -14,6 +14,7 @@ export interface Strings {
   sending: string
   emptyTitle: string
   emptyBody: string
+  quickPrompts: string[]
   loading: string
   errorTitle: string
   errorBody: string
@@ -69,6 +70,11 @@ const ro: Strings = {
   emptyTitle: "Puneți o întrebare despre serviciile municipale",
   emptyBody:
     "Fiecare răspuns arată documentul din care provine și fragmentul exact. Dacă răspunsul nu există în surse, asistentul o spune direct.",
+  quickPrompts: [
+    "Care este termenul de examinare a unei petiții?",
+    "Cum depun o petiție la primărie?",
+    "Cine este responsabil de curățenia stradală?",
+  ],
   loading: "Se caută în surse…",
   errorTitle: "Cererea nu a reușit",
   errorBody: "Serviciul nu a răspuns. Verificați conexiunea și încercați din nou.",
@@ -125,6 +131,11 @@ const ru: Strings = {
   emptyTitle: "Задайте вопрос о муниципальных услугах",
   emptyBody:
     "К каждому ответу прилагается документ-источник и дословный фрагмент. Если ответа в источниках нет, ассистент скажет об этом прямо.",
+  quickPrompts: [
+    "В какой срок рассматривается петиция в примэрии?",
+    "Как подать петицию в примэрию?",
+    "Кто отвечает за уборку улиц?",
+  ],
   loading: "Идёт поиск по источникам…",
   errorTitle: "Запрос не удался",
   errorBody: "Сервис не ответил. Проверьте соединение и попробуйте снова.",

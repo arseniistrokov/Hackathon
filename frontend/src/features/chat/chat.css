@@ -32,6 +32,7 @@
 
 .chat__title {
   font-size: var(--fs-xl);
+  font-weight: 800;
   letter-spacing: -0.01em;
 }
 
@@ -63,30 +64,30 @@
 
 .lang__group {
   display: flex;
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  gap: var(--space-1);
+  padding: 3px;
+  border: 2px solid var(--c-ink);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface);
 }
 
 .lang__button {
   min-width: 3.5rem;
-  min-height: var(--tap-min);
+  min-height: calc(var(--tap-min) - 10px);
   padding: 0 var(--space-3);
   border: 0;
-  background: var(--c-surface);
+  border-radius: var(--radius-pill);
+  background: transparent;
   color: var(--c-ink-muted);
   font-size: var(--fs-sm);
+  font-weight: 700;
   cursor: pointer;
-}
-
-.lang__button + .lang__button {
-  border-left: 1px solid var(--c-border-strong);
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .lang__button[aria-pressed="true"] {
-  background: var(--c-accent);
+  background: var(--c-ink);
   color: var(--c-on-accent);
-  font-weight: 600;
 }
 
 /* --- поток --------------------------------------------------------------- */
@@ -98,21 +99,54 @@
 }
 
 .chat__empty {
-  padding: var(--space-6) var(--space-5);
-  border: 1px dashed var(--c-border-strong);
-  border-radius: var(--radius-lg);
-  background: var(--c-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
 }
 
 .chat__empty h2 {
-  font-size: var(--fs-lg);
+  max-width: 28rem;
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
 .chat__empty p {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
   max-width: var(--measure);
   color: var(--c-ink-muted);
   font-size: var(--fs-sm);
+}
+
+/* Статичные чипсы-подсказки (нет в API — тексты из i18n, клик подставляет вопрос в композер). */
+.chat__prompts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  max-width: 40rem;
+}
+
+.chat__prompt {
+  min-height: var(--tap-min);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--c-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface);
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.chat__prompt:hover {
+  border-color: var(--c-accent);
+  background: var(--c-accent-soft);
 }
 
 .turn {
@@ -129,6 +163,7 @@
   background: var(--c-accent-soft);
   color: var(--c-ink);
   font-size: var(--fs-sm);
+  font-weight: 500;
   overflow-wrap: anywhere;
 }
 
@@ -136,10 +171,10 @@
 .answer {
   padding: var(--space-5);
   border: 1px solid var(--c-border);
-  border-left-width: 3px;
+  border-left-width: 4px;
   border-radius: var(--radius-lg);
   background: var(--c-surface);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-raised);
 }
 
 .answer--answered {
@@ -158,9 +193,9 @@
   display: inline-block;
   margin-bottom: var(--space-3);
   padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   font-size: var(--fs-xs);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: var(--ls-label);
 }
@@ -227,6 +262,11 @@
   border: 1px solid var(--c-border);
   border-radius: var(--radius-md);
   background: var(--c-surface-sunken);
+  transition: box-shadow 0.15s ease;
+}
+
+.citation:hover {
+  box-shadow: var(--shadow-card);
 }
 
 .citation + .citation {
@@ -305,8 +345,8 @@
   gap: var(--space-2);
   padding: var(--space-4);
   border: 1px solid var(--c-border);
-  border-top: 3px solid var(--c-conflict);
-  border-radius: var(--radius-md);
+  border-top: 4px solid var(--c-conflict);
+  border-radius: var(--radius-lg);
   background: var(--c-surface);
   min-width: 0;
 }
@@ -434,14 +474,14 @@
   cursor: pointer;
 }
 
-/* --- композер ------------------------------------------------------------ */
+/* --- композер (пилюля, как в макете: серая капсула + круглая CTA-кнопка) --- */
 .composer {
   position: sticky;
   bottom: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4) 0;
+  padding: var(--space-4) 0 max(var(--space-4), env(safe-area-inset-bottom, 0px));
   background: var(--c-page);
 }
 
@@ -454,7 +494,12 @@
 
 .composer__row {
   display: flex;
+  align-items: center;
   gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-pill);
+  background: var(--c-surface-raised);
 }
 
 .composer__input {
@@ -462,35 +507,60 @@
   min-width: 0;
   min-height: var(--tap-min);
   padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--c-border-strong);
-  border-radius: var(--radius-md);
-  background: var(--c-surface);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: transparent;
   font-size: var(--fs-sm);
 }
 
+.composer__input:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--c-focus);
+  border-radius: var(--radius-pill);
+}
+
 .composer__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--tap-min);
   min-height: var(--tap-min);
   padding: 0 var(--space-5);
   border: 0;
-  border-radius: var(--radius-md);
-  background: var(--c-accent);
-  color: var(--c-on-accent);
-  font-weight: 600;
+  border-radius: var(--radius-pill);
+  background: var(--c-cta);
+  color: var(--c-cta-ink);
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color 0.15s ease, transform 0.1s ease;
 }
 
 .composer__submit:hover:not(:disabled) {
-  background: var(--c-accent-hover);
+  background: var(--c-cta-hover);
+}
+
+.composer__submit:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .composer__submit:disabled {
   background: var(--c-border-strong);
+  color: var(--c-ink-faint);
   cursor: not-allowed;
 }
 
 @media (max-width: 420px) {
   .composer__row {
-    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: var(--radius-lg);
+  }
+
+  .composer__input {
+    flex-basis: 100%;
+  }
+
+  .composer__submit {
+    flex: 1;
   }
 }
