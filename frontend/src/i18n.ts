@@ -14,6 +14,7 @@ export interface Strings {
   sending: string
   emptyTitle: string
   emptyBody: string
+  quickPrompts: string[]
   loading: string
   errorTitle: string
   errorBody: string
@@ -54,6 +55,24 @@ export interface Strings {
   statsQueries: string
   statsFeedback: string
   statsModel: string
+  logoText: string
+  logoSubtitle: string
+  searchAria: string
+  collapseSidebarAria: string
+  expandSidebarAria: string
+  menuAria: string
+  newChat: string
+  pinnedLabel: string
+  recentsLabel: string
+  heroLine1: string
+  heroLine2: string
+  composerPlaceholder: string
+  mascotAlt: string
+  interfaceLangLabel: string
+  searchModalTitle: string
+  searchPlaceholder: string
+  searchNoResults: string
+  searchCloseAria: string
 }
 
 const ro: Strings = {
@@ -69,6 +88,11 @@ const ro: Strings = {
   emptyTitle: "Puneți o întrebare despre serviciile municipale",
   emptyBody:
     "Fiecare răspuns arată documentul din care provine și fragmentul exact. Dacă răspunsul nu există în surse, asistentul o spune direct.",
+  quickPrompts: [
+    "Care este termenul de examinare a unei petiții?",
+    "Cum depun o petiție la primărie?",
+    "Cine este responsabil de curățenia stradală?",
+  ],
   loading: "Se caută în surse…",
   errorTitle: "Cererea nu a reușit",
   errorBody: "Serviciul nu a răspuns. Verificați conexiunea și încercați din nou.",
@@ -110,6 +134,24 @@ const ro: Strings = {
   statsQueries: "Interogări",
   statsFeedback: "Feedback",
   statsModel: "Model",
+  logoText: "nexa",
+  logoSubtitle: "Asistent Chișinău",
+  searchAria: "Căutare în conversații",
+  collapseSidebarAria: "Restrânge meniul lateral",
+  expandSidebarAria: "Extinde meniul lateral",
+  menuAria: "Meniu",
+  newChat: "Chat nou",
+  pinnedLabel: "Fixate",
+  recentsLabel: "Recente",
+  heroLine1: "Bună, sunt NEXA",
+  heroLine2: "Cu ce te pot ajuta?",
+  composerPlaceholder: "Întreabă NEXA…",
+  mascotAlt: "Mascotă AI",
+  interfaceLangLabel: "Interfață",
+  searchModalTitle: "Caută în conversații",
+  searchPlaceholder: "Caută…",
+  searchNoResults: "Nimic găsit",
+  searchCloseAria: "Închide căutarea",
 }
 
 const ru: Strings = {
@@ -125,6 +167,11 @@ const ru: Strings = {
   emptyTitle: "Задайте вопрос о муниципальных услугах",
   emptyBody:
     "К каждому ответу прилагается документ-источник и дословный фрагмент. Если ответа в источниках нет, ассистент скажет об этом прямо.",
+  quickPrompts: [
+    "В какой срок рассматривается петиция в примэрии?",
+    "Как подать петицию в примэрию?",
+    "Кто отвечает за уборку улиц?",
+  ],
   loading: "Идёт поиск по источникам…",
   errorTitle: "Запрос не удался",
   errorBody: "Сервис не ответил. Проверьте соединение и попробуйте снова.",
@@ -166,6 +213,24 @@ const ru: Strings = {
   statsQueries: "Запросы",
   statsFeedback: "Отзывы",
   statsModel: "Модель",
+  logoText: "nexa",
+  logoSubtitle: "Asistent Chișinău",
+  searchAria: "Поиск по беседам",
+  collapseSidebarAria: "Свернуть боковую панель",
+  expandSidebarAria: "Развернуть боковую панель",
+  menuAria: "Меню",
+  newChat: "Новый чат",
+  pinnedLabel: "Закреплённые",
+  recentsLabel: "Недавние",
+  heroLine1: "Привет, я NEXA",
+  heroLine2: "Чем могу помочь?",
+  composerPlaceholder: "Спроси NEXA…",
+  mascotAlt: "AI-маскот",
+  interfaceLangLabel: "Интерфейс",
+  searchModalTitle: "Поиск по беседам",
+  searchPlaceholder: "Поиск…",
+  searchNoResults: "Ничего не найдено",
+  searchCloseAria: "Закрыть поиск",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
