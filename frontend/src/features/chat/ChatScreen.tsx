@@ -64,6 +64,8 @@ export function ChatScreen() {
   const [recents, setRecents] = useState<string[]>(() => loadRecents())
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(() => loadCollapsed())
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const s = t(lang)
 
   useEffect(() => {
@@ -114,8 +116,35 @@ export function ChatScreen() {
     setMobileOpen(false)
   }
 
+  function openSearch(): void {
+    setSearchQuery("")
+    setSearchOpen(true)
+  }
+
+  function closeSearch(): void {
+    setSearchOpen(false)
+  }
+
+  function runFromSearch(question: string): void {
+    closeSearch()
+    void run(question)
+  }
+
   const canSend = draft.trim().length >= MIN_QUESTION_LENGTH && !pending
   const showEmpty = turns.length === 0 && !pending && !failed
+
+  // Поиск по «Закреплённым» (quickPrompts) и «Недавним» (recents) — без дублей,
+  // порядок: сначала закреплённые, затем недавние. Источник данных реальный,
+  // ничего не выдумываем поверх localStorage/i18n.
+  const searchItems = [
+    ...s.quickPrompts.map((q) => ({ query: q, group: s.pinnedLabel })),
+    ...recents
+      .filter((q) => !s.quickPrompts.includes(q))
+      .map((q) => ({ query: q, group: s.recentsLabel })),
+  ]
+  const filteredSearchItems = searchQuery.trim()
+    ? searchItems.filter((item) => item.query.toLowerCase().includes(searchQuery.trim().toLowerCase()))
+    : searchItems
 
   const langSwitch = (
     <div className="lang" role="group" aria-label={s.langLabel}>
@@ -141,7 +170,7 @@ export function ChatScreen() {
           <span className="sidebar__logo-subtitle">{s.logoSubtitle}</span>
         </div>
         <div className="sidebar__top-actions">
-          <button type="button" className="sidebar__icon-btn" aria-label={s.searchAria}>
+          <button type="button" className="sidebar__icon-btn" aria-label={s.searchAria} onClick={openSearch}>
             <SearchIcon />
           </button>
           <button
@@ -225,7 +254,7 @@ export function ChatScreen() {
             <button type="button" className="sidebar__icon-btn" onClick={newChat} aria-label={s.newChat}>
               <PencilIcon />
             </button>
-            <button type="button" className="sidebar__icon-btn" aria-label={s.searchAria}>
+            <button type="button" className="sidebar__icon-btn" aria-label={s.searchAria} onClick={openSearch}>
               <SearchIcon />
             </button>
             <button type="button" className="sidebar__icon-btn" aria-label={s.pinnedLabel}>
@@ -333,6 +362,50 @@ export function ChatScreen() {
           </div>
         </form>
       </div>
+
+      {searchOpen && (
+        <div className="search-modal-overlay" onClick={closeSearch}>
+          <div
+            className="search-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={s.searchModalTitle}
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="search-modal__header">
+              <SearchIcon />
+              <input
+                type="text"
+                className="search-modal__input"
+                placeholder={s.searchPlaceholder}
+                value={searchQuery}
+                autoFocus
+                onChange={(event) => setSearchQuery(event.target.value)}
+              />
+              <button type="button" className="search-modal__close" aria-label={s.searchCloseAria} onClick={closeSearch}>
+                <CloseIcon />
+              </button>
+            </div>
+            <ul className="search-modal__list">
+              {filteredSearchItems.length === 0 && (
+                <li className="search-modal__empty">{s.searchNoResults}</li>
+              )}
+              {filteredSearchItems.map((item, index) => (
+                <li key={`${item.group}-${item.query}-${index}`}>
+                  <button
+                    type="button"
+                    className="search-modal__item"
+                    onClick={() => runFromSearch(item.query)}
+                  >
+                    <span className="search-modal__item-group">{item.group}</span>
+                    <span className="search-modal__item-text">{item.query}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
@@ -344,6 +417,15 @@ function SearchIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
       <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function CloseIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <line x1="5" y1="5" x2="19" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <line x1="19" y1="5" x2="5" y2="19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   )
 }

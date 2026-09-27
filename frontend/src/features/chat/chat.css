@@ -871,3 +871,109 @@
     border-radius: var(--radius-lg);
   }
 }
+
+/* --- модалка поиска по «Закреплённым»/«Недавним» (перенесено из PR #17,
+   переписано под наши токены и i18n) -------------------------------------- */
+.search-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--c-backdrop);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  z-index: 30;
+}
+
+.search-modal {
+  width: min(32rem, calc(100vw - var(--space-5) * 2));
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-raised);
+  overflow: hidden;
+}
+
+.search-modal__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--c-border);
+  color: var(--c-ink-faint);
+}
+
+.search-modal__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-md);
+  color: var(--c-ink);
+}
+
+.search-modal__close {
+  border: none;
+  background: transparent;
+  color: var(--c-ink-faint);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: var(--space-1);
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  justify-content: center;
+}
+
+.search-modal__close:hover {
+  color: var(--c-ink);
+}
+
+.search-modal__list {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-2);
+  overflow-y: auto;
+}
+
+.search-modal__empty {
+  padding: var(--space-4);
+  color: var(--c-ink-faint);
+  font-size: var(--fs-sm);
+  text-align: center;
+}
+
+.search-modal__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: var(--c-ink);
+}
+
+.search-modal__item:hover {
+  background: var(--c-sidebar-item-hover);
+}
+
+.search-modal__item-group {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--c-ink-faint);
+}
+
+.search-modal__item-text {
+  font-size: var(--fs-sm);
+}

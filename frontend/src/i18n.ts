@@ -69,6 +69,10 @@ export interface Strings {
   composerPlaceholder: string
   mascotAlt: string
   interfaceLangLabel: string
+  searchModalTitle: string
+  searchPlaceholder: string
+  searchNoResults: string
+  searchCloseAria: string
 }
 
 const ro: Strings = {
@@ -144,6 +148,10 @@ const ro: Strings = {
   composerPlaceholder: "Întreabă NEXA…",
   mascotAlt: "Mascotă AI",
   interfaceLangLabel: "Interfață",
+  searchModalTitle: "Caută în conversații",
+  searchPlaceholder: "Caută…",
+  searchNoResults: "Nimic găsit",
+  searchCloseAria: "Închide căutarea",
 }
 
 const ru: Strings = {
@@ -219,6 +227,10 @@ const ru: Strings = {
   composerPlaceholder: "Спроси NEXA…",
   mascotAlt: "AI-маскот",
   interfaceLangLabel: "Интерфейс",
+  searchModalTitle: "Поиск по беседам",
+  searchPlaceholder: "Поиск…",
+  searchNoResults: "Ничего не найдено",
+  searchCloseAria: "Закрыть поиск",
 }
 
 const STRINGS: Record<Lang, Strings> = { ro, ru }
