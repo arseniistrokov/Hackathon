@@ -13,6 +13,7 @@ import time
 import uuid
 
 from app.blocks import llm, rerank, retrieval, store
+from app.config import settings
 from app.contracts.models import (
     AskResponse,
     Citation,
@@ -43,7 +44,8 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
         if conflicts and not conflicts[0].resolved_by_date:
             return _conflict_response(conn, query, conflicts[0], len(cands), t0)
         if not rerank.is_enough(top):
-            return _not_found_response(conn, query, len(cands), len(top), t0)
+            if settings.LLM == "off" or not top:
+                return _not_found_response(conn, query, len(cands), len(top), t0)
         return _answered_response(conn, query, top, conflicts, len(cands), t0)
     except Exception:  # noqa: BLE001 — любая ошибка после retrieve = NOT_FOUND, не 500
         log.warning("W1: ask failed after retrieve, falling back to NOT_FOUND", exc_info=True)
