@@ -6,7 +6,6 @@ import io
 import logging
 from typing import Annotated, Literal
 
-import av
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
 from pydantic import BaseModel
 
@@ -53,6 +52,8 @@ async def post_transcribe(
 
     # Validate audio duration if container format is recognizable
     try:
+        import av  # optional dependency (extra "stt"); lazy so the app boots without it
+
         container = av.open(io.BytesIO(audio_bytes))
         if container.duration is not None and av.time_base:
             duration_sec = float(container.duration / av.time_base)
