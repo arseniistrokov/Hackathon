@@ -13,7 +13,7 @@ import type { AskResponse, FeedbackRequest, Lang, Stats } from "./types"
 const TIMEOUT_MS = 60_000
 const MOCK_LATENCY_MS = 400
 
-export const USE_MOCK = import.meta.env.VITE_USE_MOCK !== "false"
+export const USE_MOCK = false
 
 const MOCKS: Record<string, AskResponse> = {
   answered_ro: answeredRo as AskResponse,

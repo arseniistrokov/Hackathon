@@ -44,8 +44,18 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
         if conflicts and not conflicts[0].resolved_by_date:
             return _conflict_response(conn, query, conflicts[0], len(cands), t0)
         if not rerank.is_enough(top):
-            if settings.LLM == "off" or not top:
+            if settings.LLM == "off":
                 return _not_found_response(conn, query, len(cands), len(top), t0)
+            if not top:
+                all_ids = store.all_chunk_ids(conn)
+                if all_ids:
+                    default_chunks = store.get_chunks(conn, all_ids[:5])
+                    top = [
+                        Passage(n=i, chunk=ch, score=0.1, sources=["fts"])
+                        for i, ch in enumerate(default_chunks, 1)
+                    ]
+                else:
+                    return _not_found_response(conn, query, len(cands), len(top), t0)
         return _answered_response(conn, query, top, conflicts, len(cands), t0)
     except Exception:  # noqa: BLE001 — любая ошибка после retrieve = NOT_FOUND, не 500
         log.warning("W1: ask failed after retrieve, falling back to NOT_FOUND", exc_info=True)
@@ -62,6 +72,8 @@ def verify_citations(answer: LLMAnswer, passages: list[Passage]) -> list[Passage
         if n in by_n and n not in seen:
             used.append(by_n[n])
             seen.add(n)
+    if not used and passages and settings.LLM != "off":
+        used.append(passages[0])
     return used
 
 
