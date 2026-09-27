@@ -2,8 +2,14 @@
 retrieval.build_index → scout. Только вызывает порты блоков I1, I2, D1, R1, S1.
 
 uv run python scripts/index.py [--source raw|rag_memory|both] [--wave 1|2] [--manual PATH] [--reset]
+    [--drop-junk/--no-drop-junk]
 Требует CORPUS=real в .env (иначе пишет предупреждение и работает поверх фикстур — для
 CI/локальной проверки без сети такой запуск бессмысленен, но не падает).
+
+--drop-junk (по умолчанию включён): некоторые источники (rtec.md, help.chisinau.md) на момент
+волны 2 были частично захвачены spam-инъекциями (казино/беттинг-статьи на разных языках вместо
+контента сайта). Перед chunk() выбрасываем страницы без румынских диакритик и без кириллицы,
+либо явно содержащие игорную лексику — см. _is_junk().
 """
 
 from __future__ import annotations
@@ -26,6 +32,25 @@ RAW_DIR = ROOT / "data" / "raw"
 RAG_MEMORY_DIR = ROOT / "data" / "training" / "rag_memory"
 
 _FRONTMATTER_RE = re.compile(r"\A(#[^\n]*\n+)?---\n.*?\n---\n+", re.DOTALL)
+
+_RO_DIACRITICS_RE = re.compile(r"[ăâîșțĂÂÎȘȚ]")
+_CYRILLIC_RE = re.compile(r"[а-яА-ЯёЁ]")
+_JUNK_WORDS_RE = re.compile(
+    r"casino|cazino|gambl|jackpot|roulette|ruletă|ruleta|sportsbook|bookmaker|"
+    r"free\s*spins?|no\s*deposit\s*bonus|1xbet|bet365|wager|freebet|slot\s*machine",
+    re.IGNORECASE,
+)
+
+
+def _is_junk(page: RawPage) -> bool:
+    """Эвристика для spam-инъекций (казино/беттинг) на скомпрометированных источниках:
+    страница без единой румынской диакритики и без кириллицы, или содержащая игорную
+    лексику (даже если диакритики есть — переводные спам-статьи их иногда сохраняют)."""
+    if _JUNK_WORDS_RE.search(page.text):
+        return True
+    if not _RO_DIACRITICS_RE.search(page.text) and not _CYRILLIC_RE.search(page.text):
+        return True
+    return False
 
 
 def _strip_frontmatter(text: str) -> str:
@@ -76,6 +101,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--wave", type=int, choices=(1, 2), default=None)
     parser.add_argument("--manual", type=Path, default=None, help="data/conflicts_manual.json")
     parser.add_argument("--reset", action="store_true", help="стереть DB_PATH/EMB_PATH перед индексацией")
+    parser.add_argument(
+        "--drop-junk",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="выбросить страницы без RO-диакритик/кириллицы или с игорной лексикой (default: on)",
+    )
     args = parser.parse_args(argv)
 
     logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -87,6 +118,12 @@ def main(argv: list[str] | None = None) -> int:
         _reset()
 
     pages = _load_pages(args.source, args.wave)
+    if args.drop_junk:
+        clean_pages = [page for page in pages if not _is_junk(page)]
+        dropped = len(pages) - len(clean_pages)
+        if dropped:
+            log.info("drop-junk: выброшено %d/%d страниц (спам/не-RO без кириллицы)", dropped, len(pages))
+        pages = clean_pages
     if not pages:
         log.error("Нет страниц для индексации (source=%s, wave=%s)", args.source, args.wave)
         return 1
