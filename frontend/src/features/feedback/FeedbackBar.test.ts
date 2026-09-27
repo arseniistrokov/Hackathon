@@ -64,12 +64,24 @@ const transpileResult = ts.transpileModule(sourceCode, {
   },
 })
 
+// Реальный i18n.ts тоже транспилируем в CommonJS, чтобы FeedbackBar получал настоящие строки.
+const i18nPath = path.join(__dirname, "../../i18n.ts")
+const i18nSource = fs.readFileSync(i18nPath, "utf-8")
+const i18nTranspiled = ts.transpileModule(i18nSource, {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+})
+const i18nModuleObj = { exports: {} as Record<string, any> }
+const i18nRunner = new Function("require", "module", "exports", i18nTranspiled.outputText)
+i18nRunner(() => ({}), i18nModuleObj, i18nModuleObj.exports)
+const i18nExports = i18nModuleObj.exports
+
 const customRequire = (id: string) => {
   if (id === "react") return React
   if (id.endsWith(".css")) return {}
   if (id === "@/api/client" || id.endsWith("api/client")) {
     return { sendFeedback: async () => {} }
   }
+  if (id === "@/i18n" || id.endsWith("i18n")) return i18nExports
   return {}
 }
 
@@ -232,7 +244,8 @@ test("FeedbackBar.tsx содержит все обязательные элем�
   assert(sourceCode.includes("queryId"), "Компонент должен принимать queryId")
   assert(sourceCode.includes("onSubmit"), "Компонент должен принимать onSubmit")
   assert(sourceCode.includes("sendFeedback"), "Компонент должен вызывать sendFeedback")
-  assert(sourceCode.includes("Спасибо за отзыв!"), "Компонент должен показывать 'Спасибо за отзыв!'")
+  assert(sourceCode.includes("@/i18n"), "Компонент должен брать строки из i18n, а не хардкодить их")
+  assert(sourceCode.includes("s.feedbackThanks"), "Компонент должен показывать s.feedbackThanks")
   assert(sourceCode.includes("disabled={isSubmitted"), "Кнопки должны блокироваться при isSubmitted")
   assert(sourceCode.includes("maxLength={2000}"), "Поле ввода должно иметь maxLength 2000")
 })

@@ -25,14 +25,70 @@ _RRF_K = 60
 
 _index_cache: dict[str, tuple[list[str], np.ndarray, list[str]]] = {}
 
+# Словарный фолбэк для ru→ro (R2 hotfix): дообученная API-модель (qwen2.5-3b-qlora) на
+# llm.l1.translate не переводит, а возвращает почти неизменный (по многим разным вопросам —
+# один и тот же) набор ключевых слов категории, из-за чего FTS/rerank не находят реальный
+# документ. Для частотных бытовых терминов подставляем точную ro-форму напрямую — детерминированно,
+# без сети. Ключ — русская основа (без окончаний), матчится подстрокой по casefold-тексту вопроса.
+_RU_RO_TERMS: dict[str, str] = {
+    "петици": "petiție",
+    "врач": "medic",
+    "троллейбус": "troleibuz",
+    "налог": "impozit",
+    "парковк": "parcare",
+    "свадьб": "căsătorie",
+    "брак": "căsătorie",
+    "детсад": "grădiniță",
+    "мусор": "gunoi deșeuri",
+    "вода": "apă",
+    "отоплени": "încălzire",
+}
+
+
+def _dictionary_translate(text: str) -> str | None:
+    """Подстрочный ru→ro фолбэк по _RU_RO_TERMS. Пусто, если ни один термин не встретился."""
+    folded = text.casefold()
+    hits = [ro for stem, ro in _RU_RO_TERMS.items() if stem in folded]
+    if not hits:
+        return None
+    return " ".join(dict.fromkeys(hits))  # без дублей, порядок стабилен (порядок _RU_RO_TERMS)
+
+
+def _ro_prefix(translated: str) -> str:
+    """Модель (qwen2.5-3b-qlora) часто дописывает исходный ru-вопрос кириллицей после ro-ответа
+    (иногда ещё и в JSON-обвязке) — берём только "чистый" ro-префикс до первой кириллицы/`{`/`"`.
+    """
+    if not translated:
+        return ""
+    cut = len(translated)
+    for i, ch in enumerate(translated):
+        if ("а" <= ch.lower() <= "я") or ch.lower() == "ё" or ch in "{\"":
+            cut = i
+            break
+    return translated[:cut].strip()
+
 
 def make_query(text: str, lang: Lang | None = None) -> Query:
     """detect_lang (L1) → для ru: search_text = translate(text, 'ro').
 
+    LLM=api (единственная реальная эксплуатационная конфигурация с моделью, вызывающей сеть):
+    llm.l1.translate у дообученной под другую задачу модели (qwen2.5-3b-qlora) неустойчив — часто
+    возвращает один и тот же набор категорийных слов независимо от вопроса и дописывает исходный
+    ru-текст кириллицей после ro-ответа (см. _ro_prefix). Поэтому для частотных бытовых терминов
+    сначала пробуем словарный фолбэк _RU_RO_TERMS (точная ro-форма, не размывает lexical rerank
+    лишними словами), а "грязный" перевод модели чистим до ro-префикса. LLM=off/ollama — поведение
+    не меняется (identity / translate как есть), чтобы не сломать существующий контракт R1.
+
     Категория — если роутер уверен, иначе None.
     """
     resolved_lang = lang or llm.detect_lang(text)
-    search_text = llm.translate(text, "ro") if resolved_lang == "ru" else text
+    search_text = text
+    if resolved_lang == "ru":
+        if settings.LLM == "api":
+            dict_hit = _dictionary_translate(text)
+            search_text = dict_hit or (_ro_prefix(llm.translate(text, "ro")) or text)
+        else:
+            search_text = llm.translate(text, "ro")
     return Query(
         text=text,
         lang=resolved_lang,
@@ -57,33 +113,40 @@ def retrieve(query: Query, n: int | None = None) -> list[Passage]:
     """top-N кандидатов (settings.TOP_N) с RRF-скором и sources. Нумерация n=1.. по убыванию скора."""
     top_n = n or settings.TOP_N
     conn = store.connect()
+    try:
+        fts_ids = [
+            chunk_id
+            for chunk_id, _ in store.fts_search(conn, query.search_text, k=top_n, category=query.category)
+        ]
+        vec_ids = _vector_candidates(conn, query.search_text, query.category, top_n)
 
-    fts_ids = [
-        chunk_id
-        for chunk_id, _ in store.fts_search(conn, query.search_text, k=top_n, category=query.category)
-    ]
-    vec_ids = _vector_candidates(conn, query.search_text, query.category, top_n)
+        scores = _rrf_scores(fts_ids, vec_ids)
+        if not scores:
+            return []
 
-    scores = _rrf_scores(fts_ids, vec_ids)
-    if not scores:
-        return []
+        ranked_ids = sorted(scores, key=lambda chunk_id: (-scores[chunk_id], chunk_id))
+        chunks_by_id = {chunk.id: chunk for chunk in store.get_chunks(conn, ranked_ids)}
+        ranked_ids = [chunk_id for chunk_id in ranked_ids if chunk_id in chunks_by_id][:top_n]
 
-    ranked_ids = sorted(scores, key=lambda chunk_id: (-scores[chunk_id], chunk_id))
-    chunks_by_id = {chunk.id: chunk for chunk in store.get_chunks(conn, ranked_ids)}
-    ranked_ids = [chunk_id for chunk_id in ranked_ids if chunk_id in chunks_by_id][:top_n]
-
-    fts_set, vec_set = set(fts_ids), set(vec_ids)
-    passages: list[Passage] = []
-    for rank, chunk_id in enumerate(ranked_ids, start=1):
-        sources: list[Literal["fts", "vec"]] = []
-        if chunk_id in fts_set:
-            sources.append("fts")
-        if chunk_id in vec_set:
-            sources.append("vec")
-        passages.append(
-            Passage(n=rank, chunk=chunks_by_id[chunk_id], score=round(scores[chunk_id], 6), sources=sources)
-        )
-    return passages
+        fts_set, vec_set = set(fts_ids), set(vec_ids)
+        passages: list[Passage] = []
+        for rank, chunk_id in enumerate(ranked_ids, start=1):
+            sources: list[Literal["fts", "vec"]] = []
+            if chunk_id in fts_set:
+                sources.append("fts")
+            if chunk_id in vec_set:
+                sources.append("vec")
+            passages.append(
+                Passage(
+                    n=rank,
+                    chunk=chunks_by_id[chunk_id],
+                    score=round(scores[chunk_id], 6),
+                    sources=sources,
+                )
+            )
+        return passages
+    finally:
+        conn.close()
 
 
 def build_index() -> int:
@@ -92,8 +155,11 @@ def build_index() -> int:
     Вернуть число строк.
     """
     conn = store.connect()
-    ids = store.all_chunk_ids(conn)
-    chunks = store.get_chunks(conn, ids)
+    try:
+        ids = store.all_chunk_ids(conn)
+        chunks = store.get_chunks(conn, ids)
+    finally:
+        conn.close()
     matrix = embed([chunk.text for chunk in chunks])
     store.save_embeddings(ids, matrix, settings.EMB_PATH)
     _index_cache.pop(settings.EMBEDDER, None)

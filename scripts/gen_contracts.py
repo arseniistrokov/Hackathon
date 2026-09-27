@@ -294,7 +294,7 @@ BLOCKS = [
  dict(id="C0", name="skeleton", title="Каркас проекта", group="CORE", owner="A", backup="N",
   depends=[], consumers=["все блоки"],
   goal="Один Python-процесс (FastAPI раздаёт статику фронта), общие модели, переключатели уровней, гнёзда всех блоков, fixture, CI. Сделан до хакатона; после него общие файлы заморожены.",
-  paths=["app/**", "tests/**", "scripts/**", "data/fixture/**", "data/sites.yaml", "docs/**", "frontend/**", "pyproject.toml", "uv.lock", ".github/**", "hooks/**", "README.md", "AGENTS.md", "CLAUDE.md", ".env.example", ".gitignore"],
+  paths=["app/**", "tests/**", "scripts/**", "data/fixture/**", "data/sites.yaml", "data/training/**", "docs/**", "frontend/**", "pyproject.toml", "uv.lock", ".github/**", "hooks/**", "README.md", "AGENTS.md", "CLAUDE.md", ".env.example", ".gitignore"],
   models=[],
   port="""\
 Результат — не функция, а состояние репозитория:
@@ -625,7 +625,7 @@ frontend/src/api/client.ts       ask(question, lang?) / sendFeedback / getStats;
 frontend/src/features/chat/ChatScreen.tsx   ввод + переключатель ro/ru + история; AnswerCard.tsx — switch по status; CitationCard.tsx
 ```
 Состояния: `loading` (скелет), `error` (текст + «повторить»), `ANSWERED` (ответ, warning-баннер если есть, список CitationCard, navigation-ссылка), `NOT_FOUND` (блок с `meta.corpus_documents` и текстом «подтверждающих passages: 0, генерация заблокирована»), `CONFLICT` (две колонки a/b: value, date, passage, ссылка; ответ-пояснение сверху). Все строки — из `i18n.ts` по `language` ответа.""",
-  levels=[("L0", "Моки (каркас уже рисует минимум; довести до макета дизайнеров)."), ("L1", "`VITE_USE_MOCK=false` против реального `/api/ask`."), ("L2", "История вопросов в `localStorage`.")],
+  levels=[("L0", "Моки (каркас уже рисует минимум; довести по Figma-ссылке + скриншотам дизайнеров — CONTEXT.md §12, отдельного финального макета не будет)."), ("L1", "`VITE_USE_MOCK=false` против реального `/api/ask`."), ("L2", "История вопросов в `localStorage`.")],
   env="`VITE_USE_MOCK=true|false`", deps="только то, что в `frontend/package.json`",
   accept=["Каждый из 5 моков `data/fixture/mock_responses/*.json` рендерится без ошибок в консоли; `undefined` в `section`, `page`, `date`, `warning`, `navigation`, `conflict` не роняет экран.",
           "CONFLICT: две колонки на ≥ 768 px, одна под другой на 390 px; обе цитаты кликабельны.",

@@ -9,8 +9,8 @@
   min-width: var(--tap-min);
   min-height: var(--tap-min);
   padding: var(--space-2);
-  border: 1px solid var(--c-border);
-  border-radius: var(--radius-md);
+  border: 0;
+  border-radius: var(--radius-pill);
   background: var(--c-surface);
   color: var(--c-ink);
   font-size: var(--fs-md);
@@ -20,7 +20,6 @@
 }
 
 .mic-btn:hover {
-  border-color: var(--c-border-strong);
   background: var(--c-surface-sunken);
 }
 
@@ -30,8 +29,8 @@
 }
 
 .mic-btn--listening {
-  border-color: var(--c-error);
   background: var(--c-error-soft);
+  color: var(--c-error);
   animation: mic-pulse 1.5s infinite;
 }
 

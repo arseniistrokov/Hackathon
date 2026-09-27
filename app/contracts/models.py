@@ -117,6 +117,7 @@ class Meta(BaseModel):
     model: str  # "extractive" на L0, иначе имя модели
     latency_ms: int
     query_id: str  # для /feedback
+    citation_source: str | None = None  # "model" | "recovered"; None — до ANSWERED не применимо
 
 
 class LLMAnswer(BaseModel):

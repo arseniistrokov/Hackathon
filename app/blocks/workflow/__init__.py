@@ -9,10 +9,13 @@ make_query → retrieve → rerank → evidence gate (CONFLICT | NOT_FOUND | ENO
 from __future__ import annotations
 
 import logging
+import re
 import time
+import unicodedata
 import uuid
 
 from app.blocks import llm, rerank, retrieval, store
+from app.config import settings
 from app.contracts.models import (
     AskResponse,
     Citation,
@@ -28,6 +31,62 @@ from . import prompts
 
 log = logging.getLogger(__name__)
 
+# слова длиной ≥4, слишком частые в ro/ru, чтобы считаться сигналом пересечения при recovery
+_STOPWORDS = {
+    "este", "pentru", "care", "fost", "daca", "dacă", "spre", "catre",
+    "către", "asupra", "acest", "acesta", "acestei", "aceste", "acele",
+    "unde", "cand", "când", "dupa", "după", "intre", "între", "fara", "fără",
+    "если", "этот", "эта", "это", "какой", "какая", "когда", "через",
+    "более", "между", "также", "потому", "чтобы", "может", "нужно", "будет",
+}
+
+_WORD_RE = re.compile(r"[^\W\d_]{4,}", re.UNICODE)
+_NUM_RE = re.compile(r"\d+")
+
+
+def _strip_diacritics(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text)
+    return "".join(ch for ch in normalized if not unicodedata.combining(ch))
+
+
+def _word_tokens(text: str) -> set[str]:
+    folded = _strip_diacritics(text.casefold())
+    return {w for w in _WORD_RE.findall(folded) if w not in _STOPWORDS}
+
+
+def _number_tokens(text: str) -> set[str]:
+    return set(_NUM_RE.findall(text))
+
+
+def recover_citations(answer: str, top: list[Passage]) -> list[Passage]:
+    """Детерминированный откат, если LLMAnswer.citations пуст, а answer непустой и enough=true.
+
+    Совпадение с фрагментом = лексическое пересечение нормализованных токенов (≥4 символа, без
+    стоп-слов) не ниже CITATION_RECOVERY_MIN_OVERLAP ДОЛИ токенов ответа, ИЛИ общее число
+    (год/сумма/срок и т.п.) между answer и фрагментом. Ни одного совпадения → пусто (NOT_FOUND).
+
+    Среди совпавших оставляем не более CITATION_RECOVERY_MAX с наибольшим rerank-score (p.score),
+    иначе при нескольких пересекающихся фрагментах (напр. старый и новый тариф) в цитаты попадают
+    устаревшие источники только из-за лексического совпадения.
+    """
+    if not settings.CITATION_RECOVERY or not answer.strip():
+        return []
+    answer_words = _word_tokens(answer)
+    answer_numbers = _number_tokens(answer)
+    if not answer_words and not answer_numbers:
+        return []
+
+    matched: list[Passage] = []
+    for p in top:
+        passage_text = p.chunk.text
+        overlap = answer_words & _word_tokens(passage_text)
+        overlap_ratio = len(overlap) / len(answer_words) if answer_words else 0.0
+        number_hit = bool(answer_numbers & _number_tokens(passage_text))
+        if overlap_ratio >= settings.CITATION_RECOVERY_MIN_OVERLAP or number_hit:
+            matched.append(p)
+    matched.sort(key=lambda p: (-p.score, p.n))
+    return matched[: settings.CITATION_RECOVERY_MAX]
+
 
 def ask(question: str, lang: Lang | None = None) -> AskResponse:
     """Единая точка входа для POST /api/ask и eval.py."""
@@ -35,6 +94,7 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
     query = retrieval.make_query(question, lang)
     cands = retrieval.retrieve(query)
 
+    conn = None
     try:
         conn = store.connect()
         top = rerank.rerank(query, cands)
@@ -47,8 +107,12 @@ def ask(question: str, lang: Lang | None = None) -> AskResponse:
         return _answered_response(conn, query, top, conflicts, len(cands), t0)
     except Exception:  # noqa: BLE001 — любая ошибка после retrieve = NOT_FOUND, не 500
         log.warning("W1: ask failed after retrieve, falling back to NOT_FOUND", exc_info=True)
-        conn = store.connect()
+        if conn is None:
+            conn = store.connect()
         return _not_found_response(conn, query, len(cands), 0, t0)
+    finally:
+        if conn is not None:
+            conn.close()
 
 
 def verify_citations(answer: LLMAnswer, passages: list[Passage]) -> list[Passage]:
@@ -87,6 +151,10 @@ def _answered_response(
         return _not_found_response(conn, query, passages_retrieved, len(top), t0)
 
     used = verify_citations(llm_answer, top)
+    citation_source = "model"
+    if not used:
+        used = recover_citations(llm_answer.answer, top)
+        citation_source = "recovered"
     if not used:
         return _not_found_response(conn, query, passages_retrieved, len(top), t0)
 
@@ -100,6 +168,7 @@ def _answered_response(
     navigation = store.site_navigation(conn, citations[0].site)
     query_id = uuid.uuid4().hex[:12]
     meta = _meta(conn, passages_retrieved, len(top), query_id, t0)
+    meta.citation_source = citation_source
     store.save_query(
         conn,
         query_id=query_id,

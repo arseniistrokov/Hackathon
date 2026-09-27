@@ -58,6 +58,17 @@ const transpileResult = ts.transpileModule(sourceCode, {
   },
 })
 
+// Реальный i18n.ts тоже транспилируем в CommonJS, чтобы StatsFooter получал настоящие строки.
+const i18nPath = path.join(__dirname, "../../i18n.ts")
+const i18nSource = fs.readFileSync(i18nPath, "utf-8")
+const i18nTranspiled = ts.transpileModule(i18nSource, {
+  compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
+})
+const i18nModuleObj = { exports: {} as Record<string, any> }
+const i18nRunner = new Function("require", "module", "exports", i18nTranspiled.outputText)
+i18nRunner(() => ({}), i18nModuleObj, i18nModuleObj.exports)
+const i18nExports = i18nModuleObj.exports
+
 const customRequire = (id: string) => {
   if (id === "react") return React
   if (id.endsWith(".css")) return {}
@@ -75,6 +86,7 @@ const customRequire = (id: string) => {
       }),
     }
   }
+  if (id === "@/i18n" || id.endsWith("i18n")) return i18nExports
   return {}
 }
 
@@ -189,7 +201,7 @@ test("client.ts getStats() возвращает согласованные да�
   const clientCode = fs.readFileSync(clientPath, "utf-8")
   assert(clientCode.includes("getStats"), "client.ts должен экспортировать getStats")
   assert(clientCode.includes("corpus_documents: 14"), "corpus_documents на L0 должен быть 14")
-  assert(clientCode.includes("corpus_chunks: 52"), "corpus_chunks на L0 должен быть 52")
+  assert(clientCode.includes("corpus_chunks: 60"), "corpus_chunks на L0 должен быть 60")
   assert(clientCode.includes("sites: 8"), "sites на L0 должен быть 8")
   assert(clientCode.includes("conflicts: 2"), "conflicts на L0 должен быть 2")
 })

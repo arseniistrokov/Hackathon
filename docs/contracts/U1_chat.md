@@ -80,7 +80,8 @@ class AskResponse(BaseModel):
     answer: str  # NOT_FOUND → пусто; CONFLICT → короткое объяснение, что источники расходятся
     citations: list[Citation] = []
     conflict: Conflict | None = None
-    warning: str | None = None  # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    # ANSWERED с устаревшим вторым источником: «документ X от <дата> говорит иначе»
+    warning: str | None = None
     navigation: Navigation | None = None
     meta: Meta
 
@@ -126,7 +127,7 @@ class Meta(BaseModel):
 ## Уровни (заменяемость)
 | Уровень | Что сделать |
 |---|---|
-| **L0** | Моки (каркас уже рисует минимум; довести до макета дизайнеров). |
+| **L0** | Моки (каркас уже рисует минимум; довести по Figma-ссылке + скриншотам дизайнеров — CONTEXT.md §12, отдельного финального макета не будет). |
 | **L1** | `VITE_USE_MOCK=false` против реального `/api/ask`. |
 | **L2** | История вопросов в `localStorage`. |
 

@@ -2,7 +2,15 @@
 import type { Citation, Lang } from "@/api/types"
 import { t } from "@/i18n"
 
-export function CitationCard({ citation, lang }: { citation: Citation; lang: Lang }) {
+export function CitationCard({
+  citation,
+  lang,
+  onOpenDocument,
+}: {
+  citation: Citation
+  lang: Lang
+  onOpenDocument?: (citation: Citation) => void
+}) {
   const s = t(lang)
   return (
     <article className="citation">
@@ -22,7 +30,20 @@ export function CitationCard({ citation, lang }: { citation: Citation; lang: Lan
         <span>{citation.date ? <time dateTime={citation.date}>{citation.date}</time> : s.undatedLabel}</span>
       </div>
       <blockquote className="citation__passage">{citation.passage}</blockquote>
-      <a className="citation__link" href={citation.url} target="_blank" rel="noreferrer">
+      <a
+        className="citation__link"
+        href={citation.url}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(event) => {
+          // Клик открывает панель просмотра документа (данные — только из citation, без дозагрузки).
+          // Открыть источник напрямую всё ещё можно средней кнопкой/Ctrl+клик — href остаётся настоящим.
+          if (onOpenDocument) {
+            event.preventDefault()
+            onOpenDocument(citation)
+          }
+        }}
+      >
         {s.openDocument}
       </a>
     </article>

@@ -74,7 +74,9 @@ class LLMAnswer(BaseModel):
     """Схема, по которой модель обязана ответить (ollama format / json_schema). Ничего кроме этого."""
 
     answer: str = Field(description="Ответ на языке вопроса. Только факты из passages.")
-    citations: list[int] = Field(default_factory=list, description="Номера passages [n], на которых основан ответ")
+    citations: list[int] = Field(
+        default_factory=list, description="Номера passages [n], на которых основан ответ"
+    )
     enough: bool = Field(description="false, если в passages нет ответа на вопрос")
 ```
 ## Уровни (заменяемость)

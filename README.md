@@ -14,6 +14,40 @@ cd frontend && npm ci && npm run dev      # http://127.0.0.1:5173
 git config core.hooksPath hooks           # один раз
 ```
 
+## Собрать реальный корпус (CORPUS=real)
+
+По умолчанию демо работает на `data/fixture/mini_corpus` (14 страниц, `CORPUS=fixture`). Чтобы
+поднять полноценную RAG-память по 40 источникам Annex 1 (`data/sites.yaml`):
+
+```
+sed -i 's/^CORPUS=fixture/CORPUS=real/' .env      # или вручную в .env
+
+# 1. Скачать сайты (сеть, ~10 мин на волну; падение одного сайта не роняет остальные)
+uv run python -m app.blocks.fetch --wave 1          # затем --wave 2
+# результат: data/raw/<site>/<slug>.md + .meta.json
+
+# 2. (опционально) готовый архив из PR #14 — уже вычищенный текст части Annex 1
+git checkout origin/data-train -- data/training/rag_memory
+
+# 3. Собрать индекс: raw + rag_memory → chunker → SQLite (D1) → эмбеддинги (R1) → конфликты (S1)
+uv run python scripts/index.py --source both --reset
+
+# 4. Поднять сервер / прогнать eval поверх реального корпуса
+uv run uvicorn app.main:app --reload
+uv run python -m app.blocks.eval --all
+```
+
+`scripts/index.py --source raw|rag_memory|both [--wave 1|2] [--manual data/conflicts_manual.json] [--reset]`
+пишет прогресс (сайтов/документов/чанков) в stdout. `--reset` стирает `DB_PATH`/`EMB_PATH` перед
+пересборкой (полезно при повторных прогонах). Ручные конфликты (`S1`) — `data/conflicts_manual.json`
+(формат как `data/fixture/conflicts.json`); без него на реальном корпусе просто нет конфликтов —
+дизайнеры (G1) заполняют его по факту.
+
+Индекс (`data/index/app.sqlite` + `embeddings.npy`) — в `.gitignore`, каждый собирает у себя;
+время сборки — минуты для `rag_memory`, для полного `raw` (обе волны, сеть) — до ~15–20 минут.
+Golden-набор (`data/fixture/golden.jsonl`) калиброван под fixture-корпус: на `CORPUS=real`
+Recall@5/Citation закономерно ниже (другие document_id/чанки), а не показатель регресса.
+
 ## Куда смотреть
 - `docs/CONTEXT.md` — решения проекта, единственный источник правды.
 - `docs/BLOCKS.md` — карта блоков, владельцы, статус.

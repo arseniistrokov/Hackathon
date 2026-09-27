@@ -25,6 +25,7 @@ h1,
 h2,
 h3 {
   margin: 0;
+  font-weight: 700;
   line-height: var(--lh-tight);
   text-wrap: balance;
 }
