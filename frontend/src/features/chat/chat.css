@@ -370,6 +370,26 @@
   color: var(--c-submit-ink);
 }
 
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  border: 0;
+  border-radius: var(--radius-round);
+  background: transparent;
+  color: var(--c-ink);
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  opacity: 0.75;
+}
+
+
 /* --- поток --------------------------------------------------------------- */
 .chat__thread {
   display: flex;
@@ -811,7 +831,7 @@
     100deg,
     var(--c-surface-sunken) 30%,
     var(--c-surface-raised) 45%,
-    var(--c-accent-soft) 50%,
+    var(--c-shimmer-highlight) 50%,
     var(--c-surface-raised) 55%,
     var(--c-surface-sunken) 70%
   );

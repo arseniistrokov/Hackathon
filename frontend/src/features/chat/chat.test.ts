@@ -232,6 +232,16 @@ test("В frontend/src/features/** отсутствуют литеральные 
   checkDir(featuresDir)
 })
 
+test("tokens.css содержит блок :root[data-theme=\"dark\"] и prefers-color-scheme", () => {
+  const tokensPath = path.resolve(__dirname, "../../styles/tokens.css")
+  const content = fs.readFileSync(tokensPath, "utf-8")
+  assert(content.includes(':root[data-theme="dark"]'), 'tokens.css must contain :root[data-theme="dark"]')
+  assert(
+    content.includes("@media (prefers-color-scheme: dark)"),
+    "tokens.css must contain @media (prefers-color-scheme: dark)"
+  )
+})
+
 // -----------------------------------------------------------------------------
 // КРИТЕРИЙ 6: Переключатель языка меняет lang и язык интерфейса
 // -----------------------------------------------------------------------------
@@ -244,6 +254,8 @@ test("i18n предоставляет полные словари для RO и R
   assert(ru.appTitle === "Муниципальный ассистент Кишинёва", "RU app title")
   assert(ro.send === "Întreabă", "RO send button")
   assert(ru.send === "Спросить", "RU send button")
+  assert(Boolean(ro.themeLight && ro.themeDark), "RO theme keys exist")
+  assert(Boolean(ru.themeLight && ru.themeDark), "RU theme keys exist")
 })
 
 test("Язык ответа наследуется из response.language", () => {
