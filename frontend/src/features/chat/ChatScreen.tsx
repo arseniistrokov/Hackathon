@@ -11,6 +11,7 @@ import { DocumentViewer } from "./DocumentViewer"
 import { MicButton } from "../voice/MicButton"
 import { StatsFooter } from "../stats/StatsFooter"
 import { AboutScreen } from "../stats/AboutScreen"
+import mascotImg from "./assets/mascot.png"
 import "./chat.css"
 
 const MIN_QUESTION_LENGTH = 2 // AskRequest.question: min_length=2
@@ -228,61 +229,70 @@ export function ChatScreen() {
         </div>
       </div>
 
-      <button type="button" className="sidebar__new-chat" onClick={newChat}>
-        <PencilIcon />
-        {s.newChat}
-      </button>
+      <div className="sidebar__card">
+        <button type="button" className="sidebar__new-chat" onClick={newChat}>
+          <PencilIcon />
+          <span>{s.newChat}</span>
+        </button>
 
-      <nav className="sidebar__nav">
-        <p className="sidebar__section-label">
-          <PinIcon />
-          {s.pinnedLabel}
-        </p>
-        <ul className="sidebar__list">
-          {s.quickPrompts.map((prompt) => (
-            <li key={prompt}>
-              <button type="button" className="sidebar__item" onClick={() => void run(prompt)}>
-                {prompt}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <nav className="sidebar__nav">
+          <p className="sidebar__section-label">
+            <PinIcon />
+            <span>{s.pinnedLabel}</span>
+          </p>
+          <ul className="sidebar__list">
+            {s.quickPrompts.map((prompt) => (
+              <li key={prompt}>
+                <button type="button" className="sidebar__item" onClick={() => void run(prompt)}>
+                  {prompt}
+                </button>
+              </li>
+            ))}
+          </ul>
 
-        {recents.length > 0 && (
-          <>
-            <p className="sidebar__section-label">
-              <ClockIcon />
-              {s.recentsLabel}
-            </p>
-            <ul className="sidebar__list">
-              {recents.map((question) => (
-                <li key={question}>
-                  <button type="button" className="sidebar__item" onClick={() => void run(question)}>
-                    {question}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
-      </nav>
+          {recents.length > 0 && (
+            <>
+              <p className="sidebar__section-label">
+                <ClockIcon />
+                <span>{s.recentsLabel}</span>
+              </p>
+              <ul className="sidebar__list">
+                {recents.map((question) => (
+                  <li key={question}>
+                    <button type="button" className="sidebar__item" onClick={() => void run(question)}>
+                      {question}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </nav>
+      </div>
 
-      <div className="sidebar__footer">
+      <div className="sidebar__user-card">
+        <div className="sidebar__user-info">
+          <div className="sidebar__avatar" aria-hidden="true">
+            <span>A</span>
+          </div>
+          <span className="sidebar__user-name">Andrei Popescu</span>
+        </div>
         <button
           type="button"
-          className="sidebar__about-link"
+          className="sidebar__user-action"
+          aria-label={s.aboutNavLabel}
+          title={s.aboutNavLabel}
           onClick={() => {
             setView("about")
             setMobileOpen(false)
           }}
         >
           <InfoIcon />
-          {s.aboutNavLabel}
         </button>
-        {langSwitch}
-        <div className="sidebar__stats">
-          <StatsFooter lang={lang} />
-        </div>
+      </div>
+
+      <div className="sidebar__stats-hidden" aria-hidden="true">
+        <StatsFooter lang={lang} />
       </div>
     </>
   )
@@ -322,6 +332,9 @@ export function ChatScreen() {
             <button type="button" className="sidebar__icon-btn" aria-label={s.recentsLabel}>
               <ClockIcon />
             </button>
+            <div className="sidebar__collapsed-avatar" aria-hidden="true">
+              <span>A</span>
+            </div>
           </div>
         ) : (
           sidebarBody
@@ -339,7 +352,12 @@ export function ChatScreen() {
               <HamburgerIcon />
           </button>
           <span className="main__mobile-title">{renderLogo(s.logoText)}</span>
-          {langSwitch}
+          <div className="main__topbar-actions">
+            {langSwitch}
+            <button type="button" className="theme-toggle" aria-label="Theme">
+              <SunIcon />
+            </button>
+          </div>
         </header>
 
         <p className="chat__disclaimer" role="note">
@@ -351,7 +369,7 @@ export function ChatScreen() {
             <section className="chat__empty">
               <div className="mascot" aria-hidden="true">
                 <div className="mascot__glow" />
-                <div className="mascot__ball" />
+                <img className="mascot__image" src={mascotImg} alt="" />
               </div>
               <h1 className="chat__empty-title">
                 {s.heroLine1}
@@ -645,4 +663,14 @@ function PaperclipIcon() {
     </svg>
   )
 }
+
+function SunIcon() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2" />
+      <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 
