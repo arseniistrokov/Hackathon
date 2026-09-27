@@ -26,6 +26,14 @@ async def lifespan(_: FastAPI):
         "corpus=%s llm=%s embedder=%s reranker=%s scout=%s",
         settings.CORPUS, settings.LLM, settings.EMBEDDER, settings.RERANKER, settings.SCOUT,
     )
+    if settings.SEED_CONFLICTS:
+        from app.blocks import scout
+
+        try:
+            seeded = scout.seed_startup_conflicts()
+            log.info("seed_startup_conflicts: %d conflicts", seeded)
+        except Exception:
+            log.warning("seed_startup_conflicts failed", exc_info=True)
     yield
 
 

@@ -283,7 +283,7 @@ def test_conflict_takes_precedence_over_is_enough_gate(
     conn_with_conflicts, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """Контракт: проверка conflicts идёт ДО is_enough; конфликт имеет приоритет над NOT_FOUND."""
-    monkeypatch.setattr(rerank, "is_enough", lambda _top: False)
+    monkeypatch.setattr(rerank, "is_enough", lambda _top, _query=None: False)
     response = workflow.ask("Care este programul de audiență a cetățenilor la Pretura Botanica?")
     assert response.status == "CONFLICT"
 
