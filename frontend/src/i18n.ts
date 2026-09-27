@@ -78,6 +78,7 @@ export interface Strings {
   closeLabel: string
   closeSidebarAria: string
   aboutNavLabel: string
+  guestName: string
   backToChatLabel: string
   aboutTitle: string
   aboutSubtitle: string
@@ -176,6 +177,7 @@ const ro: Strings = {
   closeLabel: "Închide",
   closeSidebarAria: "Închide meniul lateral",
   aboutNavLabel: "Despre proiect",
+  guestName: "Oaspete",
   backToChatLabel: "Înapoi la chat",
   aboutTitle: "Despre proiect",
   aboutSubtitle: "Asistent municipal Chișinău — statistica serviciului, live.",
@@ -275,6 +277,7 @@ const ru: Strings = {
   closeLabel: "Закрыть",
   closeSidebarAria: "Закрыть боковую панель",
   aboutNavLabel: "О проекте",
+  guestName: "Гость",
   backToChatLabel: "Назад к чату",
   aboutTitle: "О проекте",
   aboutSubtitle: "Муниципальный ассистент Кишинёва — статистика сервиса, вживую.",
